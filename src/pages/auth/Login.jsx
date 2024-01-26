@@ -1,94 +1,89 @@
-import { StyleSheet, Text, View,ImageBackground,Image} from 'react-native'
+import { StyleSheet, Text, View,ImageBackground,Image, SafeAreaView} from 'react-native'
 import React from 'react'
-import { Button } from 'react-native-elements';
-import { ActionTextField } from '../../components/TextField'
-import BouncyCheckbox from "react-native-bouncy-checkbox";
+import AcButton from '../../components/Button';
+import { StatusBar } from 'expo-status-bar';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Login = ({navigation}) => {
   return (
-    <View 
-    style={styles.container}
-    >
-    <ImageBackground 
-    source={require('../../../assets/background.jpg') } 
-    resizeMode="cover" 
-    style={styles.imagebackground}
-    >
+    <SafeAreaView style={styles.safeArea}>
+    <View  style={styles.container}> 
+    
+    <ImageBackground
+     source={require('../../../assets/background1.jpg') } 
+     resizeMode="cover" 
+     style={styles.imagebackground}
+     imageStyle={{opacity:0.9}}>
+     
+     <BlurView style={styles.blurView}
+     intensity={0}>
+     <LinearGradient colors={['rgba(3, 3, 1, 0.3)', 'rgba(3, 3, 1, 0.3)']}
+     style={styles.gradient}>
 
+    <View style={styles.LogoView}>
     <Image 
     source={require('../../../assets/logo.png')} 
     style={styles.Logo}
     />
-    <Text style={styles.label}>LOG IN</Text>
-
-    <ActionTextField 
-    placeholder={'Username'} color='black' bcolor='#9CF2BD'
-     ></ActionTextField>
-
-    <ActionTextField 
-    placeholder={'Password'}
-    ></ActionTextField>
-
-    <View 
-    style={styles.checkboxContainer}>
-
-    <BouncyCheckbox  
-     onPress={() => {}} 
-     />
-
-    <Text 
-    style={styles.text}>Remember Password</Text>
-
-  </View>
-
-    <Button 
-    title={"Log in"} 
-    onPress={()=>{
-      navigation.navigate("DashBoard")
-    }}/>
+    <Text style={styles.heading}>Log in</Text>
     
-    <Text 
-    style={styles.text}>Forgot Password</Text>
-   
-    <Text 
-    style={styles.text}>New Here?Signup</Text>
-
+    <AcButton title="Log in" onPress={()=>{navigation.navigate("Dashboard")}} style={styles.button}></AcButton>
+    </View>
+    </LinearGradient>
+    </BlurView>
     </ImageBackground>
     </View>
+    
+    </SafeAreaView>
   )
 }
 
 export default Login
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-    },
-    imagebackground: {
-      flex: 1,
-      justifyContent: 'center',
-    },
-    Logo: {
-        flexDirection:'row',
-        alignItems:'center',
-        borderRadius:100,
-        height:150,
-        width:150,
-    },
-    checkboxContainer: {
-        flexDirection: 'row',
-        marginBottom: 20,
-      },
-      checkbox: {
-        alignSelf: 'center',
-      },
-      label:{
-        color:"white",
-        textAlign:'center',
-        fontSize:24,
-      },
-      text:
-      {
-        color: "#24C8D2",
-    },
+  container: {
+    flex: 1,
+  },
+  imagebackground: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  LogoView:
+  {
+    flex:1,
+    justifyContent:'center',
+    alignItems: 'center',
+  },
+  Logo: {
+    borderRadius:200,
+    height:150,
+    width:150,
+  },
+  safeArea: {
+    flex:1, 
+    justifyContent:'center',
+    paddingTop:StatusBar.currentHeight
+  },
+  heading:{
+    fontSize:30,
+    textAlign:'center',
+    color:'white',
+    marginVertical:25,
+  },
+  gradient: {
+    flex: 1,
+  },
+  blurView: {
+    flex: 1,
+  },
+  button:{
+    width:270,
+    height:45,
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+    borderRadius: 50,
+    backgroundColor: "#0F9F4A",
+    wordWrap: 'break-word'
+  },
   });

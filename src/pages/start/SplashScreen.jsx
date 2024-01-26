@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, Image,StyleSheet, ImageBackground, SafeAreaView} from 'react-native';
-import { Button ,Text} from 'react-native-elements';
+import {Text} from 'react-native-elements';
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
+import AcButton from '../../components/Button';
 
 
 const StartupScreen = ({navigation}) => {
@@ -28,11 +29,7 @@ const StartupScreen = ({navigation}) => {
     style={styles.Logo}
     />
     <Text style={styles.text}>Pak Agro{'\n'}Vertical Farming</Text>
-    <Button 
-    style={styles.button}
-    title={"Get Started"} 
-    onPress={()=>{navigation.navigate("Login")}}
-    />
+    <AcButton title="Get Started" onPress={()=>{navigation.navigate("Login")}} style={styles.button}></AcButton>
     </View>
     </LinearGradient>
     </BlurView>
@@ -73,6 +70,7 @@ const styles = StyleSheet.create({
     fontSize:30,
     textAlign:'center',
     color:'white',
+    marginVertical:25,
   },
   gradient: {
     flex: 1,
@@ -81,7 +79,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   button:{
-    width:240,
+    width:270,
     height:45,
     paddingHorizontal: 20,
     paddingVertical: 5,
