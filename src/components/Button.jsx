@@ -25,15 +25,10 @@ const styles = StyleSheet.create({
     button: {
       width:274,
       height:46,
-      marginVertical:5,
-      paddingTop:2,
-      paddingBottom: 7,
-      paddingVertical: 5,
       borderColor: "#0F9F4A",
-      borderWidth: 2,
       borderRadius: 50,
-      alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent:'center',
+      alignItems: 'center'
     }
 })
 export default AcButton

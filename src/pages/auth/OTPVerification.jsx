@@ -4,9 +4,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import AcButton from '../../components/Button';
 import AcTextField from '../../components/TextField';
+import OTPVerificationBox from '../../components/OTPVerificationBox';
 
-
-const Forgotpass = ({navigation}) => {
+const Otpverf = ({navigation}) => {
   return (
     <SafeAreaView style={styles.safeArea}>
     <View  style={styles.container}> 
@@ -30,18 +30,15 @@ const Forgotpass = ({navigation}) => {
     </View>
 
     <View style={styles.HeadingView}>
-    <Text style={styles.Heading}>Forgot Password</Text>
-    </View>
-
-    <View style={styles.textFiledView}>
-    <AcTextField placeholder={'Email'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'}></AcTextField>
+    <Text style={styles.Heading}>Verification</Text>
     </View>
 
     <View>
+    <OTPVerificationBox ></OTPVerificationBox>
     </View>
 
     <View style={styles.buttonView}>
-    <AcButton title="Send OTP" onPress={()=>{navigation.navigate("OTPVerification")}} style={styles.button}></AcButton>
+    <AcButton title="Send OTP" onPress={()=>{navigation.navigate("ResetPass")}} style={styles.button}></AcButton>
     </View>
 
 
@@ -54,7 +51,7 @@ const Forgotpass = ({navigation}) => {
   )
 }
 
-export default Forgotpass
+export default Otpverf
 
 const styles = StyleSheet.create({
   safeArea: {

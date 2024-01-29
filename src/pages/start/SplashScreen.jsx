@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Image,StyleSheet, ImageBackground, SafeAreaView} from 'react-native';
 import {Text} from 'react-native-elements';
-import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import AcButton from '../../components/Button';
@@ -28,9 +27,16 @@ const StartupScreen = ({navigation}) => {
     source={require('../../../assets/logo.png')} 
     style={styles.Logo}
     />
-    <Text style={styles.text}>Pak Agro{'\n'}Vertical Farming</Text>
+    </View>
+
+    <View style={styles.textView}>
+    <Text style={styles.text}>PAK AGRO{'\n'}VERTICAL FARMING</Text>
+    </View>
+
+    <View style={styles.buttonView}>
     <AcButton title="Get Started" onPress={()=>{navigation.navigate("Login")}} style={styles.button}></AcButton>
     </View>
+
     </LinearGradient>
     </BlurView>
     </ImageBackground>
@@ -43,34 +49,15 @@ const StartupScreen = ({navigation}) => {
 export default StartupScreen;
 
 const styles = StyleSheet.create({
+    safeArea: {
+    flex:1, 
+  },
   container: {
     flex: 1,
   },
   imagebackground: {
     flex: 1,
-    justifyContent: 'center',
-  },
-  LogoView:
-  {
-    flex:1,
-    justifyContent:'center',
-    alignItems: 'center',
-  },
-  Logo: {
-    borderRadius:200,
-    height:180,
-    width:180,
-  },
-  safeArea: {
-    flex:1, 
-    justifyContent:'center',
-    paddingTop:StatusBar.currentHeight
-  },
-  text:{
-    fontSize:30,
-    textAlign:'center',
-    color:'white',
-    marginVertical:25,
+    width:'100%'
   },
   gradient: {
     flex: 1,
@@ -78,13 +65,43 @@ const styles = StyleSheet.create({
   blurView: {
     flex: 1,
   },
+  LogoView:
+  {
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center',
+    marginTop:200,
+    padding:0
+  },
+  Logo: {
+    borderRadius:200,
+    height:180,
+    width:180,
+  },
+  textView:{
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center',
+    marginTop:30
+    
+  },
+  text:{
+    fontSize:30,
+    textAlign:'center',
+    color:'white',
+  },
+  
+  buttonView:{
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center',
+    marginBottom:150,
+    marginTop:0
+  },
   button:{
     width:270,
     height:45,
-    paddingHorizontal: 20,
-    paddingVertical: 5,
     borderRadius: 50,
-    backgroundColor: "#0F9F4A",
-    wordWrap: 'break-word'
+    backgroundColor: "#0F9F4A"
   },
 });

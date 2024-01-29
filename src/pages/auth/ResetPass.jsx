@@ -5,8 +5,7 @@ import { BlurView } from 'expo-blur';
 import AcButton from '../../components/Button';
 import AcTextField from '../../components/TextField';
 
-
-const Forgotpass = ({navigation}) => {
+const RePass = ({navigation}) => {
   return (
     <SafeAreaView style={styles.safeArea}>
     <View  style={styles.container}> 
@@ -30,18 +29,19 @@ const Forgotpass = ({navigation}) => {
     </View>
 
     <View style={styles.HeadingView}>
-    <Text style={styles.Heading}>Forgot Password</Text>
+    <Text style={styles.Heading}>Set New Password</Text>
     </View>
 
     <View style={styles.textFiledView}>
-    <AcTextField placeholder={'Email'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'}></AcTextField>
+    <AcTextField placeholder={'Password'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'}></AcTextField>
+    <AcTextField placeholder={'Confirm Password'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'}></AcTextField>
     </View>
 
     <View>
     </View>
 
     <View style={styles.buttonView}>
-    <AcButton title="Send OTP" onPress={()=>{navigation.navigate("OTPVerification")}} style={styles.button}></AcButton>
+    <AcButton title="Confirm" onPress={()=>{navigation.navigate("Login")}} style={styles.button}></AcButton>
     </View>
 
 
@@ -54,7 +54,7 @@ const Forgotpass = ({navigation}) => {
   )
 }
 
-export default Forgotpass
+export default RePass
 
 const styles = StyleSheet.create({
   safeArea: {
