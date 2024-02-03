@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import AcButton from '../../components/Button';
 import AcTextField from '../../components/TextField';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
 const Forgotpass = ({navigation}) => {
@@ -58,26 +59,26 @@ export default Forgotpass
 
 const styles = StyleSheet.create({
   safeArea: {
-  flex:1,
-  position:'absolute',
-  width:'100%',
-  height:'100%'
-},
-container: {
-  flex: 1,
-},
-imagebackground: {
-  flex: 1,
-  width:'100%'
-},
-gradient: {
-  flex: 1,
-},
-blurView: {
-  flex: 1,
-},
-LogoView:
-{
+    flex:1
+  },
+  container: {
+    display:'flex',
+    height: hp('100%'),
+    width: wp('100%') 
+    },
+  imagebackground: {
+    display:'flex',
+    width:'100%',
+    height:'100%'
+  },
+  gradient: {
+    width:'100%',
+    height:'100%'
+  },
+  blurView: {
+  },
+  LogoView:
+  {
   flex:1,
   justifyContent:'center',
   alignItems:'center',
@@ -94,7 +95,7 @@ HeadingView:{
   justifyContent:'center',
   alignItems:'center',
   marginTop:40,
-  marginBottom:20
+  marginBottom:15
   
 },
 Heading:{
@@ -108,7 +109,7 @@ textFiledView:{
   justifyContent:'center',
   alignItems:'center',
   marginTop:20,
-  marginBottom:40
+  marginBottom:30
 },
 textField:{
   backgroundColor:'rgba(156, 242, 189, 0.5)',
@@ -121,7 +122,7 @@ buttonView:{
   justifyContent:'center',
   alignItems:'center',
   marginTop:0,
-  marginBottom:130
+  marginBottom:150
 },
 button:{
   width:270,

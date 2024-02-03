@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Image,StyleSheet, ImageBackground, SafeAreaView} from 'react-native';
+import { View, Image,StyleSheet, ImageBackground, SafeAreaView, StatusBar} from 'react-native';
 import {Text} from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import AcButton from '../../components/Button';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
 const StartupScreen = ({navigation}) => {
@@ -21,6 +22,12 @@ const StartupScreen = ({navigation}) => {
      intensity={0}>
      <LinearGradient colors={['rgba(3, 3, 1, 0.3)', 'rgba(3, 3, 1, 0.3)']}
      style={styles.gradient}>
+     
+     <StatusBar
+        backgroundColor="black"  
+        barStyle="white-content"   
+        hidden={false}             
+      />
 
     <View style={styles.LogoView}>
     <Image 
@@ -49,21 +56,24 @@ const StartupScreen = ({navigation}) => {
 export default StartupScreen;
 
 const styles = StyleSheet.create({
-    safeArea: {
-    flex:1, 
+  safeArea: {
+    flex:1
   },
   container: {
-    flex: 1,
-  },
+    display:'flex',
+    height: hp('100%'),
+    width: wp('100%') 
+    },
   imagebackground: {
-    flex: 1,
-    width:'100%'
+    display:'flex',
+    width:'100%',
+    height:'100%'
   },
   gradient: {
-    flex: 1,
+    width:'100%',
+    height:'100%'
   },
   blurView: {
-    flex: 1,
   },
   LogoView:
   {

@@ -1,19 +1,12 @@
 import React from 'react';
-import { View, Button, StyleSheet } from 'react-native';
+import { View,StyleSheet } from 'react-native';
 import Header from '../../components/header';
-import { useNavigation } from '@react-navigation/native';
 
-const HomeScreen = () => {
-  const Dashboard = useNavigation();
-
-  const openDrawer = () => {
-    navigation.openDrawer();
-  };
-
+const DashBoard = ({navigation}) => {
   return (
     <View style={styles.container}>
       {/* Header */}
-      <Header onPressMenu={openDrawer} />
+      <Header />
 
       {/* Body */}
       <View style={styles.body}>
@@ -45,4 +38,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default DashBoard;

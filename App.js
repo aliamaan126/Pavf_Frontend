@@ -3,7 +3,6 @@ import { SafeAreaView, StyleSheet} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {DashBoard, Login, Signup, SplashScreen, Forgotpass, Otpverf,RePass} from './src/index';
-import Drawer from './src/components/drawer';
 
 
 const Stack = createStackNavigator();
@@ -19,7 +18,6 @@ export default function App() {
     <Stack.Screen name='OTPVerification' component={Otpverf}/>
     <Stack.Screen name='ResetPass' component={RePass}/>
     <Stack.Screen name="Dashboard" component={DashBoard}/>
-    <Stack.Screen name="drawer" component={drawer}/>
 
     </Stack.Navigator> 
     </NavigationContainer>   
