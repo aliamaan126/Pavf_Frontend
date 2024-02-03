@@ -19,7 +19,6 @@ export default function App() {
     <Stack.Screen name='OTPVerification' component={Otpverf}/>
     <Stack.Screen name='ResetPass' component={RePass}/>
     <Stack.Screen name="Dashboard" component={DashBoard}/>
- 
 
     </Stack.Navigator> 
     </NavigationContainer>   

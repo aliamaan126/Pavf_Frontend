@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import AcButton from '../../components/Button';
 import AcTextField from '../../components/TextField';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const RePass = ({navigation}) => {
   return (
@@ -58,24 +59,24 @@ export default RePass
 
 const styles = StyleSheet.create({
   safeArea: {
-  flex:1,
-  position:'absolute',
-  width:'100%',
-  height:'100%'
-},
-container: {
-  flex: 1,
-},
-imagebackground: {
-  flex: 1,
-  width:'100%'
-},
-gradient: {
-  flex: 1,
-},
-blurView: {
-  flex: 1,
-},
+    flex:1
+  },
+  container: {
+    display:'flex',
+    height: hp('100%'),
+    width: wp('100%') 
+    },
+  imagebackground: {
+    display:'flex',
+    width:'100%',
+    height:'100%'
+  },
+  gradient: {
+    width:'100%',
+    height:'100%'
+  },
+  blurView: {
+  },
 LogoView:
 {
   flex:1,

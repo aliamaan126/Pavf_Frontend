@@ -6,6 +6,8 @@ import { BlurView } from 'expo-blur';
 import AcButton from '../../components/Button';
 import AcTextField from '../../components/TextField';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
 
 
 const Login = ({navigation}) => {
@@ -21,8 +23,8 @@ const Login = ({navigation}) => {
      imageStyle={{opacity:0.9}}>
      
      <BlurView style={styles.blurView}
-     intensity={0}>
-     <LinearGradient colors={['rgba(3, 3, 1, 0.5)', 'rgba(3, 3, 1, 0.5)']}
+     intensity={0.5}>
+     <LinearGradient colors={['rgba(3, 3, 1, 0.6)', 'rgba(3, 3, 1, 0.6)']}
      style={styles.gradient}>
 
     <View style={styles.LogoView}>
@@ -73,30 +75,29 @@ export default Login;
 
 const styles = StyleSheet.create({
     safeArea: {
-    flex:1,
-    position:'absolute',
+    flex:1
+  },
+  container: {
+    display:'flex',
+    height: hp('100%'),
+    width: wp('100%') 
+    },
+  imagebackground: {
+    display:'flex',
     width:'100%',
     height:'100%'
   },
-  container: {
-    flex: 1,
-  },
-  imagebackground: {
-    flex: 1,
-    width:'100%'
-  },
   gradient: {
-    flex: 1,
+    width:'100%',
+    height:'100%'
   },
   blurView: {
-    flex: 1,
   },
   LogoView:
   {
-    flex:1,
     justifyContent:'center',
     alignItems:'center',
-    marginTop:140,
+    marginTop:70,
     marginBottom:0
   },
   Logo: {
@@ -105,24 +106,20 @@ const styles = StyleSheet.create({
     width:150,
   },
   HeadingView:{
-    flex:1,
     justifyContent:'center',
     alignItems:'center',
-    marginTop:40,
-    marginBottom:20
-    
+    marginTop:20,
+    marginBottom:20    
   },
   Heading:{
     fontSize:30,
     textAlign:'center',
     color:'white',
-  },
-  
+  },  
   textFiledView:{
-    flex:1,
     justifyContent:'center',
     alignItems:'center',
-    marginTop:0,
+    marginTop:20,
     marginBottom:40
   },
   textField:{
@@ -130,9 +127,7 @@ const styles = StyleSheet.create({
     borderColor:'rgba(156, 242, 189, 0.5)',
     color:'white'
   },
-
   buttonView:{
-    flex:1,
     justifyContent:'center',
     alignItems:'center',
     marginTop:0,
@@ -144,21 +139,19 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: "#0F9F4A"
   },
-
   textView1:{
-    flex:1,
     justifyContent:'center',
     alignItems:'center',
-    marginBottom:50
+    marginTop:10,
+    textDecorationLine:'underline'
   },
   textView2:{
-    flex:1,
     justifyContent:'center',
     alignItems:'center',
+    marginTop:100
   },
   text:{
     fontSize: 15,
     color:"#24C8D2"
   }
-
 });
