@@ -27,12 +27,17 @@ const OTPVerificationBox = () => {
       {otp.map((digit, index) => (
         <TextInput
           key={index}
-          ref={textInputRefs[index]}
-          style={styles.input}
+          ref={(ref) => (textInputRefs[index] = ref)}
+          style={[styles.input, index !== 3 && { marginRight: 5 }]}
           value={digit}
           onChangeText={(value) => handleOtpChange(index, value)}
           keyboardType="numeric"
           maxLength={1}
+          onSubmitEditing={() => {
+            if (index < 3) {
+              textInputRefs[index + 1].focus();
+            }
+          }}
         />
       ))}
     </View>
@@ -42,18 +47,24 @@ const OTPVerificationBox = () => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '80%',
+    width: '80%', // Adjusted width of box
+    height:80, // adjust hight of box
     alignSelf: 'center',
+   
+   
   },
   input: {
-    width: 50,
-    height: 50,
-    borderBottomWidth: 2,
-    textAlign: 'center',
-    fontSize: 20,
+    flex: 1,
+    textAlign: 'center',// set text in center
+    fontSize: 20, // set font size
+    borderWidth: 1,// set width for border
+    borderColor: 'lightgreen',
+    borderRadius: 15,// set border
+    marginHorizontal: 5,// set horizental
+    backgroundColor: 'lightgreen', // Set the background color
   },
+  
 });
 
-export default OTPVerificationBox;
 
+export default OTPVerificationBox;
