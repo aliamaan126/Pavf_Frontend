@@ -34,8 +34,8 @@ const RePass = ({navigation}) => {
     </View>
 
     <View style={styles.textFiledView}>
-    <AcTextField placeholder={'Password'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'}></AcTextField>
-    <AcTextField placeholder={'Confirm Password'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'}></AcTextField>
+    <AcTextField placeholder={'Password'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'} fontFamily={'regular'}></AcTextField>
+    <AcTextField placeholder={'Confirm Password'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'} fontFamily={'regular'}></AcTextField>
     </View>
 
     <View>
@@ -102,6 +102,7 @@ Heading:{
   fontSize:30,
   textAlign:'center',
   color:'white',
+  fontFamily:'bold'
 },
 
 textFiledView:{

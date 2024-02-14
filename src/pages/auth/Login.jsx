@@ -39,15 +39,15 @@ const Login = ({navigation}) => {
     </View>
 
     <View style={styles.textFiledView}>
-    <AcTextField placeholder={'Username or Email'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'}></AcTextField>
-    <AcTextField placeholder={'Password'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'}></AcTextField>
+    <AcTextField placeholder={'Username or Email'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'} fontFamily={'regular'}></AcTextField>
+    <AcTextField placeholder={'Password'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'} fontFamily={'regular'}></AcTextField>
     </View>
 
     <View>
     </View>
 
     <View style={styles.buttonView}>
-    <AcButton title="LOG IN" onPress={()=>{navigation.navigate("Dashboard")}} style={styles.button}></AcButton>
+    <AcButton title="LOG IN" onPress={()=>{navigation.navigate("DeviceDashboard")}} style={styles.button}></AcButton>
     </View>
 
     <View style={styles.textView1}>
@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     fontSize:30,
     textAlign:'center',
     color:'white',
+    fontFamily:'bold'
   },  
   textFiledView:{
     justifyContent:'center',
@@ -138,6 +139,7 @@ const styles = StyleSheet.create({
     height:50,
     borderRadius: 50,
     backgroundColor: "#0F9F4A"
+    
   },
   textView1:{
     justifyContent:'center',
@@ -149,9 +151,11 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
     marginTop:100
+    
   },
   text:{
     fontSize: 15,
-    color:"#24C8D2"
+    color:"#24C8D2",
+    fontFamily:'regular'
   }
 });

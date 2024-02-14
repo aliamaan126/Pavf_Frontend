@@ -16,7 +16,7 @@ const AcButton = (props) => {
             }}
             onPress={props.onPress}
         >
-            <Text style={{ fontSize: 24, ... { color: textColor } }}>{props.title}</Text>
+            <Text style={styles.text}>{props.title}</Text>
         </TouchableOpacity>
     )
 }
@@ -27,8 +27,16 @@ const styles = StyleSheet.create({
       height:46,
       borderColor: "#0F9F4A",
       borderRadius: 50,
-      justifyContent:'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      justifyContent:'center'
+      
+    },
+
+    text:{
+        fontSize: 24,
+        fontFamily:'bold',
+        color: 'white'
     }
+    
 })
 export default AcButton

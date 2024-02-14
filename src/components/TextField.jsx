@@ -10,6 +10,7 @@ const AcTextField = ({
   borderColor,
   fontWeight,
   fontSize,
+  fontFamily,
   paddingHorizontal,
   paddingVertical,
 }) => {
@@ -27,6 +28,7 @@ const AcTextField = ({
           color,
           fontWeight,
           fontSize,
+          fontFamily,
           paddingHorizontal,
           paddingVertical,
         }}

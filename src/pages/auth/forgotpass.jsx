@@ -35,7 +35,7 @@ const Forgotpass = ({navigation}) => {
     </View>
 
     <View style={styles.textFiledView}>
-    <AcTextField placeholder={'Email'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'}></AcTextField>
+    <AcTextField placeholder={'Email'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'} fontFamily={'regular'}></AcTextField>
     </View>
 
     <View>
@@ -102,6 +102,7 @@ Heading:{
   fontSize:30,
   textAlign:'center',
   color:'white',
+  fontFamily:'bold'
 },
 
 textFiledView:{

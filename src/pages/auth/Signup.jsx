@@ -35,17 +35,17 @@ const Signup = ({navigation}) => {
     </View>
 
     <View style={styles.textFiledView}>
-    <AcTextField placeholder={'Email'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'}></AcTextField>
+    <AcTextField placeholder={'Email'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'} fontFamily={'regular'}></AcTextField>
     
-    <AcTextField placeholder={'Username'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'}></AcTextField>
+    <AcTextField placeholder={'Username'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'} fontFamily={'regular'}></AcTextField>
     
-    <AcTextField placeholder={'Password'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'}></AcTextField>
+    <AcTextField placeholder={'Password'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'} fontFamily={'regular'}></AcTextField>
     
-    <AcTextField placeholder={'Confirm Password'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'}></AcTextField>
+    <AcTextField placeholder={'Confirm Password'} backgroundColor={'rgba(156, 242, 189, 0.5)'} borderColor={'rgba(156, 242, 189, 0.5)'} color={'white'} fontFamily={'regular'}></AcTextField>
     </View>
 
     <View style={styles.buttonView}>
-    <AcButton title="Register Now" onPress={()=>{navigation.navigate("Dashboard")}} style={styles.button}></AcButton>
+    <AcButton title="Sign Up" onPress={()=>{navigation.navigate("Dashboard")}} style={styles.button}></AcButton>
     </View>
 
 
@@ -105,6 +105,7 @@ Heading:{
   fontSize:30,
   textAlign:'center',
   color:'white',
+  fontFamily:'bold'
 },
 
 textFiledView:{

@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: 'center',
     color: 'white',
+    fontFamily:'bold'
   },
   otpContainer: {
     flex: 1,
