@@ -13,7 +13,11 @@ const DeviceDashboard = () => {
   return (
     <View style={styles.container}>
    
-      <SubHeader heading={"Header"} img1={require('../../../assets/icons/M.png')} img2={require('../../../assets/icons/menu.png')}></SubHeader>
+      <SubHeader heading={"Header"} 
+      img1={require('../../../assets/icons/menu2.png')} 
+      img2={require('../../../assets/icons/menu.png')}>
+        
+      </SubHeader>
       <ScrollView>
         <TouchableOpacity>
           <View style={styles.box}>

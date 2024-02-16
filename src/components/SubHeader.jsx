@@ -1,18 +1,25 @@
-import { Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
 import MainDrawer from "./MainDrawer";
 
 const SubHeader = ({ heading, img1, img2 }) => {
+  const navigation = useNavigation(); // Use useNavigation hook to get navigation object
+
+  const openDrawer = () => {
+    navigation.openDrawer(); // Open the drawer when called
+  };
+
   return (
     <View style={styles.main}>
       <View style={styles.container}>
         <View style={styles.ImgRight}>
-          <TouchableOpacity >
+          <TouchableOpacity onPress={openDrawer}>
             <Image source={img1} resizeMode="contain" />
           </TouchableOpacity>
         </View>
@@ -50,6 +57,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignContent: "flex-start",
     alignItems: "flex-start",
+    padding:15,
   },
   Heading: {
     flex: 1,
@@ -59,5 +67,6 @@ const styles = StyleSheet.create({
   ImgLeft: {
     flex: 1,
     alignItems: "flex-end",
+    padding:15,
   },
 });
