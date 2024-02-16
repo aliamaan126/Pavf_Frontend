@@ -1,56 +1,63 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ImageBackground, Image, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { DrawerActions } from '@react-navigation/native';
 
 const Header = () => {
-    return (
+  const navigation = useNavigation();
 
-      <ImageBackground
-        source={require('../../assets/icons/plant.jpg')}
-        style={styles.imgBackground}
-      >
-      
-      <View  style={styles.menuButtonContainer}>
-      <TouchableOpacity >
-      <Image
-        source={require('../../assets/icons/menu.png')}
-        style={styles.menuButton}
-      />
-      </TouchableOpacity>
+  return (
+    <ImageBackground
+      source={require('../../assets/icons/plant.jpg')}
+      style={styles.imgBackground}
+    >
+      <View style={styles.menuButtonContainer}>
+        <TouchableOpacity
+          style={styles.menuButton}
+          onPress={() => {
+            navigation.dispatch(DrawerActions.openDrawer());
+            console.log('Menu button pressed');
+          }}
+        >
+          <Image
+            source={require('../../assets/icons/menu.png')}
+            style={styles.menuIcon}
+          />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.textView}>
-      <Text style={styles.text}>HI USER</Text>
-      </View>  
+        <Text style={styles.text}>HI USER</Text>
+      </View>
 
-        {/* Profile image on the right side */}
       <TouchableOpacity>
-      <Image
-        source={require('../../assets/icons/profile.png')}
-        style={styles.profileButton}
-      />
+        <Image
+          source={require('../../assets/icons/profile.png')}
+          style={styles.profileButton}
+        />
       </TouchableOpacity>
-      </ImageBackground>
-    );
+    </ImageBackground>
+  );
 };
 
 const styles = StyleSheet.create({
-  imgBackground:{
+  imgBackground: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 15,
-    width: '110%',
+    width: '105wp',
     height: 150,
-    resizeMode:"cover",
-    color:"rgba(163, 163, 163, 0.8)"
+    resizeMode: 'cover',
+    color: 'rgba(163, 163, 163, 0.8)',
   },
 
-  textView:{
-    flex:1,
-    justifyContent:'center',
+  textView: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginLeft:15,
+    marginLeft: 15,
     marginBottom: 45,
   },
 
@@ -61,6 +68,7 @@ const styles = StyleSheet.create({
 
   menuButtonContainer: {
     paddingBottom: 50,
+    
   },
 
   menuButton: {
@@ -69,19 +77,12 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
 
-  menuButtonContainer: {
-    paddingBottom: 50,
-  },
-
   profileButton: {
     alignItems: 'center',
-    width: 100, // Adjust the width as needed to match menuButton
-    height: 50, // Adjust the height as needed
-    paddingRight: 15, // Add padding to the right side
-    bottom:20,
+    width: 50,
+    height: 50,
     resizeMode: 'contain',
-  }
-
+  },
 });
 
 export default Header;

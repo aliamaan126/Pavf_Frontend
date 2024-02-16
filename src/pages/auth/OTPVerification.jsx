@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Image, StyleSheet, ImageBackground, SafeAreaView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Image, StyleSheet, ImageBackground, SafeAreaView, Alert } from 'react-native';
 import { Text } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
@@ -7,6 +7,22 @@ import AcButton from '../../components/Button';
 import OTPVerificationBox from '../../components/OTPVerificationBox';
 
 const Otpverf = ({ navigation }) => {
+  const [isOtpFilled, setIsOtpFilled] = useState(false);
+
+  const handleOtpFilled = (otp) => {
+    const filled = otp.every((digit) => digit !== '');
+    setIsOtpFilled(filled);
+  };
+
+  const handleSendOTP = () => {
+    if (isOtpFilled) {
+      navigation.navigate("ResetPass");
+    } else {
+      // Show a prompt or alert indicating that all OTP fields must be filled
+      Alert.alert("Incomplete OTP", "Please fill in all OTP fields.");
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -29,11 +45,11 @@ const Otpverf = ({ navigation }) => {
               </View>
 
               <View style={styles.otpContainer}>
-                <OTPVerificationBox />
+                <OTPVerificationBox onOtpFilled={handleOtpFilled} />
               </View>
 
               <View style={styles.buttonView}>
-                <AcButton title="Send OTP" onPress={() => { navigation.navigate("ResetPass") }} style={styles.button}></AcButton>
+                <AcButton title="Send OTP" onPress={handleSendOTP} style={styles.button}></AcButton>
               </View>
 
             </LinearGradient>
@@ -44,7 +60,6 @@ const Otpverf = ({ navigation }) => {
   );
 };
 
-export default Otpverf;
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -89,7 +104,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: 'center',
     color: 'white',
-    fontFamily:'bold'
   },
   otpContainer: {
     flex: 1,
@@ -112,3 +126,4 @@ const styles = StyleSheet.create({
     backgroundColor: "#0F9F4A"
   },
 });
+export default Otpverf;

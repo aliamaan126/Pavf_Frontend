@@ -2,6 +2,7 @@ import "react-native-gesture-handler";
 import { SafeAreaView, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import MainDrawer from "./src/components/MainDrawer";
 import {
   DashBoard,
   Login,
@@ -46,7 +47,7 @@ export default function App() {
           <Stack.Screen name="Forgotpass" component={Forgotpass} />
           <Stack.Screen name="OTPVerification" component={Otpverf} />
           <Stack.Screen name="ResetPass" component={RePass} />
-          <Stack.Screen name="Dashboard" component={DashBoard} />
+          <Stack.Screen name="Dashboard" component={MainDrawer} />
           <Stack.Screen name="DeviceDashboard" component={DeviceDashboard} />
         </Stack.Navigator>
       </NavigationContainer>

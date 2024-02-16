@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 
-const OTPVerificationBox = () => {
+const OTPVerificationBox = ({ onOtpFilled }) => {
   const [otp, setOtp] = useState(['', '', '', '']);
 
   const handleOtpChange = (index, value) => {
-    if (value.length <= 1 && /^[0-9]$/.test(value)) {
+    if ((value.length <= 1 && /^[0-9]$/.test(value)) || value === '') {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
 
-      // Move to the next input field automatically
-      if (index < 3 && value.length === 1) {
+      if (value === '' && index > 0) {
+        textInputRefs[index - 1].focus();
+      } else if (index < 3 && value.length === 1) {
         textInputRefs[index + 1].focus();
       }
+
+      // Notify parent component about OTP filled status
+      onOtpFilled(newOtp);
     }
   };
 
-  // Array to store references to text input fields
   const textInputRefs = Array(4)
     .fill(null)
     .map((_, index) => React.createRef());
@@ -44,27 +47,25 @@ const OTPVerificationBox = () => {
   );
 };
 
+
+// Styles for the OTPVerificationBox component
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    width: '80%', // Adjusted width of box
-    height:80, // adjust hight of box
+    width: '80%', // Adjusted width of the box
+    height: 80, // Adjusted height of the box
     alignSelf: 'center',
-   
-   
   },
   input: {
     flex: 1,
-    textAlign: 'center',// set text in center
-    fontSize: 20, // set font size
-    borderWidth: 1,// set width for border
+    textAlign: 'center',
+    fontSize: 20,
+    borderWidth: 1,
     borderColor: 'lightgreen',
-    borderRadius: 15,// set border
-    marginHorizontal: 5,// set horizental
-    backgroundColor: 'lightgreen', // Set the background color
+    borderRadius: 15,
+    marginHorizontal: 5,
+    backgroundColor: 'lightgreen',
   },
-  
 });
-
 
 export default OTPVerificationBox;

@@ -47,7 +47,7 @@ const Login = ({navigation}) => {
     </View>
 
     <View style={styles.buttonView}>
-    <AcButton title="LOG IN" onPress={()=>{navigation.navigate("DeviceDashboard")}} style={styles.button}></AcButton>
+    <AcButton title="LOG IN" onPress={()=>{navigation.navigate("Dashboard")}} style={styles.button}></AcButton>
     </View>
 
     <View style={styles.textView1}>
