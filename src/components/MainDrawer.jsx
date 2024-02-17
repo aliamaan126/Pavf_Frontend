@@ -4,8 +4,11 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from "
 import { View, Text, StyleSheet, Image } from 'react-native';
 
 // Import the Dashboard component
-import DashBoard from "../pages/home/Dashboard";
-import DeviceDashboard from '../pages/deviceConn/DeviceDashboard'
+import {
+  Login,
+  DeviceDashboard,
+  DashBoard,
+} from "../index";
 
 // Create a Drawer Navigator
 const Drawer = createDrawerNavigator();
@@ -77,7 +80,7 @@ const MainDrawer = () => (
       name="DeviceDashboard"
       component={DeviceDashboard}
       options={{
-        drawerLabel: "DeviceDashboard",
+        drawerLabel: "Device Dashboard",
         drawerIcon: ({ focused, color, size }) => (
           // Custom Home icon with specific size and tint color
           <Image
@@ -134,8 +137,8 @@ const MainDrawer = () => (
       }}
     />
     <Drawer.Screen
-      name="Logout"
-      component={DeviceDashboard}
+      name="Login"
+      component={Login}
       options={{
         drawerLabel: "Logout",
         drawerIcon: ({ focused, color, size }) => (
