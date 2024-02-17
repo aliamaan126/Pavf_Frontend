@@ -1,23 +1,22 @@
 import React from 'react';
-import { View,StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
 import Header from '../../components/header';
+import View_Rreadings from '../../components/View_Rreadings';
 
-const DashBoard = ({navigation}) => {
+const DashBoard = ({ navigation }) => {
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {/* Header */}
       <Header />
 
       {/* Body */}
-      <View style={styles.body}>
-        {/* Body content goes here */}
-      </View>
-
+      <View_Rreadings />
+      
       {/* Footer */}
       <View style={styles.footer}>
-       
+        {/* Footer content goes here */}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -26,13 +25,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
-  body: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   footer: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
