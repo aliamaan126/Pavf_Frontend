@@ -12,6 +12,8 @@ import {
   Otpverf,
   RePass,
   DeviceDashboard,
+  UserProfile,
+  Settings,
 } from "./src/index";
 import { useFonts } from "expo-font";
 import { useCallback, useState } from "react";
@@ -49,6 +51,8 @@ export default function App() {
           <Stack.Screen name="ResetPass" component={RePass} />
           <Stack.Screen name="Dashboard" component={MainDrawer} />
           <Stack.Screen name="DeviceDashboard" component={DeviceDashboard} />
+          <Stack.Screen name="UserProfile" component={UserProfile} />
+          <Stack.Screen name="Settings" component={Settings} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

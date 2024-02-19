@@ -1,7 +1,11 @@
-import React from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import Header from '../../components/header';
-import View_Rreadings from '../../components/View_Rreadings';
+import React from "react";
+import { View, ScrollView, StyleSheet, Text } from "react-native";
+import Header from "../../components/header";
+import View_Rreadings from "../../components/View_Rreadings";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const DashBoard = ({ navigation }) => {
   return (
@@ -11,23 +15,27 @@ const DashBoard = ({ navigation }) => {
 
       {/* Body */}
       <View_Rreadings />
-      
+
       {/* Footer */}
-      <View style={styles.footer}>
-        {/* Footer content goes here */}
+      <View style={styles.main}>
+        <View style={styles.container}>
+          <Text>Device Connection</Text>
+        </View>
       </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  main: {
     flex: 1,
-    flexDirection: 'column',
+    justifyContent: "flex-end",
   },
-  footer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+  container: {
+    height: hp("10%"),
+    width: wp("100%"),
+    backgroundColor: "#C9E9C9",
+    
   },
 });
 

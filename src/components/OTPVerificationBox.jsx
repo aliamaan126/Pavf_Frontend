@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     width: '80%', // Adjusted width of the box
-    height: 80, // Adjusted height of the box
+    height: 70, // Adjusted height of the box
     alignSelf: 'center',
   },
   input: {
@@ -61,10 +61,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     borderWidth: 1,
-    borderColor: 'lightgreen',
+    borderColor: 'rgba(156, 242, 189, 0.5)',
     borderRadius: 15,
     marginHorizontal: 5,
-    backgroundColor: 'lightgreen',
+    backgroundColor: 'rgba(156, 242, 189, 0.5)',
   },
 });
 

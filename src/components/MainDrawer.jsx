@@ -8,6 +8,8 @@ import {
   Login,
   DeviceDashboard,
   DashBoard,
+  Settings,
+  UserProfile,
 } from "../index";
 
 // Create a Drawer Navigator
@@ -16,13 +18,17 @@ const Drawer = createDrawerNavigator();
 // Define a custom drawer content component with enhanced styling
 const CustomDrawerContent = (props) => (
   // Scrollable view for the drawer content with custom styling
+ 
   <DrawerContentScrollView {...props} style={styles.drawerContainer}>
     {/* Container for the entire drawer content */}
+   
     <View style={styles.drawerContentContainer}>
       {/* Header section with the title "Menu" */}
+
       <View style={styles.drawerHeader}>
         <Text style={styles.drawerHeaderText}>Menu</Text>
       </View>
+
       {/* Container to clip content to rounded corners */}
       <View style={styles.clipContainer}>
         {/* Default drawer items list with enhanced label style */}
@@ -31,7 +37,9 @@ const CustomDrawerContent = (props) => (
           labelStyle={{ color: '#C7F2D8' }}
         />
       </View>
+
     </View>
+
   </DrawerContentScrollView>
 );
 
@@ -41,6 +49,7 @@ const DeviceDashboardIcon = require('../../assets/icons/device.png');
 const ProfileIcon = require('../../assets/icons/profile.png');
 const SettingIcon = require('../../assets/icons/settings (1).png');
 const LogoutIcon = require('../../assets/icons/exit.png');
+
 // Main Drawer Navigator component
 const MainDrawer = () => (
   <Drawer.Navigator
@@ -49,6 +58,7 @@ const MainDrawer = () => (
     drawerStyle={{
       backgroundColor: "#C7F2D8",
     }}
+
     // Use the custom drawer content component
     drawerContent={props => <CustomDrawerContent {...props} />}
   >
@@ -69,6 +79,7 @@ const MainDrawer = () => (
             }}
           />
         ),
+
         // Hide the header for this screen
         headerShown: false,
       }}
@@ -77,7 +88,7 @@ const MainDrawer = () => (
     
     
      <Drawer.Screen
-      name="DeviceDashboard"
+      name="DeviceScreen"
       component={DeviceDashboard}
       options={{
         drawerLabel: "Device Dashboard",
@@ -98,7 +109,7 @@ const MainDrawer = () => (
     />
     <Drawer.Screen
       name="Profile"
-      component={DeviceDashboard}
+      component={UserProfile}
       options={{
         drawerLabel: "Profile",
         drawerIcon: ({ focused, color, size }) => (
@@ -118,7 +129,7 @@ const MainDrawer = () => (
     />
     <Drawer.Screen
       name="Setting"
-      component={DeviceDashboard}
+      component={Settings}
       options={{
         drawerLabel: "Setting",
         drawerIcon: ({ focused, color, size }) => (
@@ -159,19 +170,16 @@ const MainDrawer = () => (
   </Drawer.Navigator>
 );
 
-
 const styles = StyleSheet.create({
   drawerContainer: {
     flex: 1,
     backgroundColor: "#C7F2D8",
     borderTopRightRadius: 80,  // Adjusted value
     borderBottomRightRadius: 80,  // Adjusted value
-    
   },
   drawerContentContainer: {
     flex: 1,
     flexDirection: "column",
-
   },
   drawerHeader: {
     height: 100,
@@ -183,10 +191,7 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 30,
     fontWeight: "bold",
-    
   },
 });
-
-
 
 export default MainDrawer;

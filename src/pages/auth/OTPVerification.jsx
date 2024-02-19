@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import AcButton from '../../components/Button';
 import OTPVerificationBox from '../../components/OTPVerificationBox';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Otpverf = ({ navigation }) => {
   const [isOtpFilled, setIsOtpFilled] = useState(false);
@@ -44,8 +45,18 @@ const Otpverf = ({ navigation }) => {
                 <Text style={styles.Heading}>Verification</Text>
               </View>
 
+              <View style={styles.TextView}>
+              <Text style={styles.Text}>Code has been sent to {'\n'} Blah Blah BLah</Text>
+              </View>
+              
               <View style={styles.otpContainer}>
                 <OTPVerificationBox onOtpFilled={handleOtpFilled} />
+              </View>
+
+              <View style={styles.TextView}>
+              <TouchableOpacity>
+              <Text style={styles.Text}>Havent Recieved Verification</Text>
+              </TouchableOpacity>
               </View>
 
               <View style={styles.buttonView}>
@@ -97,11 +108,23 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 40,
-    marginBottom: 20
+    marginTop: 20,
+    marginBottom: 5
   },
   Heading: {
     fontSize: 30,
+    textAlign: 'center',
+    color: 'white',
+  },
+  TextView:{
+    display:'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 5,
+    marginBottom: 10
+  },
+  Text:{
+    fontSize: 12,
     textAlign: 'center',
     color: 'white',
   },

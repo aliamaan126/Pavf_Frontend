@@ -16,15 +16,15 @@ const DeviceDashboard = () => {
       <SubHeader heading={"Header"} 
       img1={require('../../../assets/icons/menu2.png')} 
       img2={require('../../../assets/icons/menu.png')}>
-        
       </SubHeader>
+      
       <ScrollView>
         <TouchableOpacity>
           <View style={styles.box}>
             <Text>Add Device</Text>
           </View>
         </TouchableOpacity> 
-        <MainDrawer>j</MainDrawer>
+        <MainDrawer></MainDrawer>
       </ScrollView>
       <SubFooter></SubFooter>
     </View>
