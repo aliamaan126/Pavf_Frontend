@@ -14,6 +14,8 @@ import {
   DeviceDashboard,
   UserProfile,
   Settings,
+notification,
+  Notification,
 } from "./src/index";
 import { useFonts } from "expo-font";
 import { useCallback, useState } from "react";
@@ -53,6 +55,7 @@ export default function App() {
           <Stack.Screen name="DeviceDashboard" component={DeviceDashboard} />
           <Stack.Screen name="UserProfile" component={UserProfile} />
           <Stack.Screen name="Settings" component={Settings} />
+          <Stack.Screen name="Notification" component={Notification} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

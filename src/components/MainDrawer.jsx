@@ -5,11 +5,17 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 
 // Import the Dashboard component
 import {
+ SplashScreen,
   Login,
-  DeviceDashboard,
+  Signup,
+  Forgotpass,
+  RePass,
+  Otpverf,
   DashBoard,
-  Settings,
+  DeviceDashboard,
   UserProfile,
+  Settings,
+  Notification,
 } from "../index";
 
 // Create a Drawer Navigator
@@ -47,6 +53,7 @@ const CustomDrawerContent = (props) => (
 const HomeIcon = require('../../assets/icons/home (1).png');
 const DeviceDashboardIcon = require('../../assets/icons/device.png');
 const ProfileIcon = require('../../assets/icons/profile.png');
+const NotificationIcon = require('../../assets/icons/bell.png');
 const SettingIcon = require('../../assets/icons/settings (1).png');
 const LogoutIcon = require('../../assets/icons/exit.png');
 
@@ -116,6 +123,26 @@ const MainDrawer = () => (
           // Custom Home icon with specific size and tint color
           <Image
             source={ProfileIcon} //call image from  const DeviceDashboardIcon = require('../../assets/icons/device.png');
+            style={{
+              width: size,
+              height: size,
+              tintColor: 'black',
+            }}
+          />
+        ),
+        // Hide the header for this screen
+        headerShown: false,
+      }}
+    />
+        <Drawer.Screen
+      name="Notification"
+      component={Notification}
+      options={{
+        drawerLabel: "Notification",
+        drawerIcon: ({ focused, color, size }) => (
+          // Custom Home icon with specific size and tint color
+          <Image
+            source={NotificationIcon} //call image from  const DeviceDashboardIcon = require('../../assets/icons/device.png');
             style={{
               width: size,
               height: size,
