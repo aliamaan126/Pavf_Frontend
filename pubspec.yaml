@@ -1,0 +1,41 @@
+name: mobapp
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.2.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  speedometer_chart: ^1.0.5
+  fl_chart: ^0.50.3
+  
+#  get_storage: ^2.1.1
+#  image_picker: ^0.8.4
+  carousel_slider: ^4.2.1
+  chewie: ^1.6.0+1
+  video_player: ^2.7.0
+  kdgaugeview: ^1.0.4
+  flutter_secure_storage: ^4.2.1
+  http: ^0.13.3
+  get: ^4.6.1
+  shared_preferences: ^2.2.2
+  localstorage: ^4.0.1+4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/3.jpg
+    - assets/profile.png
+    - assets/5.png
+   
+    - assets/plant.jpg
+    - assets/video/mountains.mp4
