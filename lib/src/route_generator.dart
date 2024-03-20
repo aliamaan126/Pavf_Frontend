@@ -1,0 +1,78 @@
+import "package:flutter/material.dart";
+import "package:mobapp/screens/dashboard.dart";
+import "package:mobapp/screens/forgotPass_screen.dart";
+import "package:mobapp/screens/home_screen.dart";
+import "package:mobapp/screens/login_screen.dart";
+import "package:mobapp/screens/otp_screen.dart";
+import "package:mobapp/screens/register_screen.dart";
+import "package:mobapp/screens/resetPass_screen.dart";
+import 'package:get/get.dart';
+
+
+class RouteGenerator {
+  static List<GetPage> routes = [
+    GetPage(
+      name: '/',
+      page: () => HomeScreen(),
+    ),
+    GetPage(
+      name: '/login',
+      page: () => LoginScreen(),
+    ),
+    GetPage(
+      name: '/register',
+      page: () => RegisterScreen(),
+    ),
+    GetPage(
+      name: '/forgotPass',
+      page: () => ForgotPassScreen(),
+    ),
+    GetPage(
+      name: '/otp',
+      page: () => Otp(),
+    ),
+    GetPage(
+      name: '/resetPass',
+      page: () => ResetPass(),
+    ),
+    GetPage(
+      name: '/dashboard',
+      page: () => Dashboard(),
+    ),
+  ];
+
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case '/':
+        return MaterialPageRoute(builder: (_) =>  HomeScreen());
+      case '/login':
+        return MaterialPageRoute(builder: (_) =>  LoginScreen());
+      case '/register':
+        return MaterialPageRoute(builder: (_) =>  const RegisterScreen());
+      case '/forgotPass':
+        return MaterialPageRoute(builder: (_) =>  const ForgotPassScreen());
+      case '/otp':
+        return MaterialPageRoute(builder: (_) =>  const Otp());
+      case '/resetPass':
+        return MaterialPageRoute(builder: (_) =>  const ResetPass());
+      case '/dashboard':
+        return MaterialPageRoute(builder: (_) =>  Dashboard());
+      default:
+        return _errorRoute();
+    }
+  }
+
+  static Route<dynamic> _errorRoute() {
+    return MaterialPageRoute(builder: (_) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text("No Route"),
+          centerTitle: true,
+        ),
+        body: const Center(
+          child: Text("Sorry No Route"),
+        ),
+      );
+    });
+  }
+}
