@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:mobapp/constants/colors.dart';
+import 'package:mobapp/screens/add_device.dart';
 import 'package:mobapp/screens/login_screen.dart';
 import 'package:mobapp/screens/profile.dart';
+import 'package:mobapp/screens/setting.dart';
 
 final localStorage = LocalStorage('app_data.json');
 
@@ -13,7 +15,7 @@ class HomeController extends GetxController {
 }
 
 class Dashboard extends StatelessWidget {
-  Dashboard({super.key});
+  Dashboard({Key? key}) : super(key: key);
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final String user = "To Agro_Farm";
 
@@ -70,73 +72,78 @@ class Dashboard extends StatelessWidget {
     return Drawer(
       child: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Colors.lightGreen, Colors.white],
-          ),
+          color: Color(0xFFC7F2D8), // Set drawer color to C7F2D8
         ),
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
+          crossAxisAlignment:
+              CrossAxisAlignment.start, // Align text to the left
           children: <Widget>[
-            _drawerHeader(),
-            _buildDrawerItem(
-              icon: Icons.home,
-              text: 'Home',
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Dashboard()),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  vertical: 20, horizontal: 20), // Added horizontal padding
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.black, // Set text color to black
+                  fontSize: 24, // Increased font size
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-            _buildDrawerItem(
-              icon: Icons.notifications,
-              text: 'Notifications',
-              onTap: () {},
-            ),
-            _buildDrawerItem(
-              icon: Icons.settings,
-              text: 'Setting',
-              onTap: () {},
-            ),
-            _buildDrawerItem(
-              icon: Icons.person,
-              text: 'Personal',
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Profile()),
-              ),
-            ),
-            _buildDrawerItem(
-              icon: Icons.security,
-              text: 'Security',
-              onTap: () {},
-            ),
-            _buildDrawerItem(
-              icon: Icons.logout,
-              text: 'Logout',
-              onTap: () {
-                deleteData('username');
-                deleteData('email');
-                deleteData('firstname');
-                deleteData('lastname');
-                deleteData('slug');
+            ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                _buildDrawerItem(
+                  icon: Icons.home,
+                  text: 'Home',
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Dashboard()),
+                  ),
+                ),
+                _buildDrawerItem(
+                  icon: Icons.notifications,
+                  text: 'Notifications',
+                  onTap: () {},
+                ),
+                _buildDrawerItem(
+                  icon: Icons.settings,
+                  text: 'Setting',
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Settings()),
+                  ),
+                ),
+                _buildDrawerItem(
+                  icon: Icons.person,
+                  text: 'Personal',
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Profile()),
+                  ),
+                ),
+                _buildDrawerItem(
+                  icon: Icons.security,
+                  text: 'Security',
+                  onTap: () {},
+                ),
+                _buildDrawerItem(
+                  icon: Icons.logout,
+                  text: 'Logout',
+                  onTap: () {
+                    deleteData('username');
+                    deleteData('email');
+                    deleteData('firstname');
+                    deleteData('lastname');
+                    deleteData('slug');
 
-                Get.offAllNamed('/login');
-              },
+                    Get.offAllNamed('/login');
+                  },
+                ),
+              ],
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _drawerHeader() {
-    return DrawerHeader(
-      child: Text(
-        'Menu',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 24,
         ),
       ),
     );
@@ -250,82 +257,119 @@ class Dashboard extends StatelessWidget {
   }
 
   Widget _buildMetricRows(BuildContext context) {
-    // used a loop for rows
-    List<List<Map<String, dynamic>>> metricRows = [
+    List<List<Map<String, dynamic>>> visualReadingMetrics = [
       [
         {
-          "title": "Light Value",
+          "title": "Soil Moisture",
           "description": "Light value of the shelf.",
           "navigationPage": LoginScreen(),
         },
         {
-          "title": "Temperature Value",
+          "title": "Soil Temp",
           "description": "Temperature value of the shelf.",
           "navigationPage": LoginScreen(),
         },
       ],
       [
         {
-          "title": "Light Control",
+          "title": "Soil EC",
           "description": "Light Control of the shelf.",
           "navigationPage": LoginScreen(),
         },
         {
-          "title": "Temperature contole",
+          "title": "Soil Nitrogen",
           "description": "Temperature Control of the shelf.",
           "navigationPage": LoginScreen(),
         },
       ],
       [
         {
-          "title": "Moisture",
+          "title": "Soil Phosphorus",
           "description": "Moisture Control of the shelf.",
           "navigationPage": LoginScreen(),
         },
         {
-          "title": "Phosphorous",
+          "title": "Soil Potassium",
           "description": "Phosphorous level in the soil.",
-          "navigationPage":
-              Row(children: [LoginScreen(), Icon(Icons.thermostat)]),
-        },
-      ],
-      [
-        {
-          "title": "Moisture",
-          "description": "Moisture Control of the shelf.",
-          "navigationPage": LoginScreen(),
-        },
-        {
-          "title": "Temperature",
-          "description": "Temperature Control of the shelf.",
           "navigationPage":
               Row(children: [LoginScreen(), Icon(Icons.thermostat)]),
         },
       ],
     ];
 
+    List<List<Map<String, dynamic>>> controlMetrics = [
+      [
+        {
+          "title": "Light Control",
+          "description": "Description for Control Metric 1.",
+          "navigationPage": LoginScreen(),
+        },
+        {
+          "title": "Temperature Control",
+          "description": "Temprature  Control of the Shelf",
+          "navigationPage": LoginScreen(),
+        },
+      ],
+      [
+        {
+          "title": "Humidity Control",
+          "description": "Description for Control Metric 3.",
+          "navigationPage": LoginScreen(),
+        },
+        {
+          "title": "Water Control",
+          "description": "Description for Control Metric 4.",
+          "navigationPage": LoginScreen(),
+        },
+      ],
+    ];
+
     return Column(
-      children: metricRows.map((row) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0),
-          child: _buildMetricRow(context, row),
-        );
-      }).toList(),
+      children: [
+        SizedBox(height: 20), // Add some gap here
+        _buildMetricRow(context, "Visual Reading", visualReadingMetrics),
+        SizedBox(height: 20), // Add some gap here
+        _buildMetricRow(context, "Control", controlMetrics),
+        SizedBox(height: 20), // Add some gap here
+      ],
     );
   }
 
-  Widget _buildMetricRow(
-      BuildContext context, List<Map<String, dynamic>> metrics) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Adjusted spacing
-      children: metrics.map((metric) {
-        return _buildMetricCard(
-          context,
-          metric["title"],
-          metric["description"],
-          metric["navigationPage"],
-        );
-      }).toList(),
+  Widget _buildMetricRow(BuildContext context, String heading,
+      List<List<Map<String, dynamic>>> metrics) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
+          child: Text(
+            heading,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        SizedBox(height: 10),
+        Column(
+          children: metrics.map((row) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: row.map((metric) {
+                  return _buildMetricCard(
+                    context,
+                    metric["title"],
+                    metric["description"],
+                    metric["navigationPage"],
+                  );
+                }).toList(),
+              ),
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
 
@@ -335,106 +379,136 @@ class Dashboard extends StatelessWidget {
     String description,
     Widget navigationPage,
   ) {
-    return Container(
-      padding: const EdgeInsets.all(10.0),
-      height: 180,
-      width: MediaQuery.of(context).size.width * 0.4, //width
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.green,
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Colors.white, Colors.green.withOpacity(0.7)],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => navigationPage),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(18.0),
+        height: 180,
+        width: MediaQuery.of(context).size.width * 0.46, //width
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: Offset(0, 3), // changes position of shadow
+            ),
+          ],
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w600,
-              fontSize: 20,
-            ),
-          ),
-          SizedBox(height: 10),
-          Text(
-            description,
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.normal,
-              fontSize: 15,
-            ),
-          ),
-          Spacer(),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: InkWell(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => navigationPage),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
               ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              description,
+              style: TextStyle(
+                color: Colors.grey[600],
+                fontSize: 14,
+              ),
+            ),
+            Spacer(),
+            Align(
+              alignment: Alignment.bottomRight,
               child: Container(
-                height: 30,
-                width: 80,
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                child: Center(
-                  child: Text(
-                    "View",
-                    style: TextStyle(
-                      color: Color(0xff18A818),
-                      fontSize: 17,
-                    ),
+                child: Text(
+                  "View",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   Padding _buildRecommendationSection(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(14.0),
+      padding: const EdgeInsets.all(0),
       child: Container(
-        height: 250,
+        height: 150,
         width: double.infinity, // For responsive
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Color(
+              0xFFC9E9C9), // Set the background color to C9E9C9 without opacity
           borderRadius: BorderRadius.circular(10),
           gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Colors.green.withOpacity(0.5),
-                Colors.white.withOpacity(0.9),
-              ]),
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.green.withOpacity(0.5),
+              Color(0xFF3FA956), // Removed opacity
+            ],
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 160),
+            Text(
+              "Device Connection",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+            SizedBox(height: 10), // Add space between text and button
+            Text(
+              "No Device Connected",
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            SizedBox(height: 10), // Add space between text and button
             InkWell(
-              onTap: () {},
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Adddevice()),
+              ),
               child: Container(
                 height: 40,
                 width: 150,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(25),
-                  border: Border.all(color: Colors.black, width: 1.0),
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                    color: const Color.fromARGB(255, 255, 253, 253),
+                    width: 1.0,
+                  ),
                 ),
                 child: Center(
-                    child: Text("To bind the device",
-                        style: TextStyle(color: Colors.black, fontSize: 16))),
+                  child: Text(
+                    "Bind the device",
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 153, 211, 7),
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
               ),
             ),
           ],
