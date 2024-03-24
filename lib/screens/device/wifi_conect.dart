@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:mobapp/screens/dashboard.dart';
-import 'package:mobapp/screens/device_Setup.dart';
-import 'package:mobapp/screens/profile.dart';
-import 'package:mobapp/screens/setting.dart';
+import 'package:mobapp/screens/device/device_Setup.dart';
+
+import 'package:mobapp/screens/device/device_conn.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: DeviceConn(),
+    home: WifiConn(),
   ));
 }
 
-class DeviceConn extends StatelessWidget {
+class WifiConn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SubHeader(heading: "Device Connection"),
-      drawer: _buildDrawer(context),
+      appBar: SubHeader(heading: "Wifi Connection"),
       body: Center(
         // Wrap with Center widget
 
@@ -30,7 +28,7 @@ class DeviceConn extends StatelessWidget {
             children: [
               SizedBox(height: 40),
               Text(
-                'Username', // Username text
+                'SSID', // Username text
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
@@ -49,7 +47,7 @@ class DeviceConn extends StatelessWidget {
                     borderSide: BorderSide(
                         color: Color(0xFFE4E4E4)), // Change border color
                   ), // Add border to the text field
-                  hintText: 'Enter your username', // Placeholder text
+                  hintText: 'Enter SSID', // Placeholder text
                   filled: true,
                   fillColor: Color(0xFFF9FAF9), // Change box color
                 ),
@@ -112,103 +110,6 @@ class DeviceConn extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildDrawer(BuildContext context) {
-    return Drawer(
-      child: Container(
-        decoration: BoxDecoration(
-          color: Color(0xFFC9E9C9),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  fontSize: 50,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  _buildDrawerItem(
-                    icon: Icons.home,
-                    text: 'Home',
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Dashboard()),
-                    ),
-                  ),
-                  _buildDrawerItem(
-                    icon: Icons.notifications,
-                    text: 'Notifications',
-                    onTap: () {},
-                  ),
-                  _buildDrawerItem(
-                    icon: Icons.settings,
-                    text: 'Settings',
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Settings()),
-                    ),
-                  ),
-                  _buildDrawerItem(
-                    icon: Icons.person,
-                    text: 'Personal',
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Profile()),
-                    ),
-                  ),
-                  _buildDrawerItem(
-                    icon: Icons.security,
-                    text: 'Security',
-                    onTap: () {},
-                  ),
-                  _buildDrawerItem(
-                    icon: Icons.logout,
-                    text: 'Logout',
-                    onTap: () {
-                      // Handle logout
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDrawerItem({
-    required IconData icon,
-    required String text,
-    required VoidCallback onTap,
-    double iconSize = 24.0, // default icon size
-    double textSize = 16.0, // default text size
-  }) {
-    return ListTile(
-      leading: Icon(
-        icon,
-        size: iconSize,
-      ),
-      title: Text(
-        text,
-        style: TextStyle(
-          fontSize: textSize,
-        ),
-      ),
-      onTap: onTap,
     );
   }
 }

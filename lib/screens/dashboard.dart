@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:mobapp/constants/colors.dart';
-import 'package:mobapp/screens/add_device.dart';
-import 'package:mobapp/screens/login_screen.dart';
-import 'package:mobapp/screens/profile.dart';
-import 'package:mobapp/screens/setting.dart';
+import 'package:mobapp/screens/device/add_device.dart';
+import 'package:mobapp/screens/auth/login_screen.dart';
+import 'package:mobapp/screens/user/profile.dart';
+import 'package:mobapp/screens/user/setting.dart';
 
 final localStorage = LocalStorage('app_data.json');
 

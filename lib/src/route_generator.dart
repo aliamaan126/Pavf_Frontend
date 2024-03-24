@@ -1,12 +1,13 @@
 import "package:flutter/material.dart";
 import "package:mobapp/screens/dashboard.dart";
-import "package:mobapp/screens/forgotPass_screen.dart";
+import "package:mobapp/screens/auth/forgotPass_screen.dart";
 import "package:mobapp/screens/home_screen.dart";
-import "package:mobapp/screens/login_screen.dart";
-import "package:mobapp/screens/otp_screen.dart";
-import "package:mobapp/screens/register_screen.dart";
-import "package:mobapp/screens/resetPass_screen.dart";
+import "package:mobapp/screens/auth/login_screen.dart";
+import "package:mobapp/screens/auth/otp_screen.dart";
+import "package:mobapp/screens/auth/register_screen.dart";
+import "package:mobapp/screens/auth/resetPass_screen.dart";
 import 'package:get/get.dart';
+import "package:mobapp/screens/splash.dart";
 
 
 class RouteGenerator {

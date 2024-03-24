@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobapp/screens/add_device.dart';
-import 'package:mobapp/screens/device_conn.dart'; // Import the AddDevice screen
-import 'package:mobapp/screens/wifi_conect.dart';
+import 'package:mobapp/screens/device/add_device.dart';
+import 'package:mobapp/screens/device/device_conn.dart'; // Import the AddDevice screen
+import 'package:mobapp/screens/device/wifi_conect.dart';
 
 void main() {
   runApp(MaterialApp(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobapp/screens/dashboard.dart';
-import 'package:mobapp/screens/profile.dart';
+import 'package:mobapp/screens/user/profile.dart';
 
 void main() {
   runApp(MaterialApp(
