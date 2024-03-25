@@ -7,7 +7,7 @@ class Splash extends StatelessWidget {
   const Splash({super.key});
 
   @override
- Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Clean Code',
       home: Scaffold(

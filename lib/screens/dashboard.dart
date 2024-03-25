@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:mobapp/constants/colors.dart';
+import 'package:mobapp/screens/app/notification.dart';
 import 'package:mobapp/screens/device/add_device.dart';
 import 'package:mobapp/screens/auth/login_screen.dart';
 import 'package:mobapp/screens/user/profile.dart';
@@ -105,7 +106,10 @@ class Dashboard extends StatelessWidget {
                 _buildDrawerItem(
                   icon: Icons.notifications,
                   text: 'Notifications',
-                  onTap: () {},
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => NotificationPage()),
+                  ),
                 ),
                 _buildDrawerItem(
                   icon: Icons.settings,

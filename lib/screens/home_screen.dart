@@ -17,14 +17,14 @@ class HomeScreen extends StatelessWidget {
               TextButton(
                 child: const Text("Login"),
                 onPressed: () {
-                  Get.toNamed('/login',arguments: 'hello');
-                  },
+                  Get.toNamed('/login', arguments: 'hello');
+                },
               ),
               TextButton(
                 child: const Text("Dashboard"),
                 onPressed: () {
-                  Get.toNamed('/dashboard',arguments: 'hello');
-                  },
+                  Get.toNamed('/dashboard', arguments: 'hello');
+                },
               ),
             ],
           ),
