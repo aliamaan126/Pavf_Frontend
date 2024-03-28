@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:mobapp/constants/colors.dart';
+import 'package:mobapp/controle(temp/light/humidity)/controle.dart';
 import 'package:mobapp/screens/app/notification.dart';
 import 'package:mobapp/screens/device/add_device.dart';
 import 'package:mobapp/screens/auth/login_screen.dart';
@@ -266,7 +267,7 @@ class Dashboard extends StatelessWidget {
         {
           "title": "Soil Moisture",
           "description": "Light value of the shelf.",
-          "navigationPage": LoginScreen(),
+          "navigationPage": control(),
         },
         {
           "title": "Soil Temp",
