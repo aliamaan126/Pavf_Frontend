@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobapp/screens/dashboard.dart';
+import 'package:mobapp/screens/app/dashboard.dart';
 import 'package:mobapp/screens/user/profile.dart';
 
 void main() {

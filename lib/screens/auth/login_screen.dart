@@ -270,6 +270,7 @@ class LoginButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () async {
           final jwtToken = await _login(context);
+          await fetchData();
           await _storeToken(jwtToken!);
 
           // Store the JWT token securely (you can use a secure storage library)
@@ -351,6 +352,46 @@ class LoginButton extends StatelessWidget {
       );
       return null;
     }
+  }
+}
+
+Future<void> fetchData() async {
+  try {
+    // Make the HTTP GET request
+    final response = await http.get(Uri.parse('$server/device/data/01/fetch'));
+
+    // Check if the request was successful (status code 200)
+    if (response.statusCode == 200) {
+      // Parse the JSON response
+      final data = json.decode(response.body);
+      
+      print('data:');
+      print(data);
+
+      print('response:');
+      print(response.body);
+
+
+      int humidity = int.parse(data['soildata']["moisture"]);
+      int temp = int.parse(data['soildata']["Temperature"]);
+      int light = int.parse(data['soildata']["Conductivity"]);
+
+      print(humidity);
+      print(temp);
+      print(light);
+
+
+      await storeData('humid', humidity.toString());
+      await storeData('temp', temp.toString());
+      await storeData('light', light.toString());
+
+    } else {
+      print('Failed to fetch data1: ${response.statusCode}');
+      print(response.body);
+    }
+  } catch (error) {
+    // Handle any exceptions that occur during the request
+    print('Error fetching data: $error');
   }
 }
 

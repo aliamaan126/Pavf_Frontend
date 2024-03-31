@@ -11,16 +11,17 @@ class Splash extends StatelessWidget {
     return MaterialApp(
       title: 'Clean Code',
       home: Scaffold(
-        body: Container(
+        body: Stack(
           alignment: Alignment.center,
-          child: AnimatedSplashScreen(
+          children: [
+            AnimatedSplashScreen(
             duration: 3000,
-            splash: Icons.home,
+            splash: Image.asset('../../assets/profile.png'),
             nextScreen: LoginScreen(),
             splashTransition: SplashTransition.fadeTransition,
-            pageTransitionType: PageTransitionType.scale,
-            backgroundColor: Colors.blue,
-          ),
+            backgroundColor: Colors.black,
+            splashIconSize: 400,           
+          ),]
         ),
       ),
     );

@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:mobapp/screens/dashboard.dart";
+import "package:mobapp/screens/app/dashboard.dart";
 import "package:mobapp/screens/auth/forgotPass_screen.dart";
 import "package:mobapp/screens/home_screen.dart";
 import "package:mobapp/screens/auth/login_screen.dart";
@@ -14,7 +14,7 @@ class RouteGenerator {
   static List<GetPage> routes = [
     GetPage(
       name: '/',
-      page: () => HomeScreen(),
+      page: () => const Splash(),
     ),
     GetPage(
       name: '/login',

@@ -1,14 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:kdgaugeview/kdgaugeview.dart';
+import 'package:mobapp/constants/url.dart';
 import 'package:mobapp/screens/dashboard.dart';
 import 'package:mobapp/screens/user/setting.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 // Define global variables for speeds
-double temperatureSpeed = 10.0;
-double lightSpeed = 40.0;
-double humiditySpeed = 100.0;
+double temperatureSpeed = double.parse(retrieveData('temp'));
+double lightSpeed = double.parse(retrieveData('light'));
+double humiditySpeed  = double.parse(retrieveData('humid'));
 
+
+
+Future<void> fetchData() async {
+  try {
+    // Make the HTTP GET request
+    final response = await http.get(Uri.parse('$server/data/01/fetch'));
+
+    // Check if the request was successful (status code 200)
+    if (response.statusCode == 200) {
+      // Parse the JSON response
+      final data = jsonDecode(response.body);
+      humiditySpeed = 50;     
+    } else {
+      print('Failed to fetch data: ${response.statusCode}');
+    }
+  } catch (error) {
+    // Handle any exceptions that occur during the request
+    print('Error fetching data: $error');
+  }
+}
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Function()? onMenuPressed;
 
@@ -190,7 +213,8 @@ class _View1ScreenState extends State<View1Screen> {
                       return Builder(
                         builder: (BuildContext context) {
                           return GestureDetector(
-                            onTap: () {
+                            onTap: () async {
+                              await fetchData();
                               setState(() {
                                 dynamicText = button['name'];
                                 selectedIndex = buttonData.indexOf(button);
@@ -268,7 +292,7 @@ class _View1ScreenState extends State<View1Screen> {
                         maxSpeed: 100,
                         speed: temperatureSpeed,
                         animate: true,
-                        duration: Duration(seconds: 5),
+                        duration: Duration(seconds: 2),
                         alertSpeedArray: [40, 80, 90],
                         alertColorArray: [
                           Colors.green,
@@ -521,6 +545,17 @@ class _View1ScreenState extends State<View1Screen> {
   }
 }
 
-void main() {
-  runApp(control());
+
+
+
+Future<void> storeData(String key, dynamic value) async {
+  await localStorage.ready;
+  localStorage.setItem(key, value);
 }
+
+// Retrieve data
+dynamic retrieveData(String key) {
+  return localStorage.getItem(key);
+}
+
+
