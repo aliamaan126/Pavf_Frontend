@@ -9,6 +9,7 @@ import 'package:mobapp/screens/device/add_device.dart';
 import 'package:mobapp/screens/auth/login_screen.dart';
 import 'package:mobapp/screens/user/profile.dart';
 import 'package:mobapp/screens/user/setting.dart';
+import 'package:mobapp/values/realtimevalue.dart';
 
 final localStorage = LocalStorage('app_data.json');
 
@@ -107,14 +108,11 @@ class Dashboard extends StatelessWidget {
                 _buildDrawerItem(
                   icon: Icons.notifications,
                   text: 'Notifications',
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => NotificationPage()),
-                  ),
+                  onTap: () {},
                 ),
                 _buildDrawerItem(
                   icon: Icons.settings,
-                  text: 'Setting',
+                  text: 'Settings',
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => Settings()),
@@ -125,7 +123,7 @@ class Dashboard extends StatelessWidget {
                   text: 'Personal',
                   onTap: () => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const Profile()),
+                    MaterialPageRoute(builder: (context) => Profile()),
                   ),
                 ),
                 _buildDrawerItem(
@@ -272,7 +270,7 @@ class Dashboard extends StatelessWidget {
         {
           "title": "Soil Temp",
           "description": "Temperature value of the shelf.",
-          "navigationPage": LoginScreen(),
+          "navigationPage": realtime(),
         },
       ],
       [
@@ -307,7 +305,7 @@ class Dashboard extends StatelessWidget {
         {
           "title": "Light Control",
           "description": "Description for Control Metric 1.",
-          "navigationPage": LoginScreen(),
+          "navigationPage": realtime(),
         },
         {
           "title": "Temperature Control",

@@ -364,13 +364,12 @@ Future<void> fetchData() async {
     if (response.statusCode == 200) {
       // Parse the JSON response
       final data = json.decode(response.body);
-      
+
       print('data:');
       print(data);
 
       print('response:');
       print(response.body);
-
 
       int humidity = int.parse(data['soildata']["moisture"]);
       int temp = int.parse(data['soildata']["Temperature"]);
@@ -380,11 +379,9 @@ Future<void> fetchData() async {
       print(temp);
       print(light);
 
-
       await storeData('humid', humidity.toString());
       await storeData('temp', temp.toString());
       await storeData('light', light.toString());
-
     } else {
       print('Failed to fetch data1: ${response.statusCode}');
       print(response.body);

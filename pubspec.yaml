@@ -12,6 +12,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   speedometer_chart: ^1.0.5
   fl_chart: ^0.50.3
+  toggle_switch: ^2.3.0
   
 #  get_storage: ^2.1.1
 #  image_picker: ^0.8.4
