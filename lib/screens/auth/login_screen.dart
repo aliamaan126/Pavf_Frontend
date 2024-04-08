@@ -1,16 +1,19 @@
+import 'package:PAVF/constants/url.dart';
+import 'package:PAVF/screens/app/flutter_secure_storage.dart';
+import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 import 'dart:convert';
-import 'package:mobapp/state_management/custom_storage.dart';
+import 'package:PAVF/state_management/custom_storage.dart';
+import 'package:toast/toast.dart';
+
 
 final storage = FlutterSecureStorage();
-// const server = "http://localhost:3000/api/v1";
 final localStorage = LocalStorage('app_data.json');
 
-const server = "https://pavf-gelj.onrender.com/api/v1";
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController usernameController = TextEditingController();
@@ -145,17 +148,17 @@ class LoginForm extends StatelessWidget {
         SizedBox(height: 10),
         Row(
           children: [
-            Checkbox(
-              activeColor: Colors.white,
-              value: true,
-              onChanged: (bool? value) {},
-            ),
-            Text(
-              'Remember Me',
-              style: TextStyle(
-                color: Colors.lightGreen,
-              ),
-            ),
+            // Checkbox(
+            //   activeColor: Colors.white,
+            //   value: true,
+            //   onChanged: (bool? value) {},
+            // ),
+            // Text(
+            //   'Remember Me',
+            //   style: TextStyle(
+            //     color: Colors.lightGreen,
+            //   ),
+            // ),
           ],
         ),
         SizedBox(height: 10),
@@ -270,6 +273,7 @@ class LoginButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () async {
           final jwtToken = await _login(context);
+          
           await fetchData();
           await _storeToken(jwtToken!);
 
@@ -311,11 +315,14 @@ class LoginButton extends StatelessWidget {
           'password': password,
         }),
       );
-
+      print(json.decode(response.body));
+      print(response.statusCode);
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        // print(response);
+        // print(data);
         String token = data['access_token'];
+        print (token);
+        storeAuthToken(token);
         String token_refresh = data['refersh_token'];
         String user = data['user']["username"];
         // print(user);
@@ -324,7 +331,7 @@ class LoginButton extends StatelessWidget {
         String fname = data['user']["firstname"];
         // print(fname);
         String lname = data['user']["lastname"];
-        String role = data['user']['role']["slug"];
+        String role = data['user']['role'];
 
         await storeData('token', token.toString());
         await storeData('refreshToken', token_refresh.toString());
@@ -332,8 +339,14 @@ class LoginButton extends StatelessWidget {
         await storeData('email', email.toString());
         await storeData('firstname', fname.toString());
         await storeData('lastname', lname.toString());
-        await storeData('slug', role.toString());
+        await storeData('role', role.toString());
 
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Login Successful'),
+          backgroundColor: Colors.green, 
+          duration: Duration(seconds: 2),),
+        );
+        
         Get.toNamed('/dashboard');
         // print(lname);
         // Corrected property name
@@ -342,7 +355,12 @@ class LoginButton extends StatelessWidget {
         // Get.find().addUser(user,email,fname,lname,'role');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login failed: ${response.body}')),
+          SnackBar(content: Text('Login failed: Invalid Username or Password'),
+          backgroundColor: Colors.red, 
+          duration: Duration(seconds: 2),
+          ),
+          
+          
         );
         return null;
       }
@@ -365,11 +383,11 @@ Future<void> fetchData() async {
       // Parse the JSON response
       final data = json.decode(response.body);
 
-      print('data:');
-      print(data);
+      // print('data:');
+      // print(data);
 
-      print('response:');
-      print(response.body);
+      // print('response:');
+      // print(response.body);
 
       int humidity = int.parse(data['soildata']["moisture"]);
       int temp = int.parse(data['soildata']["Temperature"]);
@@ -393,20 +411,7 @@ Future<void> fetchData() async {
 }
 
 // Store data
-Future<void> storeData(String key, dynamic value) async {
-  await localStorage.ready;
-  localStorage.setItem(key, value);
-}
 
-// Retrieve data
-dynamic retrieveData(String key) {
-  return localStorage.getItem(key);
-}
-
-// Delete data
-void deleteData(String key) {
-  localStorage.deleteItem(key);
-}
 
 String getImagePath(String imageName) {
   return 'assets/$imageName';

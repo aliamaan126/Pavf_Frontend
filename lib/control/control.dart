@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:kdgaugeview/kdgaugeview.dart';
-import 'package:mobapp/constants/url.dart';
-import 'package:mobapp/screens/dashboard.dart';
-import 'package:mobapp/screens/user/setting.dart';
+import 'package:PAVF/constants/url.dart';
+import 'package:PAVF/screens/app/dashboard.dart';
+import 'package:PAVF/screens/user/setting.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

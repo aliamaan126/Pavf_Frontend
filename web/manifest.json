@@ -1,6 +1,6 @@
 {
-    "name": "mobapp",
-    "short_name": "mobapp",
+    "name": "PAVF",
+    "short_name": "PAVF",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobapp/screens/device/device_Setup.dart';
+import 'package:PAVF/screens/device/device_Setup.dart';
 
-import 'package:mobapp/screens/device/device_conn.dart';
+import 'package:PAVF/screens/device/device_conn.dart';
 
 void main() {
   runApp(MaterialApp(

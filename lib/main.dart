@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobapp/src/route_generator.dart';
+import 'package:PAVF/src/route_generator.dart';
 import 'package:get/get.dart';
 
 void main() {

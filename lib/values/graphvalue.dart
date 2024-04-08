@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobapp/screens/app/dashboard.dart';
+import 'package:PAVF/screens/app/dashboard.dart';
 
 import 'package:toggle_switch/toggle_switch.dart'; // Import ToggleSwitch package
 import 'package:fl_chart/fl_chart.dart'; // Import fl_chart library

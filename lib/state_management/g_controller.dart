@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:mobapp/state_management/user.dart';
+import 'package:PAVF/state_management/user.dart';
 class GController extends GetxController{
   final user=User().obs;
    void updateUser(username,email,first_name,last_name,role)async{

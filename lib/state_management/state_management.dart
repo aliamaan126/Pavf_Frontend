@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mobapp/state_management/user.dart';
+import 'package:PAVF/state_management/user.dart';
 
 class StateManagement extends StatelessWidget{
   StateManagement({super.key});

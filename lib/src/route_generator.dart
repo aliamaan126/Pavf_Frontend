@@ -1,20 +1,20 @@
 import "package:flutter/material.dart";
-import "package:mobapp/screens/app/dashboard.dart";
-import "package:mobapp/screens/auth/forgotPass_screen.dart";
-import "package:mobapp/screens/home_screen.dart";
-import "package:mobapp/screens/auth/login_screen.dart";
-import "package:mobapp/screens/auth/otp_screen.dart";
-import "package:mobapp/screens/auth/register_screen.dart";
-import "package:mobapp/screens/auth/resetPass_screen.dart";
+import "package:PAVF/screens/app/dashboard.dart";
+import "package:PAVF/screens/auth/forgotPass_screen.dart";
+import "package:PAVF/screens/home_screen.dart";
+import "package:PAVF/screens/auth/login_screen.dart";
+import "package:PAVF/screens/auth/otp_screen.dart";
+import "package:PAVF/screens/auth/register_screen.dart";
+import "package:PAVF/screens/auth/resetPass_screen.dart";
 import 'package:get/get.dart';
-import "package:mobapp/screens/splash.dart";
+import "package:PAVF/screens/splash.dart";
 
 
 class RouteGenerator {
   static List<GetPage> routes = [
     GetPage(
       name: '/',
-      page: () => const Splash(),
+      page: () =>  Splash(),
     ),
     GetPage(
       name: '/login',

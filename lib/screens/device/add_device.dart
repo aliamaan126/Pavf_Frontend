@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobapp/screens/app/dashboard.dart';
-import 'package:mobapp/screens/device/device_Setup.dart';
-import 'package:mobapp/screens/user/profile.dart';
-import 'package:mobapp/screens/user/setting.dart';
+import 'package:PAVF/screens/app/dashboard.dart';
+import 'package:PAVF/screens/device/device_Setup.dart';
+import 'package:PAVF/screens/user/profile.dart';
+import 'package:PAVF/screens/user/setting.dart';
 
 void main() {
   runApp(MaterialApp(

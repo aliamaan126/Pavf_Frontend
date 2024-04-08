@@ -1,14 +1,17 @@
+import 'package:PAVF/screens/app/flutter_secure_storage.dart';
+import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:mobapp/constants/colors.dart';
-import 'package:mobapp/control/control.dart';
-import 'package:mobapp/screens/app/notification.dart';
-import 'package:mobapp/screens/device/add_device.dart';
-import 'package:mobapp/screens/auth/login_screen.dart';
-import 'package:mobapp/screens/user/profile.dart';
-import 'package:mobapp/screens/user/setting.dart';
+import 'package:PAVF/constants/colors.dart';
+import 'package:PAVF/control/control.dart';
+import 'package:PAVF/screens/app/notification.dart';
+import 'package:PAVF/screens/device/add_device.dart';
+import 'package:PAVF/screens/auth/login_screen.dart';
+import 'package:PAVF/screens/user/profile.dart';
+import 'package:PAVF/screens/user/setting.dart';
+import 'package:PAVF/values/realtime_value.dart';
 
 final localStorage = LocalStorage('app_data.json');
 
@@ -32,9 +35,9 @@ class Dashboard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _buildSpace(),
-              _buildLightRow(),
-              _buildSpace(),
+              // _buildSpace(),
+              // _buildLightRow(),
+              // _buildSpace(),
               _buildVisualRecording(),
               _buildVideoBox(context),
               _buildMetricRows(context),
@@ -66,7 +69,7 @@ class Dashboard extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
-      actions: [_buildProfileIcon()],
+      // actions: [_buildProfileIcon()],
     );
   }
 
@@ -128,11 +131,11 @@ class Dashboard extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => const Profile()),
                   ),
                 ),
-                _buildDrawerItem(
-                  icon: Icons.security,
-                  text: 'Security',
-                  onTap: () {},
-                ),
+                // _buildDrawerItem(
+                //   icon: Icons.security,
+                //   text: 'Security',
+                //   onTap: () {},
+                // ),
                 _buildDrawerItem(
                   icon: Icons.logout,
                   text: 'Logout',
@@ -142,7 +145,7 @@ class Dashboard extends StatelessWidget {
                     deleteData('firstname');
                     deleteData('lastname');
                     deleteData('slug');
-
+                    deleteToken("auth_token");
                     Get.offAllNamed('/login');
                   },
                 ),
@@ -173,15 +176,15 @@ class Dashboard extends StatelessWidget {
     );
   }
 
-  Padding _buildProfileIcon() {
-    return Padding(
-      padding: const EdgeInsets.only(right: 20.0),
-      child: CircleAvatar(
-        backgroundColor: Colors.white,
-        child: Icon(Icons.person, color: Colors.black, size: 40),
-      ),
-    );
-  }
+  // Padding _buildProfileIcon() {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(right: 20.0),
+  //     child: CircleAvatar(
+  //       backgroundColor: Colors.white,
+  //       child: Icon(Icons.person, color: Colors.black, size: 40),
+  //     ),
+  //   );
+  // }
 
   SizedBox _buildSpace({double height = 40.0}) => SizedBox(height: height);
 
@@ -267,37 +270,36 @@ class Dashboard extends StatelessWidget {
         {
           "title": "Soil Moisture",
           "description": "Light value of the shelf.",
-          "navigationPage": control(),
+          "navigationPage": realTime(),
         },
         {
           "title": "Soil Temp",
           "description": "Temperature value of the shelf.",
-          "navigationPage": LoginScreen(),
+          "navigationPage": realTime(),
         },
       ],
       [
         {
           "title": "Soil EC",
           "description": "Light Control of the shelf.",
-          "navigationPage": LoginScreen(),
+          "navigationPage": realTime(),
         },
         {
           "title": "Soil Nitrogen",
           "description": "Temperature Control of the shelf.",
-          "navigationPage": LoginScreen(),
+          "navigationPage": realTime(),
         },
       ],
       [
         {
           "title": "Soil Phosphorus",
           "description": "Moisture Control of the shelf.",
-          "navigationPage": LoginScreen(),
+          "navigationPage": realTime(),
         },
         {
           "title": "Soil Potassium",
           "description": "Phosphorous level in the soil.",
-          "navigationPage":
-              Row(children: [LoginScreen(), Icon(Icons.thermostat)]),
+          "navigationPage":realTime(),
         },
       ],
     ];
@@ -307,24 +309,24 @@ class Dashboard extends StatelessWidget {
         {
           "title": "Light Control",
           "description": "Description for Control Metric 1.",
-          "navigationPage": LoginScreen(),
+          "navigationPage": control(),
         },
         {
           "title": "Temperature Control",
           "description": "Temprature  Control of the Shelf",
-          "navigationPage": LoginScreen(),
+          "navigationPage": control(),
         },
       ],
       [
         {
           "title": "Humidity Control",
           "description": "Description for Control Metric 3.",
-          "navigationPage": LoginScreen(),
+          "navigationPage": control(),
         },
         {
           "title": "Water Control",
           "description": "Description for Control Metric 4.",
-          "navigationPage": LoginScreen(),
+          "navigationPage": control(),
         },
       ],
     ];
@@ -523,17 +525,4 @@ class Dashboard extends StatelessWidget {
   }
 }
 
-Future<void> storeData(String key, dynamic value) async {
-  await localStorage.ready;
-  localStorage.setItem(key, value);
-}
 
-// Retrieve data
-dynamic retrieveData(String key) {
-  return localStorage.getItem(key);
-}
-
-// Delete data
-void deleteData(String key) {
-  localStorage.deleteItem(key);
-}

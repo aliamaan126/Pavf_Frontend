@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobapp/screens/app/dashboard.dart';
-import 'package:mobapp/screens/user/profile.dart';
+import 'package:PAVF/screens/app/dashboard.dart';
+import 'package:PAVF/screens/user/profile.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -32,10 +32,10 @@ class Settings extends StatelessWidget {
                   child: ListView(
                     padding: EdgeInsets.symmetric(horizontal: 22),
                     children: [
-                      _buildRow("Personal Information", () {
-                        // onTap action for Personal Information
-                        print("Personal Information tapped");
-                      }),
+                      // _buildRow("Personal Information", () {
+                      //   // onTap action for Personal Information
+                      //   print("Personal Information tapped");
+                      // }),
                       _buildRow("Notification", () {
                         // onTap action for Notification
                         print("Notification tapped");
@@ -48,14 +48,14 @@ class Settings extends StatelessWidget {
                         // onTap action for Terms and Policies
                         print("Terms and Policies tapped");
                       }),
-                      _buildRow("Rate App", () {
-                        // onTap action for Rate App
-                        print("Rate App tapped");
-                      }),
-                      _buildRow("Become a Professional", () {
-                        // onTap action for Become a Professional
-                        print("Become a Professional tapped");
-                      }),
+                      // _buildRow("Rate App", () {
+                      //   // onTap action for Rate App
+                      //   print("Rate App tapped");
+                      // }),
+                      // _buildRow("Become a Professional", () {
+                      //   // onTap action for Become a Professional
+                      //   print("Become a Professional tapped");
+                      // }),
                       _buildRow("About", () {
                         // onTap action for About
                         print("About tapped");

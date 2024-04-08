@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobapp/constants/colors.dart';
+import 'package:PAVF/constants/colors.dart';
 
 class ResetPass extends StatelessWidget {
   const ResetPass({super.key});

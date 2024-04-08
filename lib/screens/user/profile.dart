@@ -1,16 +1,14 @@
+import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:localstorage/localstorage.dart';
-import 'package:mobapp/constants/colors.dart';
+import 'package:PAVF/constants/colors.dart';
 
 
 
-final localStorage = LocalStorage('app_data.json');
 var user = retrieveData('username');
 var email = retrieveData('email');
 var fnmae = retrieveData('firstname');
 var lname = retrieveData('lastname');
-var role = retrieveData('slug');
+var role = retrieveData('role');
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -96,18 +94,3 @@ class Profile extends StatelessWidget {
 }
 
 
-  // Store data
-  Future<void> storeData(String key, dynamic value) async {
-  await localStorage.ready;
-  localStorage.setItem(key, value);
-}
-
-// Retrieve data
-dynamic retrieveData(String key) {
-  return localStorage.getItem(key);
-}
-
-// Delete data
-void deleteData(String key) {
-  localStorage.deleteItem(key);
-}
