@@ -18,10 +18,9 @@ class MainApp extends StatelessWidget {
       //onGenerateRoute: RouteGenerator.generateRoute,
       getPages: RouteGenerator.routes,
       routingCallback: (routing) {
-        if(routing!.current=='/register'){
+        if (routing!.current == '/register') {
           print('register');
         }
-        
       },
     );
   }

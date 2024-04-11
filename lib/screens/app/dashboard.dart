@@ -1,16 +1,13 @@
-import 'package:PAVF/screens/app/flutter_secure_storage.dart';
-import 'package:PAVF/screens/app/local_storage.dart';
+import 'package:PAVF/component/drawer.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:PAVF/constants/colors.dart';
+
 import 'package:PAVF/control/control.dart';
-import 'package:PAVF/screens/app/notification.dart';
+
 import 'package:PAVF/screens/device/add_device.dart';
-import 'package:PAVF/screens/auth/login_screen.dart';
-import 'package:PAVF/screens/user/profile.dart';
-import 'package:PAVF/screens/user/setting.dart';
+
 import 'package:PAVF/values/realtime_value.dart';
 
 final localStorage = LocalStorage('app_data.json');
@@ -29,7 +26,7 @@ class Dashboard extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       appBar: _buildAppBar(context),
-      drawer: _buildDrawer(context),
+      drawer: buildDrawer(context),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -70,98 +67,6 @@ class Dashboard extends StatelessWidget {
         ),
       ),
       // actions: [_buildProfileIcon()],
-    );
-  }
-
-  Widget _buildDrawer(BuildContext context) {
-    return Drawer(
-      child: Container(
-        decoration: BoxDecoration(
-          color: Color(0xFFC7F2D8), // Set drawer color to C7F2D8
-        ),
-        child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start, // Align text to the left
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 20, horizontal: 20), // Added horizontal padding
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.black, // Set text color to black
-                  fontSize: 24, // Increased font size
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                _buildDrawerItem(
-                  icon: Icons.home,
-                  text: 'Home',
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Dashboard()),
-                  ),
-                ),
-                _buildDrawerItem(
-                  icon: Icons.notifications,
-                  text: 'Notifications',
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => NotificationPage()),
-                  ),
-                ),
-                _buildDrawerItem(
-                  icon: Icons.settings,
-                  text: 'Setting',
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Settings()),
-                  ),
-                ),
-                _buildDrawerItem(
-                  icon: Icons.person,
-                  text: 'Personal',
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Profile()),
-                  ),
-                ),
-                // _buildDrawerItem(
-                //   icon: Icons.security,
-                //   text: 'Security',
-                //   onTap: () {},
-                // ),
-                _buildDrawerItem(
-                  icon: Icons.logout,
-                  text: 'Logout',
-                  onTap: () {
-                    deleteData('username');
-                    deleteData('email');
-                    deleteData('firstname');
-                    deleteData('lastname');
-                    deleteData('slug');
-                    deleteToken("auth_token");
-                    Get.offAllNamed('/login');
-                  },
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDrawerItem({IconData? icon, String? text, VoidCallback? onTap}) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(text ?? ''),
-      onTap: onTap,
     );
   }
 
@@ -299,7 +204,7 @@ class Dashboard extends StatelessWidget {
         {
           "title": "Soil Potassium",
           "description": "Phosphorous level in the soil.",
-          "navigationPage":realTime(),
+          "navigationPage": realTime(),
         },
       ],
     ];
@@ -524,5 +429,3 @@ class Dashboard extends StatelessWidget {
     );
   }
 }
-
-

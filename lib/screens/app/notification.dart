@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:PAVF/component/drawer.dart';
 
 class NotificationPage extends StatefulWidget {
   @override
@@ -69,7 +70,7 @@ class _NotificationPageState extends State<NotificationPage> {
           _scaffoldKey.currentState?.openDrawer();
         },
       ),
-      drawer: _buildDrawer(context),
+      drawer: buildDrawer(context),
       body: ListView.builder(
         itemCount: notifications.length,
         itemBuilder: (context, index) {
@@ -162,70 +163,4 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
-}
-
-Widget _buildDrawer(BuildContext context) {
-  return Drawer(
-    child: Container(
-      decoration: BoxDecoration(
-        color: Color(0xFFC9E9C9),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Menu',
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
-            ),
-          ),
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                ListTile(
-                  leading: Icon(Icons.home),
-                  title: Text('Home', style: TextStyle(fontSize: 16)),
-                  onTap: () => Navigator.pop(context),
-                ),
-                ListTile(
-                  leading: Icon(Icons.notifications),
-                  title: Text('Notifications', style: TextStyle(fontSize: 16)),
-                  onTap: () => Navigator.pop(context),
-                ),
-                ListTile(
-                  leading: Icon(Icons.settings),
-                  title: Text('Settings', style: TextStyle(fontSize: 16)),
-                  onTap: () => Navigator.pop(context),
-                ),
-                ListTile(
-                  leading: Icon(Icons.person),
-                  title: Text('Personal', style: TextStyle(fontSize: 16)),
-                  onTap: () => Navigator.pop(context),
-                ),
-                ListTile(
-                  leading: Icon(Icons.security),
-                  title: Text('Security', style: TextStyle(fontSize: 16)),
-                  onTap: () => Navigator.pop(context),
-                ),
-                ListTile(
-                  leading: Icon(Icons.logout),
-                  title: Text('Logout', style: TextStyle(fontSize: 16)),
-                  onTap: () {
-                    // Handle logout
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
 }

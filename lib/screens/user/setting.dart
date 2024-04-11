@@ -1,5 +1,5 @@
+import 'package:PAVF/component/drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:PAVF/screens/app/dashboard.dart';
 import 'package:PAVF/screens/user/profile.dart';
 
 void main() {
@@ -15,7 +15,8 @@ class Settings extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: SubHeader(heading: "Settings"),
-      drawer: _buildDrawer(context),
+      drawer: buildDrawer(
+          context), // Call the buildDrawer function from drawer.dart
       body: Container(
         decoration: BoxDecoration(
           color: Color(0xFFC9E9C9),
@@ -32,32 +33,16 @@ class Settings extends StatelessWidget {
                   child: ListView(
                     padding: EdgeInsets.symmetric(horizontal: 22),
                     children: [
-                      // _buildRow("Personal Information", () {
-                      //   // onTap action for Personal Information
-                      //   print("Personal Information tapped");
-                      // }),
                       _buildRow("Notification", () {
-                        // onTap action for Notification
                         print("Notification tapped");
                       }),
                       _buildRow("Privacy and Security", () {
-                        // onTap action for Privacy and Security
                         print("Privacy and Security tapped");
                       }),
                       _buildRow("Terms and Policies", () {
-                        // onTap action for Terms and Policies
                         print("Terms and Policies tapped");
                       }),
-                      // _buildRow("Rate App", () {
-                      //   // onTap action for Rate App
-                      //   print("Rate App tapped");
-                      // }),
-                      // _buildRow("Become a Professional", () {
-                      //   // onTap action for Become a Professional
-                      //   print("Become a Professional tapped");
-                      // }),
                       _buildRow("About", () {
-                        // onTap action for About
                         print("About tapped");
                       }),
                     ],
@@ -73,9 +58,9 @@ class Settings extends StatelessWidget {
 
   Widget _buildRow(String label, VoidCallback onTap) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10), // Adjust vertical padding
+      padding: EdgeInsets.symmetric(vertical: 10),
       child: Container(
-        height: 70, // Adjust height of ListTile
+        height: 70,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
@@ -107,104 +92,6 @@ class Settings extends StatelessWidget {
       ),
     );
   }
-}
-
-// Define the _buildDrawerItem function here
-Widget _buildDrawerItem({
-  required IconData icon,
-  required String text,
-  required VoidCallback onTap,
-  double iconSize = 24.0, // default icon size
-  double textSize = 16.0, // default text size
-}) {
-  return ListTile(
-    leading: Icon(
-      icon,
-      size: iconSize,
-    ),
-    title: Text(
-      text,
-      style: TextStyle(
-        fontSize: textSize,
-      ),
-    ),
-    onTap: onTap,
-  );
-}
-
-Widget _buildDrawer(BuildContext context) {
-  return Drawer(
-    child: Container(
-      decoration: BoxDecoration(
-        color: Color(0xFFC9E9C9),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Menu',
-              style: TextStyle(
-                fontSize: 50,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                _buildDrawerItem(
-                  icon: Icons.home,
-                  text: 'Home',
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Dashboard()),
-                  ),
-                ),
-                _buildDrawerItem(
-                  icon: Icons.notifications,
-                  text: 'Notifications',
-                  onTap: () {},
-                ),
-                _buildDrawerItem(
-                  icon: Icons.settings,
-                  text: 'Settings',
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Settings()),
-                  ),
-                ),
-                _buildDrawerItem(
-                  icon: Icons.person,
-                  text: 'Personal',
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Profile()),
-                  ),
-                ),
-                _buildDrawerItem(
-                  icon: Icons.security,
-                  text: 'Security',
-                  onTap: () {},
-                ),
-                _buildDrawerItem(
-                  icon: Icons.logout,
-                  text: 'Logout',
-                  onTap: () {
-                    // Handle logout
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
 }
 
 class SubHeader extends StatelessWidget implements PreferredSizeWidget {
