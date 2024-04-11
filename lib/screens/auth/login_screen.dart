@@ -333,8 +333,7 @@ class LoginButton extends StatelessWidget {
         String lname = data['user']["lastname"];
         String role = data['user']['role'];
 
-        await storeData('token', token.toString());
-        await storeData('refreshToken', token_refresh.toString());
+        
         await storeData('username', user.toString());
         await storeData('email', email.toString());
         await storeData('firstname', fname.toString());
@@ -347,7 +346,7 @@ class LoginButton extends StatelessWidget {
           duration: Duration(seconds: 2),),
         );
         
-        Get.toNamed('/dashboard');
+        Get.offAllNamed('/dashboard');
         // print(lname);
         // Corrected property name
         // await _storeToken(jwtToken);

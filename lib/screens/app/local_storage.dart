@@ -13,6 +13,6 @@ dynamic retrieveData(String key) {
 }
 
 // Delete data
-void deleteData(String key) {
+Future<void> deleteData(String key) async {
   localStorage.deleteItem(key);
 }

@@ -70,6 +70,7 @@ class Dashboard extends StatelessWidget {
     );
   }
 
+ 
   Widget _buildAppBarBackground() {
     return Container(
       decoration: BoxDecoration(

@@ -1,3 +1,5 @@
+import 'package:PAVF/screens/app/flutter_secure_storage.dart';
+import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:PAVF/constants/colors.dart';
@@ -9,10 +11,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:PAVF/state_management/g_controller.dart';
 
 
-const server = "http://localhost:3000/api/v1";
+// const server = "http://localhost:3000/api/v1";
 final FlutterSecureStorage _storage = FlutterSecureStorage();
 final GController controller = Get.put(GController());
-// const server = "https://pavf-gelj.onrender.com/api/v1";
+const server = "https://pavf-gelj.onrender.com/api/v1";
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -296,22 +298,32 @@ Future<void> registerUser(String username, String email, String password,
       
       final json = jsonDecode(response.body);
       var token = json['access_token'];
+      storeAuthToken(token);
+
       var uname = json['user']['username'];
       var uemail = json['user']['email'];
       var uFirstName = json['user']['firstname'];
       var uLastName = json['user']['lastname'];
-      var urole = json['user']['role']['slug'];
+      var urole = json['user']['role'];
+
+      await storeData('username', uname.toString());
+      await storeData('email', uemail.toString());
+      await storeData('firstname', uFirstName.toString());
+      await storeData('lastname', uLastName.toString());
+      await storeData('role', urole.toString());
 
       // final SharedPreferences? prefs = await _prefs;
       // await prefs?.setString('token', token);
 
       // await _storage.write(key: 'token', value: token.toString());
-      controller.updateUser(uname.toString(), uemail.toString(), uFirstName.toString(), uLastName.toString(), urole.toString());
-      print(token.toString());
-      print(uname.toString());
-      print(uemail.toString());
-      print(urole.toString());
-      Get.offAllNamed('/');
+      // controller.updateUser(uname.toString(), uemail.toString(), uFirstName.toString(), uLastName.toString(), urole.toString());
+      // print(token.toString());
+      // print(uname.toString());
+      // print(uemail.toString());
+      // print(urole.toString());
+
+
+      Get.offAllNamed('/dashboard');
 
     } else {
       print('Failed to register user: ${response.body}');

@@ -9,7 +9,7 @@ Future<void> storeAuthToken(String authToken) async {
 }
 
 Future<String?> getToken() async {
-  return await storage.read(key: 'jwt_token');
+  return await storage.read(key: 'auth_token');
 }
 
 Future<void> deleteToken(String data) async {
