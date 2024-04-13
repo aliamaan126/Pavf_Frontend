@@ -1,8 +1,15 @@
+import 'package:PAVF/constants/url.dart';
 import 'package:flutter/material.dart';
 import 'package:PAVF/constants/colors.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ResetPass extends StatelessWidget {
-  const ResetPass({super.key});
+  ResetPass({super.key});
+
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +19,10 @@ class ResetPass extends StatelessWidget {
         child: Stack(
         children: [
           BackgroundImage(),
-          CenteredContent(),
+          CenteredContent(
+            passwordController: passwordController,
+            confirmPasswordController: confirmPasswordController,
+          ),
         ],
       ),
       ),
@@ -49,7 +59,15 @@ class BackgroundImage extends StatelessWidget {
 }
 
 class CenteredContent extends StatelessWidget {
-  @override
+  
+  final TextEditingController passwordController;
+  final TextEditingController confirmPasswordController;
+
+  CenteredContent({
+    required this.passwordController,
+    required this.confirmPasswordController,
+  });
+
   Widget build(BuildContext context) {
     return Center(
       child: SingleChildScrollView(
@@ -64,7 +82,10 @@ class CenteredContent extends StatelessWidget {
               SizedBox(height: 20),
               NPText(),
               SizedBox(height: 20),
-              LoginForm(),
+              LoginForm(
+                passwordController: passwordController,
+                confirmPasswordController: confirmPasswordController,
+              ),
             ],
           ),
         ),
@@ -98,15 +119,26 @@ class NPText extends StatelessWidget {
 }
 
 class LoginForm extends StatelessWidget {
-  @override
+  
+  final TextEditingController passwordController;
+  final TextEditingController confirmPasswordController;
+
+  LoginForm({
+    required this.passwordController,
+    required this.confirmPasswordController,
+  });
+
   Widget build(BuildContext context) {
     return Column(
       children: [
-        InputField(hintText: 'Password'),
+        InputField(hintText: 'Password', isPassword: true,controller: passwordController),
         SizedBox(height: 20),
-        InputField(hintText: 'Confirm Password', isPassword: true),
+        InputField(hintText: 'Confirm Password', isPassword: true,controller: confirmPasswordController),
         SizedBox(height: 10),
-        LoginButton(),
+        LoginButton(
+          passwordController: passwordController,
+          confirmPasswordController: confirmPasswordController,
+        ),
         SizedBox(height: 10),
       ],
     );
@@ -116,10 +148,12 @@ class LoginForm extends StatelessWidget {
 class InputField extends StatelessWidget {
   final String hintText;
   final bool isPassword;
+  final TextEditingController controller;
 
   InputField({
     required this.hintText,
     this.isPassword = false,
+    required this.controller,
   });
 
   @override
@@ -127,6 +161,7 @@ class InputField extends StatelessWidget {
     return Container(
       height: 60,
       child: TextField(
+        controller: controller,
         style: TextStyle(color: Colors.black),
         obscureText: isPassword,
         decoration: InputDecoration(
@@ -154,7 +189,17 @@ class InputField extends StatelessWidget {
 }
 
 class LoginButton extends StatelessWidget {
-  @override
+
+
+  final TextEditingController passwordController;
+  final TextEditingController confirmPasswordController;
+
+  LoginButton({
+    required this.passwordController,
+    required this.confirmPasswordController,
+  });
+
+
   Widget build(BuildContext context) {
     final inputFieldWidth = MediaQuery.of(context).size.width - 40;
     final buttonHeight = 50.0;
@@ -163,12 +208,8 @@ class LoginButton extends StatelessWidget {
       width: inputFieldWidth,
       height: buttonHeight,
       child: ElevatedButton(
-        onPressed: () {
-          // Simulating the password reset
-          // In a real scenario, you should handle password reset logic here
-
-          // Show the password reset prompt
-          _showResetPasswordPrompt(context);
+        onPressed: () async {
+          await _resetPass(context, passwordController,confirmPasswordController);
         },
         child: Text(
           'Confirm',
@@ -188,26 +229,49 @@ class LoginButton extends StatelessWidget {
     );
   }
 
-  void _showResetPasswordPrompt(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Password Change"),
-          content: Text("Your password has been Change."),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/login');
-              },
-              child: Text("OK"),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  
 }
+
+Future<String?> _resetPass (BuildContext context, TextEditingController passwordController, TextEditingController confirmPasswordController) async {
+    
+    final password = passwordController.text;
+    final confirmPassword = confirmPasswordController.text;
+
+    var args = Get.arguments;
+    String resetToken = args['reset_token'];
+    String email = args['email'];
+
+    // Add your API endpoint URL here
+    final apiUrl = '$server/auth/reset-password';
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'reset_token': resetToken,
+          'email': email,
+          'password': password,
+          'password_confirmation': confirmPassword,
+        }),
+      );
+
+      if (response.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Paswword has successfully been changed'),
+          backgroundColor: Color.fromARGB(255, 26, 227, 42), 
+          duration: Duration(seconds: 3),
+          ),         
+        );
+        Get.offAllNamed('/login');
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login failed: $e')),
+      );
+      return null;
+    }
+  }
 
 String getImagePath(String imageName) {
   return 'assets/$imageName';

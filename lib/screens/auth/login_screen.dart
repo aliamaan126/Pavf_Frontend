@@ -164,7 +164,7 @@ class LoginForm extends StatelessWidget {
         SizedBox(height: 10),
         TextButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/forgotPass');
+            Get.toNamed('/forgotPass');
           },
           child: Text(
             'Forgot Password ?',
@@ -263,23 +263,15 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final inputFieldWidth = MediaQuery.of(context).size.width - 40;
     final buttonHeight = 50.0;
-    Future<void> _storeToken(String jwtToken) async {
-      await storage.write(key: 'jwt_token', value: jwtToken);
-    }
 
     return SizedBox(
       width: inputFieldWidth,
       height: buttonHeight,
       child: ElevatedButton(
         onPressed: () async {
-          final jwtToken = await _login(context);
+          await _login(context);
           
           await fetchData();
-          await _storeToken(jwtToken!);
-
-          // Store the JWT token securely (you can use a secure storage library)
-
-          // Navigate to the dashboard or another screen
         },
         child: Text(
           'Login',
@@ -321,19 +313,15 @@ class LoginButton extends StatelessWidget {
         final data = json.decode(response.body);
         // print(data);
         String token = data['access_token'];
-        print (token);
+        // print (token);
         storeAuthToken(token);
-        String token_refresh = data['refersh_token'];
+
         String user = data['user']["username"];
-        // print(user);
         String email = data['user']["email"];
-        // print(email);
         String fname = data['user']["firstname"];
-        // print(fname);
         String lname = data['user']["lastname"];
         String role = data['user']['role'];
 
-        
         await storeData('username', user.toString());
         await storeData('email', email.toString());
         await storeData('firstname', fname.toString());
@@ -343,7 +331,7 @@ class LoginButton extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Login Successful'),
           backgroundColor: Colors.green, 
-          duration: Duration(seconds: 2),),
+          duration: Duration(seconds: 4),),
         );
         
         Get.offAllNamed('/dashboard');
@@ -354,9 +342,9 @@ class LoginButton extends StatelessWidget {
         // Get.find().addUser(user,email,fname,lname,'role');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login failed: Invalid Username or Password'),
+          const SnackBar(content: Text('Login failed: Invalid Username or Password'),
           backgroundColor: Colors.red, 
-          duration: Duration(seconds: 2),
+          duration: Duration(seconds: 3),
           ),
           
           
@@ -370,6 +358,7 @@ class LoginButton extends StatelessWidget {
       return null;
     }
   }
+
 }
 
 Future<void> fetchData() async {
