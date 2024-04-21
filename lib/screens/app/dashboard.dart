@@ -1,4 +1,11 @@
 import 'package:PAVF/component/drawer.dart';
+import 'package:PAVF/values/real/nitrogen.dart';
+
+import 'package:PAVF/values/real/phosphorous.dart';
+import 'package:PAVF/values/real/potassium.dart';
+import 'package:PAVF/values/real/soil_moisture.dart';
+import 'package:PAVF/values/real/soilec.dart';
+import 'package:PAVF/values/real/temperature.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,8 +14,6 @@ import 'package:localstorage/localstorage.dart';
 import 'package:PAVF/control/control.dart';
 
 import 'package:PAVF/screens/device/add_device.dart';
-
-import 'package:PAVF/values/realtime_value.dart';
 
 final localStorage = LocalStorage('app_data.json');
 
@@ -70,7 +75,6 @@ class Dashboard extends StatelessWidget {
     );
   }
 
- 
   Widget _buildAppBarBackground() {
     return Container(
       decoration: BoxDecoration(
@@ -176,31 +180,31 @@ class Dashboard extends StatelessWidget {
         {
           "title": "Soil Moisture",
           "description": "Light value of the shelf.",
-          "navigationPage": realTime(),
+          "navigationPage": SoilMoistureValue(),
         },
         {
           "title": "Soil Temp",
           "description": "Temperature value of the shelf.",
-          "navigationPage": realTime(),
+          "navigationPage": TemperatureValue(),
         },
       ],
       [
         {
           "title": "Soil EC",
           "description": "Light Control of the shelf.",
-          "navigationPage": realTime(),
+          "navigationPage": SoilEcValue(),
         },
         {
           "title": "Soil Nitrogen",
           "description": "Temperature Control of the shelf.",
-          "navigationPage": realTime(),
+          "navigationPage": Nitrogenvalue(),
         },
       ],
       [
         {
           "title": "Soil Phosphorus",
           "description": "Moisture Control of the shelf.",
-          "navigationPage": realTime(),
+          "navigationPage": Phosphorusvalue(),
         },
         {
           "title": "Soil Potassium",
