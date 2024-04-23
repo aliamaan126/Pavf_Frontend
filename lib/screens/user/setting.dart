@@ -1,4 +1,5 @@
 import 'package:PAVF/component/drawer.dart';
+import 'package:PAVF/screens/user/updatepass.dart';
 import 'package:flutter/material.dart';
 import 'package:PAVF/screens/user/profile.dart';
 
@@ -41,6 +42,13 @@ class Settings extends StatelessWidget {
                       }),
                       _buildRow("Terms and Policies", () {
                         print("Terms and Policies tapped");
+                      }),
+                      _buildRow("Change Password", () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => UpdatePass()),
+                        );
+                        print("Change Password tapped");
                       }),
                       _buildRow("About", () {
                         print("About tapped");

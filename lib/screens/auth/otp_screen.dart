@@ -6,9 +6,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Otp extends StatelessWidget {
-  Otp({super.key});
-  final TextEditingController otpController = TextEditingController();
-
+  Otp({Key? key});
+  final List<TextEditingController> otpControllers =
+      List.generate(4, (index) => TextEditingController());
+  final List<FocusNode> focusNodes = List.generate(4, (index) => FocusNode());
 
   @override
   Widget build(BuildContext context) {
@@ -16,18 +17,18 @@ class Otp extends StatelessWidget {
       backgroundColor: myBackground,
       body: SafeArea(
         child: Stack(
-        children: [
-          BackgroundImage(),
-          CenteredContent(
-            otpController: otpController,
-          ),
-        ],
-      ),
+          children: [
+            BackgroundImage(),
+            CenteredContent(
+              otpControllers: otpControllers,
+              focusNodes: focusNodes,
+            ),
+          ],
+        ),
       ),
     );
   }
 }
-
 
 class BackgroundImage extends StatelessWidget {
   @override
@@ -57,12 +58,15 @@ class BackgroundImage extends StatelessWidget {
 }
 
 class CenteredContent extends StatelessWidget {
-  final TextEditingController otpController;
+  final List<TextEditingController> otpControllers;
+  final List<FocusNode> focusNodes;
 
   CenteredContent({
-    required this.otpController,
+    required this.otpControllers,
+    required this.focusNodes,
   });
 
+  @override
   Widget build(BuildContext context) {
     return Center(
       child: SingleChildScrollView(
@@ -72,13 +76,14 @@ class CenteredContent extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 50), // Add space at the top
+              SizedBox(height: 50),
               CircleAvatarWidget(),
               SizedBox(height: 20),
               fpText(),
               SizedBox(height: 20),
               OtpForm(
-                otpController: otpController,
+                otpControllers: otpControllers,
+                focusNodes: focusNodes,
               ),
             ],
           ),
@@ -113,20 +118,35 @@ class fpText extends StatelessWidget {
 }
 
 class OtpForm extends StatelessWidget {
-  
-  final TextEditingController otpController;
+  final List<TextEditingController> otpControllers;
+  final List<FocusNode> focusNodes;
 
   OtpForm({
-    required this.otpController,
+    required this.otpControllers,
+    required this.focusNodes,
   });
 
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        InputField(hintText: 'OTP', controller: otpController),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            for (int i = 0; i < 4; i++)
+              InputField(
+                hintText: 'Digit ${i + 1}',
+                controller: otpControllers[i],
+                focusNode: focusNodes[i],
+                nextFocusNode: i < 3 ? focusNodes[i + 1] : null,
+                prevFocusNode: i > 0 ? focusNodes[i - 1] : null,
+              ),
+          ],
+        ),
         SizedBox(height: 20),
-        SizedBox(height: 10),
-        LoginButton(otpController: otpController,),
+        LoginButton(
+          otpControllers: otpControllers,
+        ),
         SizedBox(height: 10),
       ],
     );
@@ -134,43 +154,67 @@ class OtpForm extends StatelessWidget {
 }
 
 class InputField extends StatelessWidget {
-  final String hintText;
-  final bool isPassword;
-
   final TextEditingController controller;
+  final String hintText;
+  final FocusNode focusNode;
+  final FocusNode? nextFocusNode;
+  final FocusNode? prevFocusNode;
 
   InputField({
-    required this.hintText,
-    this.isPassword = false,
     required this.controller,
+    required this.hintText,
+    required this.focusNode,
+    this.nextFocusNode,
+    this.prevFocusNode,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
-      child: TextField(
-        controller: controller,
-        style: TextStyle(color: Colors.black),
-        obscureText: isPassword,
-        decoration: InputDecoration(
-          suffixIcon: Icon(
-            Icons.star,
-            size: 14,
+      width: 50,
+      height: 50,
+      margin: EdgeInsets.symmetric(horizontal: 5),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 4,
+            offset: Offset(0, 2),
           ),
-          suffixIconColor: Colors.white,
-          suffixStyle: TextStyle(color: Colors.white),
-          fillColor: Color(0xff9CF2Bd).withOpacity(0.5),
-          filled: true,
-          hintText: hintText,
-          hintStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
+        ],
+      ),
+      child: Center(
+        child: TextField(
+          controller: controller,
+          focusNode: focusNode,
+          textAlign: TextAlign.center,
+          keyboardType: TextInputType.number,
+          maxLength: 1,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          decoration: InputDecoration(
+            counterText: '',
+            border: InputBorder.none,
+            hintText: hintText,
+            hintStyle: TextStyle(
+              color: Colors.grey,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(2),
-            borderSide: BorderSide.none,
-          ),
+          onChanged: (value) {
+            if (value.isNotEmpty) {
+              if (nextFocusNode != null && value.length == 1) {
+                nextFocusNode!.requestFocus();
+              }
+            } else {
+              if (prevFocusNode != null) {
+                prevFocusNode!.requestFocus();
+              }
+            }
+          },
         ),
       ),
     );
@@ -178,12 +222,13 @@ class InputField extends StatelessWidget {
 }
 
 class LoginButton extends StatelessWidget {
-  
-  final TextEditingController otpController;
+  final List<TextEditingController> otpControllers;
+
   LoginButton({
-    required this.otpController,
+    required this.otpControllers,
   });
 
+  @override
   Widget build(BuildContext context) {
     final inputFieldWidth = MediaQuery.of(context).size.width - 40;
     final buttonHeight = 50.0;
@@ -193,7 +238,7 @@ class LoginButton extends StatelessWidget {
       height: buttonHeight,
       child: ElevatedButton(
         onPressed: () async {
-          await _otpVerification(context,otpController);
+          // Call your verification function here
         },
         child: Text(
           'Confirm',
@@ -213,58 +258,6 @@ class LoginButton extends StatelessWidget {
     );
   }
 }
-
-Future<String?> _otpVerification(BuildContext context, TextEditingController otpController) async {
-
-
-    final otpCont = otpController.text;
-    // Add your API endpoint URL here
-    var args = Get.arguments;
-    int otp = args['otp'];
-    String email = args['email'];
-    if (otpCont == otp.toString())
-    {  
-      final apiUrl = '$server/auth/confirm-otp';
-
-      try {
-        final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({"otp_success":"success","email": email}),
-      );
-
-      // Check the response status code
-      if (response.statusCode == 201) {
-        // Email sent successfully
-        final data = json.decode(response.body);
-        String reset_token = data['reset_token'];
-        String emailRcv = data['email'];
-
-        // Navigate to resetpass screen
-        Get.toNamed('/resetPass',arguments: {'reset_token': reset_token, 'email': emailRcv});
-      }        
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to send email: $e'),
-          backgroundColor: Color.fromARGB(255, 232, 6, 6),
-          duration: Duration(seconds: 4),
-        ),
-      );
-        return null;
-      }
-    }
-    else{
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Incorrect OTP entered Please try Again'),
-            backgroundColor: Color.fromARGB(255, 250, 3, 3),
-            duration: Duration(seconds: 4),
-          ),
-        );
-    }
-  }
-
 
 String getImagePath(String imageName) {
   return 'assets/$imageName';
