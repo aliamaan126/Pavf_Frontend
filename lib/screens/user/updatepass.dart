@@ -15,14 +15,19 @@ void main() {
 }
 
 class UpdatePass extends StatelessWidget {
+  final TextEditingController currentPasswordController =
+      TextEditingController();
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController confirmNewPasswordController =
+      TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: SubHeader(heading: "Update Password"),
-      drawer: buildDrawer(
-          context), // Call the buildDrawer function from drawer.dart
+      drawer: buildDrawer(context),
       body: Container(
         decoration: BoxDecoration(
           color: Color(0xFFC9E9C9),
@@ -35,11 +40,10 @@ class UpdatePass extends StatelessWidget {
                 SizedBox(height: 20),
                 Container(
                   width: screenWidth * 0.9,
-                  height: screenWidth * 1.5, // Adjust width as needed
-                  constraints:
-                      BoxConstraints(maxWidth: 500), // Max width of the card
+                  height: screenWidth * 1.4,
+                  constraints: BoxConstraints(maxWidth: 500),
                   child: Card(
-                    elevation: 5, // Add elevation for a shadow effect
+                    elevation: 5,
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Column(
@@ -48,10 +52,12 @@ class UpdatePass extends StatelessWidget {
                           SizedBox(height: 20),
                           CircleAvatar(
                             radius: 70,
-                            backgroundImage: AssetImage('assets/profile.png'), // Change the image path accordingly
+                            backgroundImage:
+                                AssetImage('assets/avatar_image.png'),
                           ),
                           SizedBox(height: 20),
                           TextFormField(
+                            controller: currentPasswordController,
                             decoration: InputDecoration(
                               labelText: 'Current Password',
                               border: OutlineInputBorder(),
@@ -61,6 +67,7 @@ class UpdatePass extends StatelessWidget {
                           ),
                           SizedBox(height: 20),
                           TextFormField(
+                            controller: newPasswordController,
                             decoration: InputDecoration(
                               labelText: 'New Password',
                               border: OutlineInputBorder(),
@@ -70,6 +77,7 @@ class UpdatePass extends StatelessWidget {
                           ),
                           SizedBox(height: 20),
                           TextFormField(
+                            controller: confirmNewPasswordController,
                             decoration: InputDecoration(
                               labelText: 'Confirm New Password',
                               border: OutlineInputBorder(),
@@ -79,9 +87,15 @@ class UpdatePass extends StatelessWidget {
                           ),
                           SizedBox(height: 20),
                           ElevatedButton(
-                            onPressed: () async {
-
-                              // await updatePass(context, currentPasswordController, passwordController, confirmPasswordController)
+                            onPressed: () {
+                              // Implement password change functionality
+                              print("Change Password tapped");
+                              String currentPassword =
+                                  currentPasswordController.text;
+                              String newPassword = newPasswordController.text;
+                              String confirmNewPassword =
+                                  confirmNewPasswordController.text;
+                              // You can use these strings to perform password validation or update logic
                             },
                             child: Text(
                               'Change Password',
@@ -131,45 +145,43 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
 
+Future<String?> updatePass(
+    BuildContext context,
+    TextEditingController currentPasswordController,
+    TextEditingController passwordController,
+    TextEditingController confirmPasswordController) async {
+  final currentPassword = currentPasswordController;
+  final password = passwordController.text;
+  final confirmPassword = confirmPasswordController.text;
 
+  // Add your API endpoint URL here
+  const apiUrl = '$server/profile/password/update';
+  final token = await _secureStorage.read(key: 'auth_token');
 
+  try {
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {'Authorization': 'bearer $token'},
+      body: json.encode({
+        'currentPassword': currentPassword,
+        'newPassword': password,
+        'password_confirmation': confirmPassword,
+      }),
+    );
 
-
-Future<String?> updatePass (BuildContext context, TextEditingController currentPasswordController,TextEditingController passwordController, TextEditingController confirmPasswordController) async {
-    
-    final currentPassword = currentPasswordController;
-    final password = passwordController.text;
-    final confirmPassword = confirmPasswordController.text;
-
-  
-
-    // Add your API endpoint URL here
-    const apiUrl = '$server/profile/password/update';
-    final token = await _secureStorage.read(key: 'auth_token');
-
-    try {
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {'Authorization': 'bearer $token'},
-        body: json.encode({
-          'currentPassword': currentPassword,
-          'newPassword': password,
-          'password_confirmation': confirmPassword,
-        }),
-      );
-
-      if (response.statusCode == 201) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Password has successfully been updated'),
-          backgroundColor: Color.fromARGB(255, 26, 227, 42), 
-          duration: Duration(seconds: 3),
-          ),         
-        );
-      }
-    } catch (e) {
+    if (response.statusCode == 201) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Update failed: $e')),
+        const SnackBar(
+          content: Text('Password has successfully been updated'),
+          backgroundColor: Color.fromARGB(255, 26, 227, 42),
+          duration: Duration(seconds: 3),
+        ),
       );
-      return null;
     }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Update failed: $e')),
+    );
+    return null;
   }
+}
