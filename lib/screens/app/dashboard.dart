@@ -40,8 +40,8 @@ class Dashboard extends StatelessWidget {
               // _buildSpace(),
               // _buildLightRow(),
               // _buildSpace(),
-              _buildVisualRecording(),
-              _buildVideoBox(context),
+              // _buildVisualRecording(),
+              // _buildVideoBox(context),
               _buildMetricRows(context),
               _buildRecommendationSection(context),
             ],
@@ -309,7 +309,7 @@ class Dashboard extends StatelessWidget {
         width: MediaQuery.of(context).size.width * 0.46, //width
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: Colors.white,
+          color: Color.fromARGB(255, 201, 233, 201),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
@@ -335,7 +335,7 @@ class Dashboard extends StatelessWidget {
               description,
               style: TextStyle(
                 color: Colors.grey[600],
-                fontSize: 14,
+                fontSize: 12,
               ),
             ),
             Spacer(),
@@ -370,17 +370,8 @@ class Dashboard extends StatelessWidget {
         height: 150,
         width: double.infinity, // For responsive
         decoration: BoxDecoration(
-          color: Color(
-              0xFFC9E9C9), // Set the background color to C9E9C9 without opacity
+          color: Color.fromARGB(255, 201, 233, 201), // Set the background color to C9E9C9 without opacity
           borderRadius: BorderRadius.circular(10),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Colors.green.withOpacity(0.5),
-              Color(0xFF3FA956), // Removed opacity
-            ],
-          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -411,17 +402,17 @@ class Dashboard extends StatelessWidget {
                 width: 150,
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 255, 255, 255),
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(30),
                   border: Border.all(
                     color: const Color.fromARGB(255, 255, 253, 253),
-                    width: 1.0,
+                    width: 2.0,
                   ),
                 ),
-                child: Center(
+                child: const Center(
                   child: Text(
                     "Bind the device",
                     style: TextStyle(
-                      color: Color.fromARGB(255, 153, 211, 7),
+                      color: Color.fromARGB(255, 40, 176, 6),
                       fontSize: 16,
                     ),
                   ),

@@ -1,3 +1,4 @@
+import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:kdgaugeview/kdgaugeview.dart';
@@ -6,6 +7,8 @@ import 'package:PAVF/screens/app/dashboard.dart';
 import 'package:PAVF/screens/user/setting.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:PAVF/component/drawer.dart';
+
 
 // Define global variables for speeds
 double temperatureSpeed = double.parse(retrieveData('temp'));
@@ -108,76 +111,7 @@ class _View1ScreenState extends State<View1Screen> {
           _scaffoldKey.currentState?.openDrawer();
         },
       ),
-      drawer: Drawer(
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Colors.lightGreen, Colors.white],
-            ),
-          ),
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              DrawerHeader(
-                child: Text(
-                  'Menu',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: Icon(Icons.home),
-                title: Text('Home'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Dashboard()),
-                  );
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.notifications),
-                title: Text('Notifications'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: Icon(Icons.settings),
-                title: Text('Setting'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Settings()),
-                  );
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.person),
-                title: Text('Personal'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: Icon(Icons.security),
-                title: Text('Security'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: Icon(Icons.logout),
-                title: Text('Logout'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Dashboard()),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
+      drawer: buildDrawer(context),
       body: LayoutBuilder(
         builder: (context, constraints) {
           bool isSmallScreen = constraints.maxWidth < 600;
@@ -548,14 +482,5 @@ class _View1ScreenState extends State<View1Screen> {
 
 
 
-Future<void> storeData(String key, dynamic value) async {
-  await localStorage.ready;
-  localStorage.setItem(key, value);
-}
-
-// Retrieve data
-dynamic retrieveData(String key) {
-  return localStorage.getItem(key);
-}
 
 

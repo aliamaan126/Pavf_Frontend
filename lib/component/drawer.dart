@@ -11,7 +11,7 @@ Widget _buildDrawerItem({
   required IconData icon,
   required String text,
   required VoidCallback onTap,
-  double iconSize = 24.0,
+  double iconSize = 28.0,
   double textSize = 16.0,
 }) {
   return ListTile(
@@ -32,24 +32,38 @@ Widget _buildDrawerItem({
 Widget buildDrawer(BuildContext context) {
   return Drawer(
     child: Container(
-      color: Color(0xFFC7F2D8), // Set the background color of the list body
+      color: const Color(0xFFC7F2D8), // Set the background color of the list body
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          UserAccountsDrawerHeader(
-            currentAccountPicture: CircleAvatar(
-              backgroundImage: AssetImage(
-                'assets/images/5.png', // Provide the correct asset path directly
+          SizedBox(
+            height: 220, // Specify the desired height of the UserAccountsDrawerHeader
+            child: UserAccountsDrawerHeader(
+              decoration: const BoxDecoration(
+                color: Colors.black87,
+              ),
+              currentAccountPicture: const Padding(
+                padding: EdgeInsets.only(left: 0,top: 5),
+                child: CircleAvatar(
+                  radius: 800,
+                  backgroundImage: AssetImage('assets/profile.png'),
+                ),
+              ),
+            accountEmail: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5), // Add vertical padding
+              child: Text(
+                retrieveData('email'),
+                style: const TextStyle(fontSize: 16.0, color: Colors.white),
               ),
             ),
-            accountEmail: Text('jane.doe@example.com'),
-            accountName: Text(
-              'Jane Doe',
-              style: TextStyle(fontSize: 24.0),
+            accountName: Padding(
+              padding: const EdgeInsets.only(top: 25), // Add bottom padding
+              child: Text(
+                retrieveData('username'),
+                style: const TextStyle(fontSize: 20.0, color: Colors.white),
+              ),
             ),
-            decoration: BoxDecoration(
-              color: Colors.black87,
-            ),
+          ),
           ),
           _buildDrawerItem(
             icon: Icons.home,
@@ -69,7 +83,7 @@ Widget buildDrawer(BuildContext context) {
           _buildDrawerItem(
             icon: Icons.person,
             text: 'Profile',
-            onTap: () => Get.to(() => Profile()),
+            onTap: () => Get.to(() => const Profile()),
           ),
           _buildDrawerItem(
             icon: Icons.logout,

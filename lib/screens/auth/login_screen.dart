@@ -271,7 +271,7 @@ class LoginButton extends StatelessWidget {
         onPressed: () async {
           await _login(context);
           
-          await fetchData();
+          // await fetchData();
         },
         child: Text(
           'Login',

@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:io';
 
 import 'package:PAVF/constants/url.dart';
 import 'package:PAVF/screens/app/local_storage.dart';
@@ -72,14 +72,18 @@ class SplashScreenContent extends StatelessWidget {
         future: _checkTokenExists(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const Center(
+             child: CircularProgressIndicator(),
+             );
           } else {
             if (snapshot.data == true) {
               return FutureBuilder<void>(
                 future: _fetchUserProfile(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const Center(
+                    child: CircularProgressIndicator(),
+                    );
                   } else {
                     return Dashboard();
                   }

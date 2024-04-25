@@ -1,8 +1,14 @@
+import 'dart:io';
+import 'package:PAVF/constants/url.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart'; // Import image_picker package
 import 'package:PAVF/constants/colors.dart';
 import 'package:PAVF/component/drawer.dart';
 import 'package:PAVF/screens/app/local_storage.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
 
@@ -18,6 +24,7 @@ class _ProfileState extends State<Profile> {
   late TextEditingController _roleController;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  File? _profileImage = File(retrieveData('file')); // Variable to store the selected image
 
   @override
   void initState() {
@@ -71,24 +78,38 @@ class _ProfileState extends State<Profile> {
               Positioned(
                 left: 20,
                 top: 100,
-                child: CircleAvatar(
-                  backgroundImage: AssetImage('assets/profile_pic.png'),
-                  radius: 50,
-                  backgroundColor: Colors.white,
-                  child: Container(
-                    alignment: Alignment(0, 0),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromARGB(255, 201, 192, 192)
-                              .withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 5,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: _profileImage != null
+                          ? FileImage(File(retrieveData('file')))
+                          : AssetImage('assets/profile.png')
+                              as ImageProvider,
+                      radius: 50,
+                      backgroundColor: Colors.white,
+                      child: Container(
+                        alignment: Alignment(0, 0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                    if (_isEditing)
+                      Positioned(
+                        child: GestureDetector(
+                          onTap: () {
+                            _getImage();
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 25,
+                            child: Icon(Icons.edit_document),
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ],
@@ -130,7 +151,8 @@ class _ProfileState extends State<Profile> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      await _updateProfile(context, _firstNameController, _lastNameController,  _profileImage);
                       setState(() {
                         _isEditing = false;
                       });
@@ -149,6 +171,7 @@ class _ProfileState extends State<Profile> {
                     onPressed: () {
                       setState(() {
                         _isEditing = false;
+                        // Reset changes or handle cancel action
                       });
                     },
                     style: ElevatedButton.styleFrom(
@@ -180,18 +203,120 @@ class _ProfileState extends State<Profile> {
 
   ListTile _buildListTile(
       IconData icon, String title, TextEditingController controller) {
+    // Check if the title is 'Username' or 'Email'
+    bool canEdit = title != 'Username' && title != 'Email'&& title != 'Role' ;
+
     return ListTile(
       title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
-      subtitle: _isEditing
+      subtitle: canEdit &&
+              _isEditing // Check if editing is allowed and is currently in editing mode
           ? TextField(controller: controller)
           : Text(controller.text),
       leading: Icon(icon),
     );
   }
+
+  // Function to pick image from gallery
+  Future<void> _getImage() async {
+    final ImagePicker _picker = ImagePicker();
+
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      File selectedImage = File(image.path);
+
+      int fileSizeInBytes = await selectedImage.length();
+      int fileSizeInKB = fileSizeInBytes ~/ 1024;
+
+      if (fileSizeInKB >= 1 && fileSizeInKB <= 200) {
+        setState(() {
+          _profileImage = selectedImage;
+        });
+        print('Image selected: ${selectedImage.path}');
+      } else {
+        // Reset the profile image and show the error message
+        setState(() {
+          _profileImage = null;
+        });
+        final snackBar = SnackBar(
+          content: Text('Image size must be between 1KB and 200KB'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        print('Image size is not within the allowed range');
+      }
+    }
+  }
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: Profile(),
-  ));
+Future<String?> _updateProfile(
+    BuildContext context,
+    TextEditingController firstname,
+    TextEditingController lastname,
+    File? profileImage,
+) async {
+  final Fname = firstname.text;
+  final Lname = lastname.text;
+
+  
+
+  // Add your API endpoint URL here
+  final apiUrl = '$server/profile/update';
+  
+
+  try {
+    // Create a multipart request
+    var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
+    final token = await _secureStorage.read(key: 'auth_token');
+    request.headers['Authorization'] = 'bearer $token';
+
+    // Add form fields to the request
+    request.fields['firstname'] = Fname;
+    request.fields['lastname'] = Lname;
+    if (profileImage != null) {
+      var fileStream = http.ByteStream(profileImage.openRead());
+      var length = await profileImage.length();
+      var multipartFile = http.MultipartFile(
+        'user_image',
+        fileStream,
+        length,
+        filename: profileImage.path.split('/').last,
+      );
+      request.files.add(multipartFile);
+    }
+
+    // Send the request and get the response
+    var streamedResponse = await request.send();
+
+    // Check the response status code
+    if (streamedResponse.statusCode == 202) {
+
+      await storeData('firstname', Fname);
+      await storeData('lastname', Lname);
+
+      final storage = '$serverLocal'+retrieveData("username")+".jpg";
+      await retriveFile(storage, retrieveData("username")+".jpg");
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Profile Successfully Updated'),
+          backgroundColor: Color.fromARGB(255, 26, 227, 42),
+          duration: Duration(seconds: 3),
+        ),
+      );
+    } else {
+      // Handle other status codes if needed
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to update profile: ${streamedResponse.reasonPhrase}'),
+        ),
+      );
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Update failed: $e'),
+      ),
+    );
+    return null;
+  }
 }

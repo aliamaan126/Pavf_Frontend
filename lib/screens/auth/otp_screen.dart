@@ -135,7 +135,7 @@ class OtpForm extends StatelessWidget {
           children: [
             for (int i = 0; i < 4; i++)
               InputField(
-                hintText: 'Digit ${i + 1}',
+                hintText: '',
                 controller: otpControllers[i],
                 focusNode: focusNodes[i],
                 nextFocusNode: i < 3 ? focusNodes[i + 1] : null,
@@ -233,12 +233,25 @@ class LoginButton extends StatelessWidget {
     final inputFieldWidth = MediaQuery.of(context).size.width - 40;
     final buttonHeight = 50.0;
 
+    // Function to concatenate OTP digits and return as a string
+    String getOtp() {
+      String otp = '';
+      for (TextEditingController controller in otpControllers) {
+        otp += controller.text;
+      }
+      return otp;
+    }
+
+    // Storing the OTP in a variable
+    
+
     return SizedBox(
       width: inputFieldWidth,
       height: buttonHeight,
       child: ElevatedButton(
         onPressed: () async {
-          // Call your verification function here
+          String enteredOtp = getOtp();
+          await _otpVerification(context,enteredOtp);
         },
         child: Text(
           'Confirm',
@@ -259,6 +272,54 @@ class LoginButton extends StatelessWidget {
   }
 }
 
+Future<String?> _otpVerification(BuildContext context, String otpVal) async {
+
+    var args = Get.arguments;
+    int otp = args['otp'];
+    String email = args['email'];
+    if (otpVal == otp.toString())
+    {  
+      final apiUrl = '$server/auth/confirm-otp';
+
+      try {
+        final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({"otp_success":"success","email": email}),
+      );
+
+      // Check the response status code
+      if (response.statusCode == 201) {
+        // Email sent successfully
+        final data = json.decode(response.body);
+        String reset_token = data['reset_token'];
+        String emailRcv = data['email'];
+
+        // Navigate to resetpass screen
+        Get.toNamed('/resetPass',arguments: {'reset_token': reset_token, 'email': emailRcv});
+      }        
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to send email: $e'),
+          backgroundColor: Color.fromARGB(255, 232, 6, 6),
+          duration: Duration(seconds: 4),
+        ),
+      );
+        return null;
+      }
+    }
+    else{
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Incorrect OTP entered Please try Again'),
+            backgroundColor: Color.fromARGB(255, 250, 3, 3),
+            duration: Duration(seconds: 4),
+          ),
+        );
+    }
+  }
+  
 String getImagePath(String imageName) {
   return 'assets/$imageName';
 }
