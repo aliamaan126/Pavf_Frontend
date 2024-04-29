@@ -24,7 +24,9 @@ class _ProfileState extends State<Profile> {
   late TextEditingController _roleController;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  File? _profileImage = File(retrieveData('file')); // Variable to store the selected image
+  File? _profileImage = File(retrieveData('file'));
+  String? imageExist = retrieveData('image') ;
+
 
   @override
   void initState() {
@@ -51,6 +53,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    print(imageExist);
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: myBackground,
@@ -82,10 +85,10 @@ class _ProfileState extends State<Profile> {
                   alignment: Alignment.center,
                   children: [
                     CircleAvatar(
-                      backgroundImage: _profileImage != null
-                          ? FileImage(File(retrieveData('file')))
-                          : AssetImage('assets/profile.png')
-                              as ImageProvider,
+                      backgroundImage: imageExist!= ""
+                      ?NetworkImage(userImageDir+retrieveData("image")): 
+                      AssetImage('assets/profile.png')
+                              as ImageProvider, 
                       radius: 50,
                       backgroundColor: Colors.white,
                       child: Container(
@@ -292,9 +295,12 @@ Future<String?> _updateProfile(
 
       await storeData('firstname', Fname);
       await storeData('lastname', Lname);
+      
+      String userProfile = retrieveData("image");
 
-      final storage = '$serverLocal'+retrieveData("username")+".jpg";
-      await retriveFile(storage, retrieveData("username")+".jpg");
+      final storage = userImageDir+userProfile;
+      
+      await retriveFile(storage, userProfile);
       
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

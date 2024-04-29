@@ -1,112 +1,99 @@
-import 'package:PAVF/screens/device/add_device.dart';
-import 'package:flutter/material.dart';
-
+import 'package:PAVF/screens/app/dashboard.dart';
 import 'package:PAVF/screens/device/device_Setup.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+// Example JSON response containing an array of items
+final jsonResponse = {
+  "items": [
+    {"id": 1, "name": "Shelf 01"},
+    {"id": 2, "name": "Shelf 02"},
+    // Add more items as needed
+  ]
+};
 
 void main() {
   runApp(MaterialApp(
-    home: shelf(),
+    home: Shelf(),
   ));
 }
 
-class shelf extends StatelessWidget {
+class Shelf extends StatelessWidget {
+  const Shelf({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
+    List<dynamic> items = jsonResponse['items']!; // Extract array of items from JSON response
+
     return Scaffold(
-      appBar: SubHeader(heading: "Shelfs"),
+      appBar: const SubHeader(heading: "Shelf"),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Color(0xFFC9E9C9),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: SizedBox(
-                  width: screenWidth * 9, // Adjust width as needed
-                  height: screenHeight * 0.9, // Adjust height as needed
-                  child: ListView(
-                    padding: EdgeInsets.symmetric(horizontal: 22),
-                    children: [
-                      _buildRow("Add device", "", () {
-                        // onTap action for Personal Information
-                        // Navigate to AddDevice screen
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DeviceSetup()),
-                        );
-
-                        print("Personal Information tapped");
-                      }),
-                      _buildRow("Add device", "    ", () {
-                        // onTap action for Personal Information
-                        // Navigate to AddDevice screen
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DeviceSetup()),
-                        );
-
-                        print("Personal Information tapped");
-                      }),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
+        child: ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            final item = items[index];
+            return CardItem(
+              itemId: item['id'],
+              itemName: item['name'],
+              onTap: () {
+                // Handle card tap (e.g., navigate to detail page)
+                print('Card tapped: ${item['name']}');
+                // Implement your navigation logic here
+                Get.to(() => Dashboard());
+              },
+            );
+          },
         ),
+        
       ),
     );
   }
+}
 
-  Widget _buildRow(String label, String subtitle, VoidCallback onTap) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10), // Adjust vertical padding
+class CardItem extends StatelessWidget {
+  final int itemId;
+  final String itemName;
+  final VoidCallback onTap;
+
+  CardItem({
+    required this.itemId,
+    required this.itemName,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // Calculate screen width
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return GestureDetector(
+      onTap: onTap,
       child: Container(
-        height: 120, // Adjust height of ListTile
-        decoration: BoxDecoration(
-          color: Color(0xFFF9FAF9), // Set background color to F9FAF9
-          borderRadius: BorderRadius.circular(25),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              offset: Offset(10, 10),
-              blurRadius: 1,
-              spreadRadius: 0.5,
-            ),
-          ],
+        constraints: BoxConstraints(
+          maxWidth: screenWidth, // Set maximum width to screen width
+          minHeight: 110, // Set minimum height to 20 (adjust as needed)
         ),
-        child: ListTile(
-          title: Align(
-            alignment: Alignment.center,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 20, // Increased text size
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF2c2c2c),
-                  ),
-                ),
-                SizedBox(height: 5), // Added SizedBox for spacing
-              ],
+        child: Card(
+          margin: EdgeInsets.all(10),
+          child: Padding(
+            padding: EdgeInsets.only(top: 30,bottom: 20,left: 20),
+            child: Text(
+              itemName,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
-          onTap: onTap,
         ),
       ),
     );
   }
 }
+
 
 class SubHeader extends StatelessWidget implements PreferredSizeWidget {
   final String heading;
@@ -117,19 +104,23 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Color(0xFFC9E9C9),
-      title: Padding(
-        padding: const EdgeInsets.symmetric(
-            horizontal: 50.0), // Adjust padding as needed
-        child: Text(
-          heading,
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
+      leading: IconButton(
+        icon: Icon(Icons.menu), // Specify the icon for the left button (e.g., menu)
+        onPressed: () {
+          // Handle onPressed event for the left button
+          // Implement your logic here
+        },
       ),
-      centerTitle: true, // Center aligns the title horizontally
+      title: Text(
+        heading,
+        style: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        textAlign: TextAlign.center, // Align the text to center
+      ),
+      centerTitle: true, 
     );
   }
 

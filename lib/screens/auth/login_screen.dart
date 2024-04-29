@@ -1,3 +1,5 @@
+// ignore_for_file: body_might_complete_normally_nullable
+
 import 'package:PAVF/constants/url.dart';
 import 'package:PAVF/screens/app/flutter_secure_storage.dart';
 import 'package:PAVF/screens/app/local_storage.dart';
@@ -7,9 +9,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 import 'dart:convert';
-import 'package:PAVF/state_management/custom_storage.dart';
-import 'package:toast/toast.dart';
-
 
 final storage = FlutterSecureStorage();
 final localStorage = LocalStorage('app_data.json');
@@ -269,7 +268,7 @@ class LoginButton extends StatelessWidget {
       height: buttonHeight,
       child: ElevatedButton(
         onPressed: () async {
-          await _login(context);
+          await _login(context,usernameController,passwordController);
           
           // await fetchData();
         },
@@ -291,7 +290,8 @@ class LoginButton extends StatelessWidget {
     );
   }
 
-  Future<String?> _login(BuildContext context) async {
+  Future<String?> _login(BuildContext context,TextEditingController usernameController,
+    TextEditingController passwordController,) async {
     final username = usernameController.text;
     final password = passwordController.text;
 
@@ -301,8 +301,8 @@ class LoginButton extends StatelessWidget {
     try {
       final response = await http.post(
         Uri.parse(apiUrl),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({
+        headers: <String, String>{'Content-Type': 'application/json'},
+        body: json.encode(<String, String>{
           'username': username,
           'password': password,
         }),
@@ -316,17 +316,21 @@ class LoginButton extends StatelessWidget {
         // print (token);
         storeAuthToken(token);
 
-        String user = data['user']["username"];
-        String email = data['user']["email"];
-        String fname = data['user']["firstname"];
-        String lname = data['user']["lastname"];
-        String role = data['user']['role'];
+        String? user = data['user']?['username'];
+        String? email = data['user']?['email'];
+        String? fname = data['user']?['firstname'];
+        String? lname = data['user']?['lastname'];
+        String? role = data['user']?['role'];
+        String? image = data['user']?['image'];
+        List<dynamic>? devices = data['user']?['devices'];
 
         await storeData('username', user.toString());
         await storeData('email', email.toString());
         await storeData('firstname', fname.toString());
         await storeData('lastname', lname.toString());
         await storeData('role', role.toString());
+        await storeData('image', image.toString());
+        await storeData('devices', devices.toString());
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Login Successful'),

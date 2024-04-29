@@ -5,7 +5,7 @@
 // const serverLocal = "http://localhost:3000/storage/users/";
 
 const server = "https://pavf-gelj.onrender.com/api/v1";
-const serverLocal = "https://pavf-gelj.onrender.com/storage/users/";
+const userImageDir = "https://pavf-gelj.onrender.com/storage/users/";
 
 
 // const apiUrl = '$server/auth/login';

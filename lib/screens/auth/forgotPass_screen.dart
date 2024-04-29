@@ -212,6 +212,7 @@ class SubmitButton extends StatelessWidget {
   }
 }
 
+ // ignore: body_might_complete_normally_nullable
  Future<String?> _sendEmail(BuildContext context, TextEditingController emailController) async {
     final email = emailController.text;
     final apiUrl = '$server/auth/forgot-password';

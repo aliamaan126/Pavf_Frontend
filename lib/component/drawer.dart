@@ -1,3 +1,5 @@
+import 'package:PAVF/constants/url.dart';
+import 'package:PAVF/screens/device/add_device.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:PAVF/screens/app/notification.dart';
@@ -8,6 +10,7 @@ import 'package:PAVF/screens/app/flutter_secure_storage.dart';
 import 'package:PAVF/screens/app/local_storage.dart';
 
 Widget _buildDrawerItem({
+  
   required IconData icon,
   required String text,
   required VoidCallback onTap,
@@ -30,6 +33,8 @@ Widget _buildDrawerItem({
 }
 
 Widget buildDrawer(BuildContext context) {
+  final imageUrl = retrieveData('image') ?? '';
+
   return Drawer(
     child: Container(
       color: const Color(0xFFC7F2D8), // Set the background color of the list body
@@ -46,7 +51,9 @@ Widget buildDrawer(BuildContext context) {
                 padding: EdgeInsets.only(left: 0,top: 5),
                 child: CircleAvatar(
                   radius: 800,
-                  backgroundImage: AssetImage('assets/profile.png'),
+                  backgroundImage: 
+                      AssetImage('assets/profile.png')
+                              as ImageProvider, 
                 ),
               ),
             accountEmail: Padding(
@@ -71,6 +78,11 @@ Widget buildDrawer(BuildContext context) {
             onTap: () => Get.to(() => Dashboard()),
           ),
           _buildDrawerItem(
+            icon: Icons.device_hub,
+            text: 'Devices',
+            onTap: () => Get.to(() => AddDevice()),
+          ),
+          _buildDrawerItem(
             icon: Icons.notifications,
             text: 'Notifications',
             onTap: () => Get.to(() => NotificationPage()),
@@ -88,13 +100,15 @@ Widget buildDrawer(BuildContext context) {
           _buildDrawerItem(
             icon: Icons.logout,
             text: 'Logout',
-            onTap: () {
-              deleteData('username');
-              deleteData('email');
-              deleteData('firstname');
-              deleteData('lastname');
-              deleteData('slug');
-              deleteToken("auth_token");
+            onTap: () async {
+              await deleteData('username');
+              await deleteData('email');
+              await deleteData('firstname');
+              await deleteData('lastname');
+              await deleteData('slug');
+              await deleteData('image');
+              await deleteData('devices');
+              await deleteToken("auth_token");
               Get.offAllNamed('/login');
             },
           ),

@@ -1,4 +1,5 @@
 import 'package:PAVF/component/drawer.dart';
+import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:PAVF/values/real/nitrogen.dart';
 
 import 'package:PAVF/values/real/phosphorous.dart';
@@ -25,9 +26,15 @@ class Dashboard extends StatelessWidget {
   Dashboard({Key? key}) : super(key: key);
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final String user = "To Agro_Farm";
+  bool shouldDisplayRecommendation(List<dynamic> items) {
+    return items.isEmpty; // Only display if items array is not empty
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<dynamic> items = [];
+    print("image:");
+    print(retrieveData("image"));
     return Scaffold(
       key: _scaffoldKey,
       appBar: _buildAppBar(context),
@@ -43,6 +50,7 @@ class Dashboard extends StatelessWidget {
               // _buildVisualRecording(),
               // _buildVideoBox(context),
               _buildMetricRows(context),
+              if (shouldDisplayRecommendation(items))
               _buildRecommendationSection(context),
             ],
           ),
@@ -393,10 +401,9 @@ class Dashboard extends StatelessWidget {
             ),
             SizedBox(height: 10), // Add space between text and button
             InkWell(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Adddevice()),
-              ),
+              onTap: () {
+                Get.to(() => const AddDevice());
+              },
               child: Container(
                 height: 40,
                 width: 150,

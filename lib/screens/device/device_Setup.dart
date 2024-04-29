@@ -1,7 +1,14 @@
+import 'package:PAVF/constants/url.dart';
 import 'package:flutter/material.dart';
 import 'package:PAVF/screens/device/add_device.dart';
 import 'package:PAVF/screens/device/device_conn.dart'; // Import the AddDevice screen
 import 'package:PAVF/screens/device/wifi_conect.dart';
+import 'package:http/http.dart' as http;
+
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
 void main() {
   runApp(MaterialApp(
@@ -41,8 +48,17 @@ class DeviceSetup extends StatelessWidget {
                                   DeviceConn()), // Navigate to AddDevice screen
                         );
                       }),
-                      SizedBox(height: 40),
-                      _buildRow("onnect Device only", "", () {
+                      SizedBox(height: 20),
+                      _buildRow("Configure Device only", "", () {
+                        // onTap action for Connect and Configure Device
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DeviceConn()), // Navigate to AddDevice screen
+                        );
+                      }),
+                      SizedBox(height: 20),
+                      _buildRow("Connect Device only", "", () {
                         // onTap action for Connect and Configure Device
                         Navigator.push(
                           context,
@@ -51,6 +67,7 @@ class DeviceSetup extends StatelessWidget {
                                   WifiConn()), // Navigate to AddDevice screen
                         );
                       }),
+                      
                     ],
                   ),
                 ),
@@ -126,24 +143,62 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
           // Navigate to the AddDevice screen
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Adddevice()),
+            MaterialPageRoute(builder: (context) => AddDevice()),
           );
         },
         child: Icon(Icons.chevron_left), // Changed icon to "<"
       ),
-      title: Center(
-        child: Text(
+      title: Text(
           heading,
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
+          textAlign: TextAlign.center,
         ),
-      ),
+        centerTitle: true,
     );
   }
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
+}
+
+
+Future<String?> deviceBind(
+    BuildContext context,
+    TextEditingController usernameController,
+    TextEditingController passwordController) async {
+  final username = usernameController.text;
+  final password = passwordController.text;
+
+  // Add your API endpoint URL here
+  const apiUrl = '$server/profile/deviceBind';
+  final token = await _secureStorage.read(key: 'auth_token');
+  try {
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {'Content-Type': 'application/json','Authorization': 'Bearer $token'},
+      body: json.encode({
+        'username': username,
+        'password': password,
+      }),
+    );
+
+    if (response.statusCode == 202) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Device Successfully Binded'),
+          backgroundColor: Color.fromARGB(255, 26, 227, 42),
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Update failed: $e')),
+    );
+    return null;
+  }
 }

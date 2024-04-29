@@ -1,3 +1,5 @@
+import "package:PAVF/screens/device/add_device.dart";
+import "package:PAVF/screens/device/device_Setup.dart";
 import "package:flutter/material.dart";
 import "package:PAVF/screens/app/dashboard.dart";
 import "package:PAVF/screens/auth/forgotPass_screen.dart";
@@ -39,6 +41,14 @@ class RouteGenerator {
     GetPage(
       name: '/dashboard',
       page: () => Dashboard(),
+    ),
+    GetPage(
+      name: '/addDevice',
+      page: () => const AddDevice(),
+    ),
+    GetPage(
+      name: '/deviceSetup',
+      page: () => DeviceSetup(),
     ),
   ];
 

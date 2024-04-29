@@ -1,24 +1,28 @@
+import 'dart:ffi';
 import 'dart:io';
-
+import 'package:PAVF/screens/app/flutter_secure_storage.dart';
+import 'package:get/get.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:PAVF/constants/url.dart';
 import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:PAVF/screens/app/dashboard.dart';
 import 'package:PAVF/screens/auth/login_screen.dart';
+import 'package:PAVF/utils/socket_client.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
 void main() {
-  runApp(Splash());
+  runApp(const Splash());
 }
 
 class Splash extends StatelessWidget {
   const Splash({Key? key}) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,7 +31,7 @@ class Splash extends StatelessWidget {
         children: [
           // Background image
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image:
                     AssetImage('5.png'), // Change to your background image path
@@ -51,7 +55,7 @@ class Splash extends StatelessWidget {
                 ),
               ),
             ),
-            nextScreen: SplashScreenContent(),
+            nextScreen: const SplashScreenContent(),
             splashTransition: SplashTransition.fadeTransition,
             backgroundColor:
                 Colors.transparent, // Set background color to transparent
@@ -81,9 +85,10 @@ class SplashScreenContent extends StatelessWidget {
                 future: _fetchUserProfile(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
+                    socketCLient("http://localhost:3000");
                     return const Center(
                     child: CircularProgressIndicator(),
-                    );
+                    );                   
                   } else {
                     return Dashboard();
                   }
@@ -119,17 +124,32 @@ class SplashScreenContent extends StatelessWidget {
         String? fname = data['user']?['firstname'];
         String? lname = data['user']?['lastname'];
         String? role = data['user']?['role'];
-
+        String? image = data['user']?['image'];
+        List<dynamic>? devices = data['user']?['devices'];
+        
+        print("data obj: $data");
+        print("username: $user");
+        print(image);
         await storeData('username', user.toString());
         await storeData('email', email.toString());
         await storeData('firstname', fname.toString());
         await storeData('lastname', lname.toString());
         await storeData('role', role.toString());
-
+        await storeData('image', image.toString());
+        await storeData('devices', devices.toString());
+        print(retrieveData("devices"));
         // Handle user profile data as needed
       } else {
         // Handle HTTP error response
-        throw Exception('Failed to fetch user profile');
+              await deleteData('username');
+              await deleteData('email');
+              await deleteData('firstname');
+              await deleteData('lastname');
+              await deleteData('slug');
+              await deleteData('image');
+              await deleteData('devices');
+              await deleteToken("auth_token");
+        Get.offAllNamed('/login');
       }
     } catch (e) {
       // Handle exception
@@ -153,11 +173,11 @@ class CenteredContent extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 50), // Add space at the top
+              const SizedBox(height: 50), // Add space at the top
               CircleAvatarWidget(),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               SignUpText(),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -179,7 +199,7 @@ class CircleAvatarWidget extends StatelessWidget {
 class SignUpText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
         Text(
           'PAK AGRO',
@@ -203,4 +223,12 @@ class SignUpText extends StatelessWidget {
       ],
     );
   }
+}
+
+
+void socketCLient(address) {
+  IO.Socket socket = IO.io(address);
+  socket.onConnect((_) {
+    print('connect');
+  });
 }
