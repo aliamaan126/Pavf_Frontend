@@ -190,7 +190,32 @@ class _SoilMoistureValueState extends State<SoilMoistureValue> {
             }
           },
         ),
-        SizedBox(height: 0),
+        SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              width: 70,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.red, // Color representing minimum value
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Center(
+                  child: Text('Min 32', style: TextStyle(color: Colors.white))),
+            ),
+            Container(
+              width: 70,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.green, // Color representing maximum value
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Center(
+                  child: Text('Max 52', style: TextStyle(color: Colors.white))),
+            ),
+          ],
+        ),
         Expanded(
           child: Center(
             child: Container(

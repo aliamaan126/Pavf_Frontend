@@ -153,7 +153,7 @@ class _NitrogenvalueState extends State<Nitrogenvalue> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(height: 50),
+        SizedBox(height: 20),
         ToggleSwitch(
           minWidth: 90.0,
           cornerRadius: 100.0,
@@ -183,7 +183,32 @@ class _NitrogenvalueState extends State<Nitrogenvalue> {
             }
           },
         ),
-        SizedBox(height: 0),
+        SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              width: 70,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.red, // Color representing minimum value
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Center(
+                  child: Text('Min 32', style: TextStyle(color: Colors.white))),
+            ),
+            Container(
+              width: 70,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.green, // Color representing maximum value
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Center(
+                  child: Text('Max 52', style: TextStyle(color: Colors.white))),
+            ),
+          ],
+        ),
         Expanded(
           child: Center(
             child: Container(

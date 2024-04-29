@@ -187,6 +187,44 @@ class _TempgraphState extends State<Tempgraph> {
             }
           },
         ),
+        SizedBox(height: 30), // Add this line
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              width: 70,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.red, // Color representing minimum value
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Center(
+                  child: Text('Min 32', style: TextStyle(color: Colors.white))),
+            ),
+            Container(
+              width: 70,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.green, // Color representing maximum value
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Center(
+                  child: Text('Max 52', style: TextStyle(color: Colors.white))),
+            ),
+          ],
+        ),
+        SizedBox(height: 40), // Add this line
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildIntervalButton('1d'),
+            _buildIntervalButton('3d'),
+            _buildIntervalButton('7d'),
+            _buildIntervalButton('1m'),
+            _buildIntervalButton('1y'),
+          ],
+        ),
+        SizedBox(height: 40), // Add this line
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: SizedBox(
@@ -201,19 +239,6 @@ class _TempgraphState extends State<Tempgraph> {
                   ),
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _buildIntervalButton('1d'),
-                            _buildIntervalButton('3d'),
-                            _buildIntervalButton('7d'),
-                            _buildIntervalButton('1m'),
-                            _buildIntervalButton('1y'),
-                          ],
-                        ),
-                      ),
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
