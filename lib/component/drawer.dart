@@ -109,6 +109,12 @@ Widget buildDrawer(BuildContext context) {
               await deleteData('image');
               await deleteData('devices');
               await deleteToken("auth_token");
+
+              await deleteData('moisture');
+              await deleteData('temperature');
+              await deleteData('conductivity');
+              await deleteToken("pH");
+
               Get.offAllNamed('/login');
             },
           ),

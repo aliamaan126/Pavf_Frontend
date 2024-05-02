@@ -1,3 +1,4 @@
+import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:PAVF/values/graph/graphvalue.dart';
 
 import 'package:PAVF/values/real/potassium.dart';
@@ -44,7 +45,7 @@ class _TemperatureValueState extends State<TemperatureValue> {
 // double temperatureSpeed = double.parse(retrieveData('temp'));
 // double lightSpeed = double.parse(retrieveData('light'));
 // double humiditySpeed  = double.parse(retrieveData('humid'));
-  int speedValue1 = 30;
+  double speedValue1 = retrieveData("temperature")*0.1;
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -156,7 +157,7 @@ class _TemperatureValueState extends State<TemperatureValue> {
     );
   }
 
-  Widget _buildTextScreen(int index, int speedValue) {
+  Widget _buildTextScreen(int index, double speedValue) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

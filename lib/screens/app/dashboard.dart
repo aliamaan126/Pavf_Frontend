@@ -26,13 +26,18 @@ class Dashboard extends StatelessWidget {
   Dashboard({Key? key}) : super(key: key);
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final String user = "To Agro_Farm";
-  bool shouldDisplayRecommendation(List<dynamic> items) {
-    return items.isEmpty; // Only display if items array is not empty
+  bool shouldDisplayRecommendation(String items) {
+    if(items == "")
+    { return false;
+      }
+      else{
+        return true;
+      }
   }
 
   @override
   Widget build(BuildContext context) {
-    List<dynamic> items = [];
+    String items = retrieveData("devices");
     print("image:");
     print(retrieveData("image"));
     return Scaffold(
@@ -402,7 +407,7 @@ class Dashboard extends StatelessWidget {
             SizedBox(height: 10), // Add space between text and button
             InkWell(
               onTap: () {
-                Get.to(() => const AddDevice());
+                Get.to(() =>  AddDevice());
               },
               child: Container(
                 height: 40,

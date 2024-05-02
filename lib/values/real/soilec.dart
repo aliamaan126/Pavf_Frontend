@@ -1,3 +1,4 @@
+import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:PAVF/values/graph/graphvalue.dart';
 import 'package:PAVF/values/graph/soil_Ec.dart';
 import 'package:PAVF/values/real/nitrogen.dart';
@@ -44,7 +45,7 @@ class _SoilEcValueState extends State<SoilEcValue> {
 // double temperatureSpeed = double.parse(retrieveData('temp'));
 // double lightSpeed = double.parse(retrieveData('light'));
 // double humiditySpeed  = double.parse(retrieveData('humid'));
-  int speedValue1 = 30;
+  double speedValue1 = retrieveData("conductivity")*0.01;
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -155,7 +156,7 @@ class _SoilEcValueState extends State<SoilEcValue> {
     );
   }
 
-  Widget _buildTextScreen(int index, int speedValue) {
+  Widget _buildTextScreen(int index, double speedValue) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -223,7 +224,7 @@ class _SoilEcValueState extends State<SoilEcValue> {
               padding: EdgeInsets.all(12),
               child: KdGaugeView(
                 minSpeed: 0,
-                maxSpeed: 100,
+                maxSpeed: 5,
                 speed: speedValue.toDouble(),
                 animate: true,
                 duration: Duration(seconds: 5),

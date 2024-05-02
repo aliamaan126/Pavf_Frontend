@@ -44,7 +44,7 @@ class RouteGenerator {
     ),
     GetPage(
       name: '/addDevice',
-      page: () => const AddDevice(),
+      page: () => AddDevice(),
     ),
     GetPage(
       name: '/deviceSetup',

@@ -1,3 +1,4 @@
+import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:PAVF/values/graph/soil_nitrogen.dart';
 import 'package:PAVF/values/real/phosphorous.dart';
 import 'package:PAVF/values/real/potassium.dart';
@@ -41,7 +42,7 @@ class _NitrogenvalueState extends State<Nitrogenvalue> {
 // double temperatureSpeed = double.parse(retrieveData('temp'));
 // double lightSpeed = double.parse(retrieveData('light'));
 // double humiditySpeed  = double.parse(retrieveData('humid'));
-  int speedValue1 = 30;
+  int speedValue1 = retrieveData("pH");
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,

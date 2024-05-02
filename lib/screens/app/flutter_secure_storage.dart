@@ -1,7 +1,7 @@
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-final storage = FlutterSecureStorage();
+const storage = FlutterSecureStorage();
 
 
 Future<void> storeAuthToken(String authToken) async {

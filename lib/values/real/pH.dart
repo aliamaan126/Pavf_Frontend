@@ -1,9 +1,10 @@
 import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:PAVF/values/graph/graphvalue.dart';
-import 'package:PAVF/values/graph/soil_moisture.dart';
-import 'package:PAVF/values/real/nitrogen.dart';
+import 'package:PAVF/values/real/phosphorous.dart';
+
 import 'package:PAVF/values/real/potassium.dart';
-import 'package:PAVF/values/real/temperature.dart';
+import 'package:PAVF/values/real/soil_moisture.dart';
+import 'package:PAVF/values/real/soilec.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kdgaugeview/kdgaugeview.dart';
@@ -11,24 +12,24 @@ import 'package:toggle_switch/toggle_switch.dart';
 import 'package:PAVF/component/drawer.dart';
 
 // Define the main widget for the real-time screen
-class SoilMoistureValue extends StatefulWidget {
-  SoilMoistureValue({Key? key}) : super(key: key);
+class PhValue extends StatefulWidget {
+  PhValue({Key? key}) : super(key: key);
 
   @override
-  _SoilMoistureValueState createState() => _SoilMoistureValueState();
+  _PhValueState createState() => _PhValueState();
 }
 
-class _SoilMoistureValueState extends State<SoilMoistureValue> {
+class _PhValueState extends State<PhValue> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final String user = "To Agro_Farm";
   final PageController _pageController = PageController();
 
   final List<String> textData = [
-    "Soil Moisture",
+    "PH Value",
   ];
   final List<IconData> iconData = [
-    Icons.thermostat, // Soil Moisture icon
+    Icons.thermostat, // Temperature icon
   ];
   int currentIndex = 0;
   // Global variables for each meter's speed value
@@ -45,7 +46,7 @@ class _SoilMoistureValueState extends State<SoilMoistureValue> {
 // double temperatureSpeed = double.parse(retrieveData('temp'));
 // double lightSpeed = double.parse(retrieveData('light'));
 // double humiditySpeed  = double.parse(retrieveData('humid'));
-  int speedValue1 = retrieveData("moisture");
+  double speedValue1 = retrieveData("pH")*0.1;
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,8 +105,8 @@ class _SoilMoistureValueState extends State<SoilMoistureValue> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    //reverse
-                    MaterialPageRoute(builder: (context) => realTime()),
+                    MaterialPageRoute(
+                        builder: (context) => Phosphorusvalue()),
                   );
                 },
                 child: IconButton(
@@ -131,7 +132,7 @@ class _SoilMoistureValueState extends State<SoilMoistureValue> {
                   Navigator.push(
                     context,
                     //forward move
-                    MaterialPageRoute(builder: (context) => TemperatureValue()),
+                    MaterialPageRoute(builder: (context) => realTime()),
                   );
                 },
                 child: Padding(
@@ -157,7 +158,7 @@ class _SoilMoistureValueState extends State<SoilMoistureValue> {
     );
   }
 
-  Widget _buildTextScreen(int index, int speedValue) {
+  Widget _buildTextScreen(int index, double speedValue) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -181,12 +182,12 @@ class _SoilMoistureValueState extends State<SoilMoistureValue> {
               Navigator.push(
                 context,
                 //graph
-                MaterialPageRoute(builder: (context) => Soilgraph()),
+                MaterialPageRoute(builder: (context) => Tempgraph()),
               );
             } else if (index == 1) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => realTime()),
+                MaterialPageRoute(builder: (context) => PhValue()),
               );
             }
           },
@@ -225,7 +226,7 @@ class _SoilMoistureValueState extends State<SoilMoistureValue> {
               padding: EdgeInsets.all(12),
               child: KdGaugeView(
                 minSpeed: 0,
-                maxSpeed: 100,
+                maxSpeed: 14,
                 speed: speedValue.toDouble(),
                 animate: true,
                 duration: Duration(seconds: 5),
@@ -245,6 +246,6 @@ class _SoilMoistureValueState extends State<SoilMoistureValue> {
 
 void main() {
   runApp(MaterialApp(
-    home: SoilMoistureValue(),
+    home: PhValue(),
   ));
 }

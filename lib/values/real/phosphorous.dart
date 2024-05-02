@@ -1,5 +1,7 @@
+import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:PAVF/values/graph/soilphosporous.dart';
 import 'package:PAVF/values/real/nitrogen.dart';
+import 'package:PAVF/values/real/pH.dart';
 import 'package:PAVF/values/real/potassium.dart';
 
 import 'package:flutter/material.dart';
@@ -43,7 +45,7 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
 // double temperatureSpeed = double.parse(retrieveData('temp'));
 // double lightSpeed = double.parse(retrieveData('light'));
 // double humiditySpeed  = double.parse(retrieveData('humid'));
-  int speedValue1 = 30;
+  int speedValue1 = retrieveData("moisture");
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,7 +93,7 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
 
   Widget _buildBody() {
     return Padding(
-      padding: const EdgeInsets.only(top: 30.0),
+      padding: const EdgeInsets.only(top: 20.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -112,7 +114,7 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
               ),
               SizedBox(width: 20),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Icon(
                   iconData[currentIndex],
                   size: 40,
@@ -128,11 +130,11 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
                   Navigator.push(
                     context,
                     //forward move
-                    MaterialPageRoute(builder: (context) => realTime()),
+                    MaterialPageRoute(builder: (context) => PhValue()),
                   );
                 },
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: IconButton(
                     icon: Icon(Icons.arrow_forward_ios),
                     onPressed: null,

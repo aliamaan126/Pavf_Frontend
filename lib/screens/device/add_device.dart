@@ -1,3 +1,4 @@
+import 'package:PAVF/component/drawer.dart';
 import 'package:PAVF/constants/url.dart';
 import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:PAVF/screens/device/device_Setup.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 // Example JSON response containing an array of items
 final jsonResponse = {
@@ -26,7 +28,6 @@ void main() {
 }
 
 class AddDevice extends StatelessWidget {
-  const AddDevice({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +35,10 @@ class AddDevice extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     List<dynamic> items = jsonResponse['items']!; // Extract array of items from JSON response
-    
-    print(deviceIds);
+
     return Scaffold(
+      key: _scaffoldKey, // Assign the scaffold key to the key property
+      drawer: buildDrawer(context),
       appBar: const SubHeader(heading: "Device"),
       body: Container(
         decoration: const BoxDecoration(
@@ -90,6 +92,7 @@ class AddDevice extends StatelessWidget {
     );
   }
 }
+
 class CardItem extends StatelessWidget {
   final int itemId;
   final String itemName;
@@ -116,7 +119,7 @@ class CardItem extends StatelessWidget {
         child: Card(
           margin: EdgeInsets.all(10),
           child: Padding(
-            padding: EdgeInsets.only(top: 30,bottom: 20,left: 20),
+            padding: EdgeInsets.only(top: 30, bottom: 20, left: 20),
             child: Text(
               itemName,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -127,7 +130,6 @@ class CardItem extends StatelessWidget {
     );
   }
 }
-
 
 class SubHeader extends StatelessWidget implements PreferredSizeWidget {
   final String heading;
@@ -143,6 +145,7 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
         onPressed: () {
           // Handle onPressed event for the left button
           // Implement your logic here
+          _scaffoldKey.currentState?.openDrawer(); // Open the drawer
         },
       ),
       title: Text(
@@ -169,7 +172,3 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
-
-
-
- 

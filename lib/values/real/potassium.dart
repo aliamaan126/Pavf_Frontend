@@ -1,6 +1,7 @@
 import 'package:PAVF/values/graph/graphvalue.dart';
 import 'package:PAVF/values/graph/potassium.dart';
 import 'package:PAVF/values/real/nitrogen.dart';
+import 'package:PAVF/values/real/pH.dart';
 import 'package:PAVF/values/real/phosphorous.dart';
 import 'package:PAVF/values/real/soil_moisture.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class _RealTimeState extends State<realTime> {
 // double temperatureSpeed = double.parse(retrieveData('temp'));
 // double lightSpeed = double.parse(retrieveData('light'));
 // double humiditySpeed  = double.parse(retrieveData('humid'));
-  int speedValue1 = 30;
+  int speedValue1 = 36;
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +176,7 @@ class _RealTimeState extends State<realTime> {
               Navigator.push(
                 context,
                 //graph
-                MaterialPageRoute(builder: (context) => Soilpotassiumgraph()),
+                MaterialPageRoute(builder: (context) => PhValue()),
               );
             } else if (index == 1) {
               Navigator.push(

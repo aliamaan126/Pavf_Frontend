@@ -4,14 +4,10 @@ import 'package:PAVF/constants/url.dart';
 import 'package:PAVF/screens/app/flutter_secure_storage.dart';
 import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:localstorage/localstorage.dart';
 import 'dart:convert';
 
-final storage = FlutterSecureStorage();
-final localStorage = LocalStorage('app_data.json');
 
 
 class LoginScreen extends StatelessWidget {
@@ -268,6 +264,7 @@ class LoginButton extends StatelessWidget {
       height: buttonHeight,
       child: ElevatedButton(
         onPressed: () async {
+          await fetchLatestSoilData();
           await _login(context,usernameController,passwordController);
           
           // await fetchData();
@@ -365,45 +362,63 @@ class LoginButton extends StatelessWidget {
 
 }
 
-Future<void> fetchData() async {
+
+Future<void> fetchLatestSoilData() async {
   try {
-    // Make the HTTP GET request
-    final response = await http.get(Uri.parse('$server/device/data/01/fetch'));
+    final url = '$server/arduino/fetch-Data';
 
-    // Check if the request was successful (status code 200)
+    final response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{'Content-Type': 'application/json'},
+      body: json.encode(<String, String>{
+        'deviceID': "3d2c5777-25a4-455a-b8f3-fa0e135cc12b", // Ensure deviceID is defined or passed as a parameter
+      }),
+    );
+
     if (response.statusCode == 200) {
-      // Parse the JSON response
-      final data = json.decode(response.body);
+      final jsonData = json.decode(response.body);
 
-      // print('data:');
-      // print(data);
+      // Access the 'device' object from the JSON response
+      final device = jsonData['device'];
 
-      // print('response:');
-      // print(response.body);
+      // Access the 'shelfs' array under the 'device' object
+      final shelfs = device['shelfs'] as List<dynamic>;
 
-      int humidity = int.parse(data['soildata']["moisture"]);
-      int temp = int.parse(data['soildata']["Temperature"]);
-      int light = int.parse(data['soildata']["Conductivity"]);
+      // Check if 'shelfs' array is not empty and retrieve the first shelf
+      if (shelfs.isNotEmpty) {
+        // Retrieve the first shelf
+        final firstShelf = shelfs[0];
 
-      print(humidity);
-      print(temp);
-      print(light);
+        // Access the 'soil_data' array under the first shelf
+        final soilDataArray = firstShelf['soil_data'] as List<dynamic>;
+        if (soilDataArray.isNotEmpty) {
+          final firstSoilData = soilDataArray[0];
 
-      await storeData('humid', humidity.toString());
-      await storeData('temp', temp.toString());
-      await storeData('light', light.toString());
+          // Extract field values from the first soil data object
+          final moisture = firstSoilData['Moisture'] ?? 0;
+          final temperature = firstSoilData['Temperature'] ?? 0;
+          final conductivity = firstSoilData['Conductivity'] ?? 0;
+          final pH = firstSoilData['pH'] ?? 0;
+          final dateTime = firstSoilData['DateTime'] ?? '';
+
+        await storeData('moisture', moisture);
+        await storeData('temperature', temperature);
+        await storeData('conductivity', conductivity);
+        await storeData('pH', pH);
+        } else {
+          print('No soil data available');
+        }
+      } else {
+        print('No shelf data available');
+      }
     } else {
-      print('Failed to fetch data1: ${response.statusCode}');
-      print(response.body);
+      throw Exception('Failed to fetch device data: HTTP ${response.statusCode}');
     }
   } catch (error) {
-    // Handle any exceptions that occur during the request
-    print('Error fetching data: $error');
+    print('Error fetching soil data: $error');
+    // Handle the error gracefully, e.g., display a message to the user
   }
 }
-
-// Store data
-
 
 String getImagePath(String imageName) {
   return 'assets/$imageName';

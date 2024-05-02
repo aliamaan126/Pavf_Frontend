@@ -22,7 +22,7 @@ void main() {
 
 class Splash extends StatelessWidget {
   const Splash({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,38 +33,35 @@ class Splash extends StatelessWidget {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image:
-                    AssetImage('5.png'), // Change to your background image path
+                image: AssetImage('assets/5.png'), // Corrected path to background image
                 fit: BoxFit.cover,
               ),
             ),
           ),
           // Animated splash screen content
-          // Animated splash screen content
           AnimatedSplashScreen(
             duration: 3000,
             splash: SizedBox(
-              // width: max(200, 200), // Adjust the width as needed
-              // height: max(200, 200), // Adjust the height as needed
+              width: 100,
+              height: 90,
               child: ClipRRect(
-                borderRadius:
-                    BorderRadius.circular(20), // Adjust the radius as needed
+                borderRadius: BorderRadius.circular(20),
                 child: Image.asset(
-                  'profile.png', // Change to your splash image path
-                  fit: BoxFit.cover, // Ensure the image fills the SizedBox
+                  'assets/profile.png', // Corrected path to splash image
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
             nextScreen: const SplashScreenContent(),
             splashTransition: SplashTransition.fadeTransition,
-            backgroundColor:
-                Colors.transparent, // Set background color to transparent
+            backgroundColor: Colors.transparent,
           ),
         ],
       ),
     );
   }
 }
+
 
 class SplashScreenContent extends StatelessWidget {
   const SplashScreenContent({Key? key}) : super(key: key);
@@ -231,4 +228,61 @@ void socketCLient(address) {
   socket.onConnect((_) {
     print('connect');
   });
+}
+
+
+Future<void> fetchLatestSoilData(String deviceID) async {
+  try {
+    final url = '$server/arduino/fetch-Data'; 
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{'Content-Type': 'application/json'},
+      body: json.encode(<String, String>{
+        'deviceID': deviceID,
+      }),
+    );
+    print(response.statusCode);
+    // if (response.statusCode == 200) {
+    //   final jsonData = json.decode(response.body);
+    //   final shelfs = jsonData['shelfs'] as List;
+
+    //   // Iterate over each shelf object
+    //   shelfs.forEach((shelf) {
+    //     final soilDataArray = shelf['soil_data'] as List;
+
+    //     // Sort soil data array by DateTime in descending order
+    //     soilDataArray.sort((a, b) => DateTime.parse(b['DateTime']).compareTo(DateTime.parse(a['DateTime'])));
+
+    //     // Retrieve the most recent soil data entry
+    //     final latestEntry = soilDataArray.isNotEmpty ? soilDataArray.first : null;
+
+    //     if (latestEntry != null) {
+    //       // Extract fields from the latest entry
+    //       final moisture = latestEntry['Moisture'];
+    //       final temperature = latestEntry['Temperature'];
+    //       final conductivity = latestEntry['Conductivity'];
+    //       final pH = latestEntry['pH'];
+    //       final dateTime = latestEntry['DateTime'];
+
+    //       // Now you can use these variables as needed
+    //       print('Latest Moisture: $moisture');
+    //       print('Latest Temperature: $temperature');
+    //       print('Latest Conductivity: $conductivity');
+    //       print('Latest pH: $pH');
+    //       print('Latest DateTime: $dateTime');
+
+    //       // Example: Store moisture in a variable
+    //       int humidity = int.parse(moisture);
+    //     } else {
+    //       print('No soil data available');
+    //     }
+    //   });
+    // } else {
+    //   throw Exception('Failed to fetch device data');
+    // }
+  } catch (error) {
+    print('Error fetching soil data: $error');
+    // Handle the error gracefully, e.g., display a message to the user
+  }
 }
