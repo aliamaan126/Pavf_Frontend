@@ -8,8 +8,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
-
 class LoginScreen extends StatelessWidget {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -132,14 +130,22 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+
     return Column(
       children: [
-        InputField(hintText: 'username', controller: usernameController),
+        InputField(
+          hintText: 'username',
+          controller: usernameController,
+          inputWidth: screenWidth * 0.8, // Adjust input field width
+        ),
         SizedBox(height: 20),
         InputField(
-            hintText: 'Password',
-            isPassword: true,
-            controller: passwordController),
+          hintText: 'Password',
+          isPassword: true,
+          controller: passwordController,
+          inputWidth: screenWidth * 0.8, // Adjust input field width
+        ),
         SizedBox(height: 10),
         Row(
           children: [
@@ -172,6 +178,7 @@ class LoginForm extends StatelessWidget {
         LoginButton(
           usernameController: usernameController,
           passwordController: passwordController,
+          buttonWidth: screenWidth * 0.8, // Adjust button width
         ),
         SizedBox(height: 10),
         Row(
@@ -206,16 +213,19 @@ class InputField extends StatelessWidget {
   final String hintText;
   final bool isPassword;
   final TextEditingController controller;
+  final double inputWidth; // Added
 
   InputField({
     required this.hintText,
     this.isPassword = false,
     required this.controller,
+    required this.inputWidth, // Added
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: inputWidth, // Added
       height: 60,
       child: TextField(
         controller: controller,
@@ -248,25 +258,25 @@ class InputField extends StatelessWidget {
 class LoginButton extends StatelessWidget {
   final TextEditingController usernameController;
   final TextEditingController passwordController;
+  final double buttonWidth; // Added
 
   LoginButton({
     required this.usernameController,
     required this.passwordController,
+    required this.buttonWidth, // Added
   });
 
   @override
   Widget build(BuildContext context) {
-    final inputFieldWidth = MediaQuery.of(context).size.width - 40;
-    final buttonHeight = 50.0;
+    final double screenWidth = MediaQuery.of(context).size.width;
 
     return SizedBox(
-      width: inputFieldWidth,
-      height: buttonHeight,
+      width: buttonWidth, // Adjusted to buttonWidth
+      height: 50,
       child: ElevatedButton(
         onPressed: () async {
           await fetchLatestSoilData();
-          await _login(context,usernameController,passwordController);
-          
+          await _login(context, usernameController, passwordController);
           // await fetchData();
         },
         child: Text(
@@ -287,8 +297,11 @@ class LoginButton extends StatelessWidget {
     );
   }
 
-  Future<String?> _login(BuildContext context,TextEditingController usernameController,
-    TextEditingController passwordController,) async {
+  Future<String?> _login(
+    BuildContext context,
+    TextEditingController usernameController,
+    TextEditingController passwordController,
+  ) async {
     final username = usernameController.text;
     final password = passwordController.text;
 
@@ -330,11 +343,13 @@ class LoginButton extends StatelessWidget {
         await storeData('devices', devices.toString());
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login Successful'),
-          backgroundColor: Colors.green, 
-          duration: Duration(seconds: 4),),
+          SnackBar(
+            content: Text('Login Successful'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 4),
+          ),
         );
-        
+
         Get.offAllNamed('/dashboard');
         // print(lname);
         // Corrected property name
@@ -343,12 +358,11 @@ class LoginButton extends StatelessWidget {
         // Get.find().addUser(user,email,fname,lname,'role');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Login failed: Invalid Username or Password'),
-          backgroundColor: Colors.red, 
-          duration: Duration(seconds: 3),
+          const SnackBar(
+            content: Text('Login failed: Invalid Username or Password'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 3),
           ),
-          
-          
         );
         return null;
       }
@@ -359,9 +373,7 @@ class LoginButton extends StatelessWidget {
       return null;
     }
   }
-
 }
-
 
 Future<void> fetchLatestSoilData() async {
   try {
@@ -371,7 +383,8 @@ Future<void> fetchLatestSoilData() async {
       Uri.parse(url),
       headers: <String, String>{'Content-Type': 'application/json'},
       body: json.encode(<String, String>{
-        'deviceID': "3d2c5777-25a4-455a-b8f3-fa0e135cc12b", // Ensure deviceID is defined or passed as a parameter
+        'deviceID':
+            "3d2c5777-25a4-455a-b8f3-fa0e135cc12b", // Ensure deviceID is defined or passed as a parameter
       }),
     );
 
@@ -401,10 +414,10 @@ Future<void> fetchLatestSoilData() async {
           final pH = firstSoilData['pH'] ?? 0;
           final dateTime = firstSoilData['DateTime'] ?? '';
 
-        await storeData('moisture', moisture);
-        await storeData('temperature', temperature);
-        await storeData('conductivity', conductivity);
-        await storeData('pH', pH);
+          await storeData('moisture', moisture);
+          await storeData('temperature', temperature);
+          await storeData('conductivity', conductivity);
+          await storeData('pH', pH);
         } else {
           print('No soil data available');
         }
@@ -412,7 +425,8 @@ Future<void> fetchLatestSoilData() async {
         print('No shelf data available');
       }
     } else {
-      throw Exception('Failed to fetch device data: HTTP ${response.statusCode}');
+      throw Exception(
+          'Failed to fetch device data: HTTP ${response.statusCode}');
     }
   } catch (error) {
     print('Error fetching soil data: $error');

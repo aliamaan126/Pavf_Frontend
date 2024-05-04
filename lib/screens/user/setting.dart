@@ -12,54 +12,56 @@ void main() {
 class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: SubHeader(heading: "Settings"),
-      drawer: buildDrawer(
-          context), // Call the buildDrawer function from drawer.dart
-      body: Container(
-        decoration: BoxDecoration(
-          color: Color(0xFFC9E9C9),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: SizedBox(
-                  width: screenWidth * 1, // Adjust width as needed
-                  height: screenHeight * 0.8, // Adjust height as needed
-                  child: ListView(
-                    padding: EdgeInsets.symmetric(horizontal: 22),
-                    children: [
-                      _buildRow("Notification", () {
-                        print("Notification tapped");
-                      }),
-                      _buildRow("Privacy and Security", () {
-                        print("Privacy and Security tapped");
-                      }),
-                      _buildRow("Terms and Policies", () {
-                        print("Terms and Policies tapped");
-                      }),
-                      _buildRow("Change Password", () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => UpdatePass()),
-                        );
-                        print("Change Password tapped");
-                      }),
-                      _buildRow("About", () {
-                        print("About tapped");
-                      }),
-                    ],
+      drawer: buildDrawer(context),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return Container(
+            decoration: BoxDecoration(
+              color: Color(0xFFC9E9C9),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: SizedBox(
+                      width: constraints.maxWidth,
+                      height: constraints.maxHeight,
+                      child: ListView(
+                        padding: EdgeInsets.symmetric(horizontal: 22),
+                        children: [
+                          _buildRow("Notification", () {
+                            print("Notification tapped");
+                          }),
+                          _buildRow("Privacy and Security", () {
+                            print("Privacy and Security tapped");
+                          }),
+                          _buildRow("Terms and Policies", () {
+                            print("Terms and Policies tapped");
+                          }),
+                          _buildRow("Change Password", () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UpdatePass()),
+                            );
+                            print("Change Password tapped");
+                          }),
+                          _buildRow("About", () {
+                            print("About tapped");
+                          }),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -69,6 +71,7 @@ class Settings extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Container(
         height: 70,
+        width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),

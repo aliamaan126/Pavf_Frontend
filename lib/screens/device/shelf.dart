@@ -26,7 +26,8 @@ class Shelf extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    List<dynamic> items = jsonResponse['items']!; // Extract array of items from JSON response
+    List<dynamic> items =
+        jsonResponse['items']!; // Extract array of items from JSON response
 
     return Scaffold(
       appBar: const SubHeader(heading: "Shelf"),
@@ -50,7 +51,6 @@ class Shelf extends StatelessWidget {
             );
           },
         ),
-        
       ),
     );
   }
@@ -82,7 +82,7 @@ class CardItem extends StatelessWidget {
         child: Card(
           margin: EdgeInsets.all(10),
           child: Padding(
-            padding: EdgeInsets.only(top: 30,bottom: 20,left: 20),
+            padding: EdgeInsets.only(top: 30, bottom: 20, left: 20),
             child: Text(
               itemName,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -94,7 +94,6 @@ class CardItem extends StatelessWidget {
   }
 }
 
-
 class SubHeader extends StatelessWidget implements PreferredSizeWidget {
   final String heading;
 
@@ -105,7 +104,8 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Color(0xFFC9E9C9),
       leading: IconButton(
-        icon: Icon(Icons.menu), // Specify the icon for the left button (e.g., menu)
+        icon: Icon(
+            Icons.menu), // Specify the icon for the left button (e.g., menu)
         onPressed: () {
           // Handle onPressed event for the left button
           // Implement your logic here
@@ -120,7 +120,7 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
         ),
         textAlign: TextAlign.center, // Align the text to center
       ),
-      centerTitle: true, 
+      centerTitle: true,
     );
   }
 

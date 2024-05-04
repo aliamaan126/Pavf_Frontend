@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:PAVF/state_management/g_controller.dart';
 
-
 // const server = "http://localhost:3000/api/v1";
 final FlutterSecureStorage _storage = FlutterSecureStorage();
 final GController controller = Get.put(GController());
@@ -25,16 +24,15 @@ class RegisterScreen extends StatelessWidget {
       backgroundColor: myBackground,
       body: SafeArea(
         child: Stack(
-        children: [
-          BackgroundImage(),
-          CenteredContent(),
-        ],
-      ),
+          children: [
+            BackgroundImage(),
+            CenteredContent(),
+          ],
+        ),
       ),
     );
   }
 }
-
 
 class BackgroundImage extends StatelessWidget {
   @override
@@ -116,25 +114,40 @@ class SignUpForm extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Column(
       children: [
-        InputField(hintText: 'Email', controller: emailController),
-        SizedBox(height: 20),
-        InputField(hintText: 'Username', controller: usernameController),
+        InputField(
+          hintText: 'Email',
+          controller: emailController,
+          inputWidth: screenWidth * 0.8, // Adjusted width based on screen size
+        ),
         SizedBox(height: 20),
         InputField(
-            hintText: 'Password',
-            isPassword: true,
-            controller: passwordController),
+          hintText: 'Username',
+          controller: usernameController,
+          inputWidth: screenWidth * 0.8, // Adjusted width based on screen size
+        ),
         SizedBox(height: 20),
         InputField(
-            hintText: 'Confirm Password',
-            isPassword: true,
-            controller: confirmPasswordController),
+          hintText: 'Password',
+          isPassword: true,
+          controller: passwordController,
+          inputWidth: screenWidth * 0.8, // Adjusted width based on screen size
+        ),
+        SizedBox(height: 20),
+        InputField(
+          hintText: 'Confirm Password',
+          isPassword: true,
+          controller: confirmPasswordController,
+          inputWidth: screenWidth * 0.8, // Adjusted width based on screen size
+        ),
         SizedBox(height: 20),
         SignUpButton(
           emailController: emailController,
@@ -142,6 +155,7 @@ class SignUpForm extends StatelessWidget {
           passwordController: passwordController,
           confirmPasswordController: confirmPasswordController,
           context: context,
+          buttonWidth: screenWidth * 0.8, // Adjusted width based on screen size
         ),
         SizedBox(height: 20),
         LoginLink(),
@@ -154,16 +168,19 @@ class InputField extends StatelessWidget {
   final String hintText;
   final bool isPassword;
   final TextEditingController controller;
+  final double inputWidth; // Added inputWidth parameter
 
   InputField({
     required this.hintText,
     this.isPassword = false,
     required this.controller,
+    required this.inputWidth, // Defined inputWidth parameter
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: inputWidth, // Set width based on inputWidth parameter
       height: 60,
       child: TextField(
         controller: controller,
@@ -193,6 +210,7 @@ class SignUpButton extends StatelessWidget {
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
   final BuildContext context;
+  final double buttonWidth;
 
   SignUpButton({
     required this.emailController,
@@ -200,16 +218,14 @@ class SignUpButton extends StatelessWidget {
     required this.passwordController,
     required this.confirmPasswordController,
     required this.context,
+    required this.buttonWidth,
   });
 
   @override
   Widget build(BuildContext context) {
-    final inputFieldWidth = MediaQuery.of(context).size.width - 40;
-    final buttonHeight = 50.0;
-
     return SizedBox(
-      width: inputFieldWidth,
-      height: buttonHeight,
+      width: buttonWidth,
+      height: 50,
       child: ElevatedButton(
         onPressed: () async {
           await registerUser(
@@ -243,9 +259,7 @@ class LoginLink extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        
-      },
+      onTap: () {},
       child: RichText(
         text: TextSpan(
           text: 'Already have an account? ',
@@ -253,29 +267,30 @@ class LoginLink extends StatelessWidget {
             color: Colors.white,
           ),
           children: [
-      TextSpan(
-        text: 'Login here.',
-        style: TextStyle(
-          color: Colors.lightGreen,
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-        ),
-        recognizer: TapGestureRecognizer()
-          ..onTap = () {
-                Navigator.pushNamed(context, '/login');
-          },
-      ),
-    ],
+            TextSpan(
+              text: 'Login here.',
+              style: TextStyle(
+                color: Colors.lightGreen,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  Navigator.pushNamed(context, '/login');
+                },
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
+// final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 Future<void> registerUser(String username, String email, String password,
     String passwordConfirmation, BuildContext context) async {
-      // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-      final apiUrl = '$server/auth/register';
+  // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final apiUrl = '$server/auth/register';
   try {
     final response = await http.post(
       Uri.parse(apiUrl),
@@ -294,8 +309,8 @@ Future<void> registerUser(String username, String email, String password,
       print('User registered successfully');
       // ignore: use_build_context_synchronously
       showSignUpConfirmationDialog(context, 'Account Created',
-      'Your account has been successfully created.');
-      
+          'Your account has been successfully created.');
+
       final json = jsonDecode(response.body);
       var token = json['access_token'];
       storeAuthToken(token);
@@ -322,15 +337,12 @@ Future<void> registerUser(String username, String email, String password,
       // print(uemail.toString());
       // print(urole.toString());
 
-
       Get.offAllNamed('/dashboard');
-
     } else {
       print('Failed to register user: ${response.body}');
       var responseBody = json.decode(response.body);
-      
+
       if (responseBody['error'] == 'Password too short') {
-        
         showSignUpErrorDialog(context, 'Registration Failed',
             'Password is too short. Please use a longer password.');
       } else {
@@ -360,8 +372,7 @@ void showSignUpConfirmationDialog(
         content: Text(content),
         actions: <Widget>[
           TextButton(
-            onPressed: () {
-            },
+            onPressed: () {},
             child: Text('OK'),
           ),
         ],

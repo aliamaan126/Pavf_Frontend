@@ -54,7 +54,8 @@ class DeviceSetup extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => DeviceConn()), // Navigate to AddDevice screen
+                              builder: (context) =>
+                                  DeviceConn()), // Navigate to AddDevice screen
                         );
                       }),
                       SizedBox(height: 20),
@@ -67,7 +68,6 @@ class DeviceSetup extends StatelessWidget {
                                   WifiConn()), // Navigate to AddDevice screen
                         );
                       }),
-                      
                     ],
                   ),
                 ),
@@ -149,22 +149,21 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
         child: Icon(Icons.chevron_left), // Changed icon to "<"
       ),
       title: Text(
-          heading,
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-          textAlign: TextAlign.center,
+        heading,
+        style: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
         ),
-        centerTitle: true,
+        textAlign: TextAlign.center,
+      ),
+      centerTitle: true,
     );
   }
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
-
 
 Future<String?> deviceBind(
     BuildContext context,
@@ -179,7 +178,10 @@ Future<String?> deviceBind(
   try {
     final response = await http.post(
       Uri.parse(apiUrl),
-      headers: {'Content-Type': 'application/json','Authorization': 'Bearer $token'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
       body: json.encode({
         'username': username,
         'password': password,

@@ -80,11 +80,18 @@ class _NotificationPageState extends State<NotificationPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  padding: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.width * (10 / 375.0),
+                    horizontal:
+                        MediaQuery.of(context).size.width * (15 / 375.0),
+                  ),
                   child: Text(
                     lastDate!,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize:
+                          MediaQuery.of(context).size.width * (18 / 375.0),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 _buildNotificationList(index),
@@ -103,13 +110,15 @@ class _NotificationPageState extends State<NotificationPage> {
       key: Key(notifications[index]["id"].toString()),
       background: Container(
         color: Colors.green,
-        padding: EdgeInsets.only(left: 15),
+        padding: EdgeInsets.only(
+            left: MediaQuery.of(context).size.width * (15 / 375.0)),
         alignment: Alignment.centerLeft,
         child: Icon(Icons.archive),
       ),
       secondaryBackground: Container(
         color: Colors.red,
-        padding: EdgeInsets.only(right: 15),
+        padding: EdgeInsets.only(
+            right: MediaQuery.of(context).size.width * (15 / 375.0)),
         alignment: Alignment.centerRight,
         child: Icon(Icons.archive),
       ),
@@ -119,11 +128,14 @@ class _NotificationPageState extends State<NotificationPage> {
         ),
         title: Text(
           notifications[index]["heading"],
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: MediaQuery.of(context).size.width * (16 / 375.0),
+              fontWeight: FontWeight.bold),
         ),
         subtitle: Text(
           notifications[index]["reason"],
-          style: TextStyle(fontSize: 14),
+          style: TextStyle(
+              fontSize: MediaQuery.of(context).size.width * (14 / 375.0)),
         ),
         trailing: Icon(Icons.star_rate_rounded),
       ),
@@ -151,7 +163,9 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
         child: Text(
           heading,
           style: TextStyle(
-              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: MediaQuery.of(context).size.width * (20 / 375.0),
+              fontWeight: FontWeight.bold,
+              color: Colors.black),
         ),
       ),
       leading: IconButton(

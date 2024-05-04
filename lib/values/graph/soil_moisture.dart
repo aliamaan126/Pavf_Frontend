@@ -11,6 +11,12 @@ import 'package:PAVF/values/real/potassium.dart';
 import 'package:intl/intl.dart';
 
 // Define the main widget for the real-time screen
+void main() {
+  runApp(MaterialApp(
+    home: Soilgraph(),
+  ));
+}
+
 class Soilgraph extends StatefulWidget {
   Soilgraph({Key? key}) : super(key: key);
 
@@ -23,29 +29,30 @@ class _SoilgraphState extends State<Soilgraph> {
 
   final String user = "To Agro_Farm";
   final PageController _pageController = PageController();
+  late MediaQueryData mediaQueryData;
+  late double screenWidth;
+  late double screenHeight;
 
-  final List<String> textData = [
-    "Soil Moisture",
-  ];
-  final List<IconData> iconData = [
-    Icons.thermostat, // Temperature icon
-  ];
+  final List<String> textData = ["Soil Moisture"];
+  final List<IconData> iconData = [Icons.thermostat];
   int currentIndex = 0;
 
   int speedValue1 = 0;
 
-  // Define chart data
-  final List<SalesData> chartData = [
-    SalesData(
-      DateTime(1, 1),
-      10,
-    ),
-    SalesData(DateTime(2, 1), 12),
-    SalesData(DateTime(3, 1), 13),
-    SalesData(DateTime(4, 1), 15),
-  ];
+  List<SalesData> chartData = [];
 
+  @override
+  void initState() {
+    super.initState();
+    chartData = _generateDummyData('1d'); // Initially set data to 1d
+  }
+
+  @override
   Widget build(BuildContext context) {
+    mediaQueryData = MediaQuery.of(context);
+    screenWidth = mediaQueryData.size.width;
+    screenHeight = mediaQueryData.size.height;
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: _buildAppBar(context),
@@ -67,14 +74,13 @@ class _SoilgraphState extends State<Soilgraph> {
         },
       ),
       title: Text(
-        'Welcome $user', // Display the greeting with the username
+        'Welcome $user',
         style: TextStyle(
           color: Colors.white,
           fontSize: 22,
           fontWeight: FontWeight.bold,
         ),
       ),
-      // actions: [_buildProfileIcon()],
     );
   }
 
@@ -113,27 +119,28 @@ class _SoilgraphState extends State<Soilgraph> {
               ),
               SizedBox(width: 20),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
                 child: Icon(
                   iconData[currentIndex],
-                  size: 40,
+                  size: screenWidth * 0.08,
                 ),
               ),
               Text(
                 textData[currentIndex],
-                style: TextStyle(fontSize: 24),
+                style: TextStyle(
+                  fontSize: screenWidth * 0.05,
+                ),
               ),
-              SizedBox(width: 0),
+              SizedBox(width: screenWidth * 0.03),
               GestureDetector(
                 onTap: () {
                   Navigator.push(
                     context,
-                    //forward move
                     MaterialPageRoute(builder: (context) => Tempgraph()),
                   );
                 },
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
                   child: IconButton(
                     icon: Icon(Icons.arrow_forward_ios),
                     onPressed: null,
@@ -161,7 +168,7 @@ class _SoilgraphState extends State<Soilgraph> {
       children: [
         SizedBox(height: 10),
         ToggleSwitch(
-          minWidth: 90.0,
+          minWidth: screenWidth * 0.25,
           cornerRadius: 100.0,
           activeBgColors: [
             [Color(0xFF18A818)],
@@ -188,25 +195,25 @@ class _SoilgraphState extends State<Soilgraph> {
             }
           },
         ),
-        SizedBox(height: 30), // Add this line
+        SizedBox(height: 30),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              width: 70,
-              height: 50,
+              width: screenWidth * 0.15,
+              height: screenHeight * 0.065,
               decoration: BoxDecoration(
-                color: Colors.red, // Color representing minimum value
+                color: Colors.red,
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Center(
                   child: Text('Min 32', style: TextStyle(color: Colors.white))),
             ),
             Container(
-              width: 70,
-              height: 50,
+              width: screenWidth * 0.15,
+              height: screenHeight * 0.065,
               decoration: BoxDecoration(
-                color: Colors.green, // Color representing maximum value
+                color: Colors.green,
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Center(
@@ -214,7 +221,7 @@ class _SoilgraphState extends State<Soilgraph> {
             ),
           ],
         ),
-        SizedBox(height: 40), // Add this line
+        SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -222,17 +229,17 @@ class _SoilgraphState extends State<Soilgraph> {
             _buildIntervalButton('3d'),
             _buildIntervalButton('7d'),
             _buildIntervalButton('1m'),
-            _buildIntervalButton('1y'),
+            _buildIntervalButton('3m'),
           ],
         ),
-        SizedBox(height: 40), // Add this line
+        SizedBox(height: 10),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
           child: SizedBox(
             height: 350,
             child: Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(2.0),
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
                 child: Card(
                   elevation: 3,
                   shape: RoundedRectangleBorder(
@@ -242,7 +249,8 @@ class _SoilgraphState extends State<Soilgraph> {
                     children: [
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(
+                              MediaQuery.of(context).size.width * 0.08),
                           child: SizedBox(
                             height: 300,
                             child: SfCartesianChart(
@@ -261,6 +269,8 @@ class _SoilgraphState extends State<Soilgraph> {
                                   color: Colors.grey[300],
                                 ),
                                 plotOffset: 0,
+                                dateFormat: DateFormat
+                                    .MMMd(), // Add this line to format dates
                               ),
                               primaryYAxis: NumericAxis(
                                 title: AxisTitle(
@@ -281,7 +291,6 @@ class _SoilgraphState extends State<Soilgraph> {
                                 ),
                                 numberFormat: NumberFormat.compact(),
                               ),
-                              // Remove plotArea here
                               series: <CartesianSeries>[
                                 LineSeries<SalesData, DateTime>(
                                   dataSource: chartData,
@@ -321,18 +330,65 @@ class _SoilgraphState extends State<Soilgraph> {
   Widget _buildIntervalButton(String interval) {
     return ElevatedButton(
       onPressed: () {
-        // Handle button press for the given interval
-        // Update chart data based on the selected interval
+        updateChartData(interval);
       },
       child: Text(interval),
     );
   }
-}
 
-void main() {
-  runApp(MaterialApp(
-    home: Soilgraph(),
-  ));
+  List<SalesData> _generateDummyData(String interval) {
+    // Dummy data generation logic based on interval
+    List<SalesData> dummyData = [];
+    DateTime now = DateTime.now();
+    switch (interval) {
+      case '1d':
+        dummyData = [
+          SalesData(now.subtract(Duration(days: 1)), 10),
+          SalesData(now, 12),
+        ];
+        break;
+      case '3d':
+        dummyData = [
+          SalesData(now.subtract(Duration(days: 3)), 8),
+          SalesData(now.subtract(Duration(days: 2)), 9),
+          SalesData(now.subtract(Duration(days: 1)), 10),
+          SalesData(now, 12),
+        ];
+        break;
+      // Add cases for other intervals if needed
+      case '7d':
+        dummyData = [
+          SalesData(now.subtract(Duration(days: 3)), 8),
+          SalesData(now.subtract(Duration(days: 2)), 9),
+          SalesData(now.subtract(Duration(days: 5)), 11),
+          SalesData(now, 12),
+        ];
+        break;
+      case '1m':
+        dummyData = [
+          SalesData(now.subtract(Duration(days: 4)), 8),
+          SalesData(now.subtract(Duration(days: 2)), 9),
+          SalesData(now.subtract(Duration(days: 5)), 11),
+          SalesData(now, 12),
+        ];
+        break;
+      case '3m':
+        dummyData = [
+          SalesData(now.subtract(Duration(days: 7)), 8),
+          SalesData(now.subtract(Duration(days: 21)), 9),
+          SalesData(now.subtract(Duration(days: 5)), 11),
+          SalesData(now, 12),
+        ];
+        break;
+    }
+    return dummyData;
+  }
+
+  void updateChartData(String interval) {
+    setState(() {
+      chartData = _generateDummyData(interval);
+    });
+  }
 }
 
 class SalesData {

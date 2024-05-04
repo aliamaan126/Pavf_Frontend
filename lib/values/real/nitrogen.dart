@@ -8,24 +8,34 @@ import 'package:kdgaugeview/kdgaugeview.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:PAVF/component/drawer.dart';
 
+// Define the main widget for the real-time screen
 class Nitrogenvalue extends StatefulWidget {
   Nitrogenvalue({Key? key}) : super(key: key);
 
   @override
-  _NitrogenvalueState createState() => _NitrogenvalueState();
+  _PhosphorusvalueState createState() => _PhosphorusvalueState();
 }
 
-class _NitrogenvalueState extends State<Nitrogenvalue> {
+// Add MediaQuery
+late MediaQueryData mediaQueryData;
+late double screenWidth;
+late double screenHeight;
+
+class _PhosphorusvalueState extends State<Nitrogenvalue> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final String user = "To Agro_Farm";
   final PageController _pageController = PageController();
+  //media queru
+  late MediaQueryData mediaQueryData;
+  late double screenWidth;
+  late double screenHeight;
 
   final List<String> textData = [
     "Nitrogen",
   ];
   final List<IconData> iconData = [
-    Icons.thermostat, // Nitrogen icon
+    Icons.thermostat, // nitogen  icon
   ];
   int currentIndex = 0;
   // Global variables for each meter's speed value
@@ -42,8 +52,14 @@ class _NitrogenvalueState extends State<Nitrogenvalue> {
 // double temperatureSpeed = double.parse(retrieveData('temp'));
 // double lightSpeed = double.parse(retrieveData('light'));
 // double humiditySpeed  = double.parse(retrieveData('humid'));
-  int speedValue1 = retrieveData("pH");
+  int speedValue1 = retrieveData("moisture");
+
   Widget build(BuildContext context) {
+    // Retrieve MediaQuery
+    mediaQueryData = MediaQuery.of(context);
+    screenWidth = mediaQueryData.size.width;
+    screenHeight = mediaQueryData.size.height;
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: _buildAppBar(context),
@@ -72,6 +88,7 @@ class _NitrogenvalueState extends State<Nitrogenvalue> {
           fontWeight: FontWeight.bold,
         ),
       ),
+      // actions: [_buildProfileIcon()],
     );
   }
 
@@ -99,6 +116,7 @@ class _NitrogenvalueState extends State<Nitrogenvalue> {
                 onTap: () {
                   Navigator.push(
                     context,
+                    //backward
                     MaterialPageRoute(builder: (context) => SoilEcValue()),
                   );
                 },
@@ -109,26 +127,30 @@ class _NitrogenvalueState extends State<Nitrogenvalue> {
               ),
               SizedBox(width: 20),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
                 child: Icon(
                   iconData[currentIndex],
-                  size: 40,
+                  size: screenWidth *
+                      0.08, // Adjust icon size based on screen width
                 ),
               ),
               Text(
                 textData[currentIndex],
-                style: TextStyle(fontSize: 24),
+                style: TextStyle(
+                    fontSize: screenWidth *
+                        0.05), // Adjust font size based on screen width
               ),
-              SizedBox(width: 0),
+              SizedBox(width: screenWidth * 0.03),
               GestureDetector(
                 onTap: () {
                   Navigator.push(
                     context,
+                    //forward
                     MaterialPageRoute(builder: (context) => Phosphorusvalue()),
                   );
                 },
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
                   child: IconButton(
                     icon: Icon(Icons.arrow_forward_ios),
                     onPressed: null,
@@ -154,9 +176,9 @@ class _NitrogenvalueState extends State<Nitrogenvalue> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(height: 20),
+        SizedBox(height: 50),
         ToggleSwitch(
-          minWidth: 90.0,
+          minWidth: screenWidth * 0.25, // Adjust width based on screen width
           cornerRadius: 100.0,
           activeBgColors: [
             [Color(0xFFC9E9C9)],
@@ -173,7 +195,6 @@ class _NitrogenvalueState extends State<Nitrogenvalue> {
             if (index == 0) {
               Navigator.push(
                 context,
-                //graph
                 MaterialPageRoute(builder: (context) => SoilNCgraph()),
               );
             } else if (index == 1) {
@@ -189,8 +210,9 @@ class _NitrogenvalueState extends State<Nitrogenvalue> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              width: 70,
-              height: 50,
+              width: screenWidth * 0.15, // Adjust width based on screen width
+              height:
+                  screenHeight * 0.065, // Adjust height based on screen height
               decoration: BoxDecoration(
                 color: Colors.red, // Color representing minimum value
                 borderRadius: BorderRadius.circular(15),
@@ -199,8 +221,9 @@ class _NitrogenvalueState extends State<Nitrogenvalue> {
                   child: Text('Min 32', style: TextStyle(color: Colors.white))),
             ),
             Container(
-              width: 70,
-              height: 50,
+              width: screenWidth * 0.15, // Adjust width based on screen width
+              height:
+                  screenHeight * 0.065, // Adjust height based on screen height
               decoration: BoxDecoration(
                 color: Colors.green, // Color representing maximum value
                 borderRadius: BorderRadius.circular(15),
@@ -213,8 +236,8 @@ class _NitrogenvalueState extends State<Nitrogenvalue> {
         Expanded(
           child: Center(
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.9,
-              height: MediaQuery.of(context).size.width * 0.9,
+              width: screenWidth * 0.9,
+              height: screenWidth * 0.9,
               padding: EdgeInsets.all(12),
               child: KdGaugeView(
                 minSpeed: 0,

@@ -8,7 +8,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 // Example JSON response containing an array of items
 final jsonResponse = {
@@ -28,13 +28,13 @@ void main() {
 }
 
 class AddDevice extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    List<dynamic> items = jsonResponse['items']!; // Extract array of items from JSON response
+    List<dynamic> items =
+        jsonResponse['items']!; // Extract array of items from JSON response
 
     return Scaffold(
       key: _scaffoldKey, // Assign the scaffold key to the key property
@@ -47,6 +47,8 @@ class AddDevice extends StatelessWidget {
         child: ListView.builder(
           itemCount: items.length + 1, // Add one for the "Add Device" button
           itemBuilder: (context, index) {
+            final screenWidth = MediaQuery.of(context).size.width;
+            final screenHeight = MediaQuery.of(context).size.height;
             if (index < items.length) {
               final item = items[index];
               return CardItem(
@@ -55,6 +57,7 @@ class AddDevice extends StatelessWidget {
                 onTap: () {
                   // Handle card tap (e.g., navigate to detail page)
                   print('Card tapped: ${item['name']}');
+                  Navigator.of(context).pop(); // Close the drawer
                   Get.to(() => Shelf());
                   // Implement your navigation logic here
                 },
@@ -79,7 +82,10 @@ class AddDevice extends StatelessWidget {
                       SizedBox(width: 10),
                       Text(
                         'Add Device',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
                       ),
                     ],
                   ),
@@ -108,13 +114,14 @@ class CardItem extends StatelessWidget {
   Widget build(BuildContext context) {
     // Calculate screen width
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
         constraints: BoxConstraints(
           maxWidth: screenWidth, // Set maximum width to screen width
-          minHeight: 110, // Set minimum height to 20 (adjust as needed)
+          maxHeight: screenHeight,
         ),
         child: Card(
           margin: EdgeInsets.all(10),
@@ -140,8 +147,10 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Color(0xFFC9E9C9),
+
       leading: IconButton(
-        icon: Icon(Icons.menu), // Specify the icon for the left button (e.g., menu)
+        icon: Icon(
+            Icons.menu), // Specify the icon for the left button (e.g., menu)
         onPressed: () {
           // Handle onPressed event for the left button
           // Implement your logic here
@@ -160,7 +169,8 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true, // Center the title within the AppBar
       actions: [
         IconButton(
-          icon: Icon(Icons.add), // Specify the icon for the right button (e.g., add)
+          icon: Icon(
+              Icons.add), // Specify the icon for the right button (e.g., add)
           onPressed: () {
             Get.to(() => DeviceSetup());
           },

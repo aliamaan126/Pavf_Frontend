@@ -18,11 +18,20 @@ class Phosphorusvalue extends StatefulWidget {
   _PhosphorusvalueState createState() => _PhosphorusvalueState();
 }
 
+// Add MediaQuery
+late MediaQueryData mediaQueryData;
+late double screenWidth;
+late double screenHeight;
+
 class _PhosphorusvalueState extends State<Phosphorusvalue> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final String user = "To Agro_Farm";
   final PageController _pageController = PageController();
+  //media queru
+  late MediaQueryData mediaQueryData;
+  late double screenWidth;
+  late double screenHeight;
 
   final List<String> textData = [
     "Phosphorus",
@@ -48,6 +57,11 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
   int speedValue1 = retrieveData("moisture");
 
   Widget build(BuildContext context) {
+    // Retrieve MediaQuery
+    mediaQueryData = MediaQuery.of(context);
+    screenWidth = mediaQueryData.size.width;
+    screenHeight = mediaQueryData.size.height;
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: _buildAppBar(context),
@@ -93,7 +107,7 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
 
   Widget _buildBody() {
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
+      padding: const EdgeInsets.only(top: 30.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -104,6 +118,7 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
                 onTap: () {
                   Navigator.push(
                     context,
+                    //backward
                     MaterialPageRoute(builder: (context) => Nitrogenvalue()),
                   );
                 },
@@ -114,27 +129,30 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
               ),
               SizedBox(width: 20),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
                 child: Icon(
                   iconData[currentIndex],
-                  size: 40,
+                  size: screenWidth *
+                      0.08, // Adjust icon size based on screen width
                 ),
               ),
               Text(
                 textData[currentIndex],
-                style: TextStyle(fontSize: 24),
+                style: TextStyle(
+                    fontSize: screenWidth *
+                        0.05), // Adjust font size based on screen width
               ),
-              SizedBox(width: 0),
+              SizedBox(width: screenWidth * 0.03),
               GestureDetector(
                 onTap: () {
                   Navigator.push(
                     context,
-                    //forward move
+                    //forward
                     MaterialPageRoute(builder: (context) => PhValue()),
                   );
                 },
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
                   child: IconButton(
                     icon: Icon(Icons.arrow_forward_ios),
                     onPressed: null,
@@ -162,7 +180,7 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
       children: [
         SizedBox(height: 50),
         ToggleSwitch(
-          minWidth: 90.0,
+          minWidth: screenWidth * 0.25, // Adjust width based on screen width
           cornerRadius: 100.0,
           activeBgColors: [
             [Color(0xFFC9E9C9)],
@@ -179,7 +197,6 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
             if (index == 0) {
               Navigator.push(
                 context,
-                //graph
                 MaterialPageRoute(builder: (context) => SoilPhosphorusgraph()),
               );
             } else if (index == 1) {
@@ -195,8 +212,9 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              width: 70,
-              height: 50,
+              width: screenWidth * 0.15, // Adjust width based on screen width
+              height:
+                  screenHeight * 0.065, // Adjust height based on screen height
               decoration: BoxDecoration(
                 color: Colors.red, // Color representing minimum value
                 borderRadius: BorderRadius.circular(15),
@@ -205,8 +223,9 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
                   child: Text('Min 32', style: TextStyle(color: Colors.white))),
             ),
             Container(
-              width: 70,
-              height: 50,
+              width: screenWidth * 0.15, // Adjust width based on screen width
+              height:
+                  screenHeight * 0.065, // Adjust height based on screen height
               decoration: BoxDecoration(
                 color: Colors.green, // Color representing maximum value
                 borderRadius: BorderRadius.circular(15),
@@ -216,12 +235,11 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
             ),
           ],
         ),
-        SizedBox(height: 0),
         Expanded(
           child: Center(
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.9,
-              height: MediaQuery.of(context).size.width * 0.9,
+              width: screenWidth * 0.9,
+              height: screenWidth * 0.9,
               padding: EdgeInsets.all(12),
               child: KdGaugeView(
                 minSpeed: 0,

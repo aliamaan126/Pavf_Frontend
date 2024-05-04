@@ -1,6 +1,7 @@
 import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:PAVF/values/graph/graphvalue.dart';
 import 'package:PAVF/values/graph/soil_Ec.dart';
+import 'package:PAVF/values/graph/soil_moisture.dart';
 import 'package:PAVF/values/real/nitrogen.dart';
 import 'package:PAVF/values/real/potassium.dart';
 import 'package:PAVF/values/real/temperature.dart';
@@ -18,17 +19,26 @@ class SoilEcValue extends StatefulWidget {
   _SoilEcValueState createState() => _SoilEcValueState();
 }
 
+// Add MediaQuery
+late MediaQueryData mediaQueryData;
+late double screenWidth;
+late double screenHeight;
+
 class _SoilEcValueState extends State<SoilEcValue> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final String user = "To Agro_Farm";
   final PageController _pageController = PageController();
+  //media queruy
+  late MediaQueryData mediaQueryData;
+  late double screenWidth;
+  late double screenHeight;
 
   final List<String> textData = [
     "Soil EC",
   ];
   final List<IconData> iconData = [
-    Icons.thermostat, // Soil Moisture icon
+    Icons.eco, // Soil Moisture icon
   ];
   int currentIndex = 0;
   // Global variables for each meter's speed value
@@ -45,9 +55,14 @@ class _SoilEcValueState extends State<SoilEcValue> {
 // double temperatureSpeed = double.parse(retrieveData('temp'));
 // double lightSpeed = double.parse(retrieveData('light'));
 // double humiditySpeed  = double.parse(retrieveData('humid'));
-  double speedValue1 = retrieveData("conductivity")*0.01;
+  int speedValue1 = retrieveData("moisture");
 
   Widget build(BuildContext context) {
+    // Retrieve MediaQuery
+    mediaQueryData = MediaQuery.of(context);
+    screenWidth = mediaQueryData.size.width;
+    screenHeight = mediaQueryData.size.height;
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: _buildAppBar(context),
@@ -104,6 +119,7 @@ class _SoilEcValueState extends State<SoilEcValue> {
                 onTap: () {
                   Navigator.push(
                     context,
+                    // backwad
                     MaterialPageRoute(builder: (context) => TemperatureValue()),
                   );
                 },
@@ -114,27 +130,30 @@ class _SoilEcValueState extends State<SoilEcValue> {
               ),
               SizedBox(width: 20),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
                 child: Icon(
                   iconData[currentIndex],
-                  size: 40,
+                  size: screenWidth *
+                      0.08, // Adjust icon size based on screen width
                 ),
               ),
               Text(
                 textData[currentIndex],
-                style: TextStyle(fontSize: 24),
+                style: TextStyle(
+                    fontSize: screenWidth *
+                        0.05), // Adjust font size based on screen width
               ),
-              SizedBox(width: 0),
+              SizedBox(width: screenWidth * 0.03),
               GestureDetector(
                 onTap: () {
                   Navigator.push(
                     context,
-                    //forward move
+                    //forward
                     MaterialPageRoute(builder: (context) => Nitrogenvalue()),
                   );
                 },
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
                   child: IconButton(
                     icon: Icon(Icons.arrow_forward_ios),
                     onPressed: null,
@@ -156,13 +175,13 @@ class _SoilEcValueState extends State<SoilEcValue> {
     );
   }
 
-  Widget _buildTextScreen(int index, double speedValue) {
+  Widget _buildTextScreen(int index, int speedValue) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(height: 50),
         ToggleSwitch(
-          minWidth: 90.0,
+          minWidth: screenWidth * 0.25, // Adjust width based on screen width
           cornerRadius: 100.0,
           activeBgColors: [
             [Color(0xFFC9E9C9)],
@@ -179,7 +198,6 @@ class _SoilEcValueState extends State<SoilEcValue> {
             if (index == 0) {
               Navigator.push(
                 context,
-                //graph
                 MaterialPageRoute(builder: (context) => SoilECgraph()),
               );
             } else if (index == 1) {
@@ -195,8 +213,9 @@ class _SoilEcValueState extends State<SoilEcValue> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              width: 70,
-              height: 50,
+              width: screenWidth * 0.15, // Adjust width based on screen width
+              height:
+                  screenHeight * 0.065, // Adjust height based on screen height
               decoration: BoxDecoration(
                 color: Colors.red, // Color representing minimum value
                 borderRadius: BorderRadius.circular(15),
@@ -205,8 +224,9 @@ class _SoilEcValueState extends State<SoilEcValue> {
                   child: Text('Min 32', style: TextStyle(color: Colors.white))),
             ),
             Container(
-              width: 70,
-              height: 50,
+              width: screenWidth * 0.15, // Adjust width based on screen width
+              height:
+                  screenHeight * 0.065, // Adjust height based on screen height
               decoration: BoxDecoration(
                 color: Colors.green, // Color representing maximum value
                 borderRadius: BorderRadius.circular(15),
@@ -219,12 +239,12 @@ class _SoilEcValueState extends State<SoilEcValue> {
         Expanded(
           child: Center(
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.9,
-              height: MediaQuery.of(context).size.width * 0.9,
+              width: screenWidth * 0.9,
+              height: screenWidth * 0.9,
               padding: EdgeInsets.all(12),
               child: KdGaugeView(
                 minSpeed: 0,
-                maxSpeed: 5,
+                maxSpeed: 100,
                 speed: speedValue.toDouble(),
                 animate: true,
                 duration: Duration(seconds: 5),

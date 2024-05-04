@@ -19,17 +19,27 @@ class PhValue extends StatefulWidget {
   _PhValueState createState() => _PhValueState();
 }
 
+// Add MediaQuery
+late MediaQueryData mediaQueryData;
+late double screenWidth;
+late double screenHeight;
+
 class _PhValueState extends State<PhValue> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final String user = "To Agro_Farm";
   final PageController _pageController = PageController();
+  //media queruy
+  late MediaQueryData mediaQueryData;
+  late double screenWidth;
+  late double screenHeight;
 
   final List<String> textData = [
     "PH Value",
   ];
   final List<IconData> iconData = [
-    Icons.thermostat, // Temperature icon
+    Icons.connected_tv_sharp,
+    //  Icons.thermostat,
   ];
   int currentIndex = 0;
   // Global variables for each meter's speed value
@@ -46,9 +56,14 @@ class _PhValueState extends State<PhValue> {
 // double temperatureSpeed = double.parse(retrieveData('temp'));
 // double lightSpeed = double.parse(retrieveData('light'));
 // double humiditySpeed  = double.parse(retrieveData('humid'));
-  double speedValue1 = retrieveData("pH")*0.1;
+  int speedValue1 = retrieveData("moisture");
 
   Widget build(BuildContext context) {
+    // Retrieve MediaQuery
+    mediaQueryData = MediaQuery.of(context);
+    screenWidth = mediaQueryData.size.width;
+    screenHeight = mediaQueryData.size.height;
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: _buildAppBar(context),
@@ -105,8 +120,8 @@ class _PhValueState extends State<PhValue> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => Phosphorusvalue()),
+                    // backwad
+                    MaterialPageRoute(builder: (context) => Phosphorusvalue()),
                   );
                 },
                 child: IconButton(
@@ -116,27 +131,30 @@ class _PhValueState extends State<PhValue> {
               ),
               SizedBox(width: 20),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
                 child: Icon(
                   iconData[currentIndex],
-                  size: 40,
+                  size: screenWidth *
+                      0.08, // Adjust icon size based on screen width
                 ),
               ),
               Text(
                 textData[currentIndex],
-                style: TextStyle(fontSize: 24),
+                style: TextStyle(
+                    fontSize: screenWidth *
+                        0.05), // Adjust font size based on screen width
               ),
-              SizedBox(width: 0),
+              SizedBox(width: screenWidth * 0.03),
               GestureDetector(
                 onTap: () {
                   Navigator.push(
                     context,
-                    //forward move
+                    //forward
                     MaterialPageRoute(builder: (context) => realTime()),
                   );
                 },
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
                   child: IconButton(
                     icon: Icon(Icons.arrow_forward_ios),
                     onPressed: null,
@@ -158,13 +176,13 @@ class _PhValueState extends State<PhValue> {
     );
   }
 
-  Widget _buildTextScreen(int index, double speedValue) {
+  Widget _buildTextScreen(int index, int speedValue) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(height: 50),
         ToggleSwitch(
-          minWidth: 90.0,
+          minWidth: screenWidth * 0.25, // Adjust width based on screen width
           cornerRadius: 100.0,
           activeBgColors: [
             [Color(0xFFC9E9C9)],
@@ -181,7 +199,6 @@ class _PhValueState extends State<PhValue> {
             if (index == 0) {
               Navigator.push(
                 context,
-                //graph
                 MaterialPageRoute(builder: (context) => Tempgraph()),
               );
             } else if (index == 1) {
@@ -197,8 +214,9 @@ class _PhValueState extends State<PhValue> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              width: 70,
-              height: 50,
+              width: screenWidth * 0.15, // Adjust width based on screen width
+              height:
+                  screenHeight * 0.065, // Adjust height based on screen height
               decoration: BoxDecoration(
                 color: Colors.red, // Color representing minimum value
                 borderRadius: BorderRadius.circular(15),
@@ -207,8 +225,9 @@ class _PhValueState extends State<PhValue> {
                   child: Text('Min 32', style: TextStyle(color: Colors.white))),
             ),
             Container(
-              width: 70,
-              height: 50,
+              width: screenWidth * 0.15, // Adjust width based on screen width
+              height:
+                  screenHeight * 0.065, // Adjust height based on screen height
               decoration: BoxDecoration(
                 color: Colors.green, // Color representing maximum value
                 borderRadius: BorderRadius.circular(15),
@@ -221,12 +240,12 @@ class _PhValueState extends State<PhValue> {
         Expanded(
           child: Center(
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.9,
-              height: MediaQuery.of(context).size.width * 0.9,
+              width: screenWidth * 0.9,
+              height: screenWidth * 0.9,
               padding: EdgeInsets.all(12),
               child: KdGaugeView(
                 minSpeed: 0,
-                maxSpeed: 14,
+                maxSpeed: 100,
                 speed: speedValue.toDouble(),
                 animate: true,
                 duration: Duration(seconds: 5),

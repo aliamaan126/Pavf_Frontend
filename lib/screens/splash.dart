@@ -33,7 +33,8 @@ class Splash extends StatelessWidget {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/5.png'), // Corrected path to background image
+                image: AssetImage(
+                    'assets/5.png'), // Corrected path to background image
                 fit: BoxFit.cover,
               ),
             ),
@@ -62,7 +63,6 @@ class Splash extends StatelessWidget {
   }
 }
 
-
 class SplashScreenContent extends StatelessWidget {
   const SplashScreenContent({Key? key}) : super(key: key);
 
@@ -74,8 +74,8 @@ class SplashScreenContent extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-             child: CircularProgressIndicator(),
-             );
+              child: CircularProgressIndicator(),
+            );
           } else {
             if (snapshot.data == true) {
               return FutureBuilder<void>(
@@ -84,8 +84,8 @@ class SplashScreenContent extends StatelessWidget {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     socketCLient("http://localhost:3000");
                     return const Center(
-                    child: CircularProgressIndicator(),
-                    );                   
+                      child: CircularProgressIndicator(),
+                    );
                   } else {
                     return Dashboard();
                   }
@@ -123,7 +123,7 @@ class SplashScreenContent extends StatelessWidget {
         String? role = data['user']?['role'];
         String? image = data['user']?['image'];
         List<dynamic>? devices = data['user']?['devices'];
-        
+
         print("data obj: $data");
         print("username: $user");
         print(image);
@@ -138,14 +138,14 @@ class SplashScreenContent extends StatelessWidget {
         // Handle user profile data as needed
       } else {
         // Handle HTTP error response
-              await deleteData('username');
-              await deleteData('email');
-              await deleteData('firstname');
-              await deleteData('lastname');
-              await deleteData('slug');
-              await deleteData('image');
-              await deleteData('devices');
-              await deleteToken("auth_token");
+        await deleteData('username');
+        await deleteData('email');
+        await deleteData('firstname');
+        await deleteData('lastname');
+        await deleteData('slug');
+        await deleteData('image');
+        await deleteData('devices');
+        await deleteToken("auth_token");
         Get.offAllNamed('/login');
       }
     } catch (e) {
@@ -222,7 +222,6 @@ class SignUpText extends StatelessWidget {
   }
 }
 
-
 void socketCLient(address) {
   IO.Socket socket = IO.io(address);
   socket.onConnect((_) {
@@ -230,10 +229,9 @@ void socketCLient(address) {
   });
 }
 
-
 Future<void> fetchLatestSoilData(String deviceID) async {
   try {
-    final url = '$server/arduino/fetch-Data'; 
+    final url = '$server/arduino/fetch-Data';
 
     final response = await http.post(
       Uri.parse(url),
