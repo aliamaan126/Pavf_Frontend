@@ -234,7 +234,7 @@ Widget _buildMetricRows(BuildContext context) {
       {
         "title": "Light Control",
         "description": "Description for Control Metric 1.",
-        "navigationPage": control(),
+        "navigationPage": View1Screen(initialIndex: 1),
       },
       {
         "title": "Temperature Control",
@@ -246,7 +246,7 @@ Widget _buildMetricRows(BuildContext context) {
       {
         "title": "Humidity Control",
         "description": "Description for Control Metric 3.",
-        "navigationPage": control(),
+        "navigationPage": View1Screen(initialIndex: 2),
       },
       {
         "title": "Water Control",

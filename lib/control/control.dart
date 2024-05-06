@@ -73,6 +73,10 @@ class control extends StatelessWidget {
 }
 
 class View1Screen extends StatefulWidget {
+  final int initialIndex;
+
+  View1Screen({this.initialIndex = 0}); // Define initialIndex parameter
+
   @override
   _View1ScreenState createState() => _View1ScreenState();
 }
@@ -80,7 +84,10 @@ class View1Screen extends StatefulWidget {
 class _View1ScreenState extends State<View1Screen> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String dynamicText = 'Temperature';
+
   int selectedIndex = 0;
+  CarouselController _carouselController = CarouselController();
+
   bool isTemperatureOn = false;
   double temperatureSliderValue = 0.0;
   bool isManualMode = false;
@@ -99,6 +106,12 @@ class _View1ScreenState extends State<View1Screen> {
   GlobalKey<KdGaugeViewState> temperatureGaugeKey = GlobalKey();
   GlobalKey<KdGaugeViewState> lightGaugeKey = GlobalKey();
   GlobalKey<KdGaugeViewState> humidityGaugeKey = GlobalKey();
+  @override
+  void initState() {
+    super.initState();
+    selectedIndex = widget.initialIndex; // Set selectedIndex to initialIndex
+    dynamicText = buttonData[widget.initialIndex]['name']; // Set dynamicText
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,6 +143,8 @@ class _View1ScreenState extends State<View1Screen> {
                   ),
                   SizedBox(height: isSmallScreen ? 10 : 20),
                   CarouselSlider(
+                    // Set the currentIndex to selectedIndex
+                    carouselController: _carouselController,
                     options: CarouselOptions(
                       height: isSmallScreen ? 100.0 : 150.0,
                       viewportFraction: 0.4,
@@ -140,6 +155,8 @@ class _View1ScreenState extends State<View1Screen> {
                           selectedIndex = index;
                         });
                       },
+                      // Set initial index
+                      initialPage: selectedIndex,
                     ),
                     items: buttonData.map((button) {
                       return Builder(
@@ -151,6 +168,8 @@ class _View1ScreenState extends State<View1Screen> {
                                 dynamicText = button['name'];
                                 selectedIndex = buttonData.indexOf(button);
                               });
+                              // Set the current index of the carousel
+                              _carouselController.animateToPage(selectedIndex);
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width,
@@ -179,21 +198,11 @@ class _View1ScreenState extends State<View1Screen> {
                                     ),
                                     child: Icon(
                                       button['icon'],
-                                      size: isSmallScreen ? 24.0 : 32.0,
+                                      size: isSmallScreen ? 42.0 : 52.0,
                                       color: Colors.white,
                                     ),
                                   ),
                                   SizedBox(height: isSmallScreen ? 5.0 : 10.0),
-                                  Text(
-                                    button['name'],
-                                    style: TextStyle(
-                                      color: selectedIndex ==
-                                              buttonData.indexOf(button)
-                                          ? Colors.blue
-                                          : Colors.grey,
-                                      fontSize: isSmallScreen ? 12.0 : 16.0,
-                                    ),
-                                  ),
                                 ],
                               ),
                             ),
