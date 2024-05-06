@@ -40,19 +40,47 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      leading: IconButton(
-        icon: Icon(Icons.menu),
-        onPressed: onMenuPressed,
-        color: Colors.black,
-      ),
-      elevation: 0,
+    double appBarHeight = kToolbarHeight * 2;
+
+    return Stack(
+      children: [
+        Image.asset(
+          'assets/plant.jpg', // Path to your background image
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: appBarHeight, // Set the height here
+        ),
+        AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: true,
+          automaticallyImplyLeading: false, // Hide the default leading icon
+
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.only(top: 20.0), // Add space from the top
+                child: IconButton(
+                  icon: Icon(Icons.menu, size: 35),
+                  onPressed: onMenuPressed,
+                  color: Colors.white, // Set the color to white
+                ),
+              ),
+              Expanded(
+                  child:
+                      Container()), // Empty Expanded to push the menu icon to the left corner
+            ],
+          ),
+        ),
+      ],
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(kToolbarHeight * 2);
 }
 
 class control extends StatelessWidget {
@@ -345,9 +373,9 @@ class _View1ScreenState extends State<View1Screen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildIconButton(Icons.air, 'Fan', isSmallScreen),
-                        _buildIconButton(Icons.ac_unit, 'Cool', isSmallScreen),
-                        _buildIconButton(Icons.whatshot, 'Heat', isSmallScreen),
+                        // _buildIconButton(Icons.air, 'Fan', isSmallScreen),
+                        // _buildIconButton(Icons.ac_unit, 'Cool', isSmallScreen),
+                        // _buildIconButton(Icons.whatshot, 'Heat', isSmallScreen),
                         _buildIconButton(Icons.timer, 'Timer', isSmallScreen),
                       ],
                     ),
@@ -428,8 +456,12 @@ class _View1ScreenState extends State<View1Screen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildIconButton(Icons.air, 'Fan', isSmallScreen),
-                        _buildIconButton(Icons.ac_unit, 'Cool', isSmallScreen),
+                        _buildIconButton(
+                          Icons.air,
+                          'wind',
+                          isSmallScreen,
+                        ),
+                        // _buildIconButton(Icons.ac_unit, 'Cool', isSmallScreen),
                         _buildIconButton(Icons.whatshot, 'Heat', isSmallScreen),
                         _buildIconButton(Icons.timer, 'Timer', isSmallScreen),
                       ],
@@ -470,16 +502,23 @@ class _View1ScreenState extends State<View1Screen> {
     );
   }
 
+  //handel icon code
   Widget _buildIconButton(IconData icon, String label, bool isSmallScreen) {
+    double iconSize = isSmallScreen ? 50.0 : 50.0;
+    double labelSize = isSmallScreen ? 12.0 : 15.0;
+
     return Column(
       children: [
         IconButton(
           icon: Icon(icon),
+          iconSize: iconSize, // Set icon size based on screen size
           onPressed: () {},
         ),
-        SizedBox(height: isSmallScreen ? 5 : 10),
+        SizedBox(height: isSmallScreen ? 25 : 15),
         Text(
           label,
+          style: TextStyle(
+              fontSize: labelSize), // Set label size based on screen size
         ),
       ],
     );
