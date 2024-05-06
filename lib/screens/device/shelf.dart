@@ -1,8 +1,10 @@
 import 'package:PAVF/screens/app/dashboard.dart';
 import 'package:PAVF/screens/device/device_Setup.dart';
 import 'package:flutter/material.dart';
+import 'package:PAVF/component/drawer.dart';
 import 'package:get/get.dart';
 
+final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 // Example JSON response containing an array of items
 final jsonResponse = {
   "items": [
@@ -30,6 +32,7 @@ class Shelf extends StatelessWidget {
         jsonResponse['items']!; // Extract array of items from JSON response
 
     return Scaffold(
+      drawer: buildDrawer(), // This line includes the drawer
       appBar: const SubHeader(heading: "Shelf"),
       body: Container(
         decoration: const BoxDecoration(
@@ -109,6 +112,7 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
         onPressed: () {
           // Handle onPressed event for the left button
           // Implement your logic here
+          _scaffoldKey.currentState?.openDrawer(); // Open the drawer
         },
       ),
       title: Text(

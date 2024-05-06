@@ -42,7 +42,7 @@ class Dashboard extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       appBar: _buildAppBar(context),
-      drawer: buildDrawer(context),
+      drawer: buildDrawer(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

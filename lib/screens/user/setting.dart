@@ -14,7 +14,7 @@ class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SubHeader(heading: "Settings"),
-      drawer: buildDrawer(context),
+      drawer: buildDrawer(),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Container(

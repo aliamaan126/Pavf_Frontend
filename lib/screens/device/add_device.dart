@@ -38,7 +38,7 @@ class AddDevice extends StatelessWidget {
 
     return Scaffold(
       key: _scaffoldKey, // Assign the scaffold key to the key property
-      drawer: buildDrawer(context),
+      drawer: buildDrawer(),
       appBar: const SubHeader(heading: "Device"),
       body: Container(
         decoration: const BoxDecoration(

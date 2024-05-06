@@ -50,7 +50,7 @@ class _SoilgECraphState extends State<SoilECgraph> {
       key: _scaffoldKey,
       appBar: _buildAppBar(context),
       body: _buildBody(),
-      drawer: buildDrawer(context),
+      drawer: buildDrawer(),
     );
   }
 

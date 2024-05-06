@@ -6,7 +6,6 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:PAVF/component/drawer.dart';
-import 'package:PAVF/values/real/potassium.dart';
 
 import 'package:intl/intl.dart';
 
@@ -57,7 +56,7 @@ class _SoilgraphState extends State<Soilgraph> {
       key: _scaffoldKey,
       appBar: _buildAppBar(context),
       body: _buildBody(),
-      drawer: buildDrawer(context),
+      drawer: buildDrawer(),
     );
   }
 
@@ -96,234 +95,226 @@ class _SoilgraphState extends State<Soilgraph> {
   }
 
   Widget _buildBody() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 30.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Soilpotassiumgraph()),
-                  );
-                },
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back_ios),
-                  onPressed: null,
-                ),
-              ),
-              SizedBox(width: 20),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
-                child: Icon(
-                  iconData[currentIndex],
-                  size: screenWidth * 0.08,
-                ),
-              ),
-              Text(
-                textData[currentIndex],
-                style: TextStyle(
-                  fontSize: screenWidth * 0.05,
-                ),
-              ),
-              SizedBox(width: screenWidth * 0.03),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Tempgraph()),
-                  );
-                },
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Soilpotassiumgraph()),
+                    );
+                  },
                   child: IconButton(
-                    icon: Icon(Icons.arrow_forward_ios),
+                    icon: Icon(Icons.arrow_back_ios),
                     onPressed: null,
                   ),
                 ),
-              ),
-            ],
-          ),
-          Expanded(
-            child: PageView(
-              controller: _pageController,
-              children: [
-                _buildTextScreen(0, speedValue1),
+                SizedBox(width: 10),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+                  child: Icon(
+                    iconData[currentIndex],
+                    size: screenWidth * 0.08,
+                  ),
+                ),
+                Text(
+                  textData[currentIndex],
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.05,
+                  ),
+                ),
+                SizedBox(width: screenWidth * 0.03),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Tempgraph()),
+                    );
+                  },
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_forward_ios),
+                      onPressed: null,
+                    ),
+                  ),
+                ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTextScreen(int index, int speedValue) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(height: 10),
-        ToggleSwitch(
-          minWidth: screenWidth * 0.25,
-          cornerRadius: 100.0,
-          activeBgColors: [
-            [Color(0xFF18A818)],
-            [Color(0xFF18A818)]
-          ],
-          activeFgColor: Color.fromARGB(255, 6, 6, 6),
-          inactiveBgColor: Color(0xFFC9E9C9),
-          inactiveFgColor: Color.fromARGB(255, 0, 0, 0),
-          initialLabelIndex: 1,
-          totalSwitches: 2,
-          labels: ['Graph', 'Realtime'],
-          radiusStyle: true,
-          onToggle: (index) {
-            if (index == 0) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SoilMoistureValue()),
-              );
-            } else if (index == 1) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SoilMoistureValue()),
-              );
-            }
-          },
-        ),
-        SizedBox(height: 30),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              width: screenWidth * 0.15,
-              height: screenHeight * 0.065,
-              decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Center(
-                  child: Text('Min 32', style: TextStyle(color: Colors.white))),
+            SizedBox(height: 10),
+            ToggleSwitch(
+              minWidth: screenWidth * 0.25,
+              cornerRadius: 100.0,
+              activeBgColors: [
+                [Color(0xFF18A818)],
+                [Color(0xFF18A818)]
+              ],
+              activeFgColor: Color.fromARGB(255, 6, 6, 6),
+              inactiveBgColor: Color(0xFFC9E9C9),
+              inactiveFgColor: Color.fromARGB(255, 0, 0, 0),
+              initialLabelIndex: 1,
+              totalSwitches: 2,
+              labels: ['Graph', 'Realtime'],
+              radiusStyle: true,
+              onToggle: (index) {
+                if (index == 0) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SoilMoistureValue()),
+                  );
+                } else if (index == 1) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SoilMoistureValue()),
+                  );
+                }
+              },
             ),
-            Container(
-              width: screenWidth * 0.15,
-              height: screenHeight * 0.065,
-              decoration: BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Center(
-                  child: Text('Max 52', style: TextStyle(color: Colors.white))),
-            ),
-          ],
-        ),
-        SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _buildIntervalButton('1d'),
-            _buildIntervalButton('3d'),
-            _buildIntervalButton('7d'),
-            _buildIntervalButton('1m'),
-            _buildIntervalButton('3m'),
-          ],
-        ),
-        SizedBox(height: 10),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
-          child: SizedBox(
-            height: 350,
-            child: Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
-                child: Card(
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  width: screenWidth * 0.3,
+                  height: screenHeight * 0.065,
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.all(
-                              MediaQuery.of(context).size.width * 0.08),
-                          child: SizedBox(
-                            height: 300,
-                            child: SfCartesianChart(
-                              backgroundColor: Colors.white,
-                              primaryXAxis: DateTimeAxis(
-                                title: AxisTitle(
-                                  text: 'Date',
-                                  textStyle: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                  child: Center(
+                      child: Text('Min 32',
+                          style: TextStyle(color: Colors.white))),
+                ),
+                Container(
+                  width: screenWidth * 0.3,
+                  height: screenHeight * 0.065,
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Center(
+                      child: Text('Max 52',
+                          style: TextStyle(color: Colors.white))),
+                ),
+              ],
+            ),
+            SizedBox(height: 40),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildIntervalButton('1d'),
+                _buildIntervalButton('3d'),
+                _buildIntervalButton('7d'),
+                _buildIntervalButton('1m'),
+                _buildIntervalButton('3m'),
+              ],
+            ),
+            SizedBox(height: 40),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
+              child: SizedBox(
+                height: screenHeight * 0.35,
+                child: Expanded(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+                    child: Card(
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: screenWidth * 0.03),
+                              child: SizedBox(
+                                height: screenHeight * 0.3,
+                                child: SfCartesianChart(
+                                  backgroundColor: Colors.white,
+                                  primaryXAxis: DateTimeAxis(
+                                    title: AxisTitle(
+                                      text: 'Date',
+                                      textStyle: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    majorGridLines: MajorGridLines(
+                                      width: 1,
+                                      color: Colors.grey[300],
+                                    ),
+                                    plotOffset: 0,
+                                    dateFormat: DateFormat
+                                        .MMMd(), // Add this line to format dates
                                   ),
-                                ),
-                                majorGridLines: MajorGridLines(
-                                  width: 1,
-                                  color: Colors.grey[300],
-                                ),
-                                plotOffset: 0,
-                                dateFormat: DateFormat
-                                    .MMMd(), // Add this line to format dates
-                              ),
-                              primaryYAxis: NumericAxis(
-                                title: AxisTitle(
-                                  text: 'Value',
-                                  textStyle: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                                  primaryYAxis: NumericAxis(
+                                    title: AxisTitle(
+                                      text: 'Value',
+                                      textStyle: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    axisLine: AxisLine(
+                                      width: 1,
+                                      color: Colors.grey[300],
+                                    ),
+                                    majorTickLines: MajorTickLines(
+                                      size: 5,
+                                      color: Colors.grey[300],
+                                    ),
+                                    numberFormat: NumberFormat.compact(),
                                   ),
-                                ),
-                                axisLine: AxisLine(
-                                  width: 1,
-                                  color: Colors.grey[300],
-                                ),
-                                majorTickLines: MajorTickLines(
-                                  size: 5,
-                                  color: Colors.grey[300],
-                                ),
-                                numberFormat: NumberFormat.compact(),
-                              ),
-                              series: <CartesianSeries>[
-                                LineSeries<SalesData, DateTime>(
-                                  dataSource: chartData,
-                                  xValueMapper: (SalesData sales, _) =>
-                                      sales.year,
-                                  yValueMapper: (SalesData sales, _) =>
-                                      sales.sales,
-                                  color: Colors.blue,
-                                  width: 2,
-                                  markerSettings: MarkerSettings(
-                                    isVisible: true,
-                                    color: Colors.blue,
+                                  series: <CartesianSeries>[
+                                    LineSeries<SalesData, DateTime>(
+                                      dataSource: chartData,
+                                      xValueMapper: (SalesData sales, _) =>
+                                          sales.year,
+                                      yValueMapper: (SalesData sales, _) =>
+                                          sales.sales,
+                                      color: Colors.blue,
+                                      width: 2,
+                                      markerSettings: MarkerSettings(
+                                        isVisible: true,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                  ],
+                                  tooltipBehavior: TooltipBehavior(
+                                    enable: true,
+                                    textStyle: TextStyle(
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                ),
-                              ],
-                              tooltipBehavior: TooltipBehavior(
-                                enable: true,
-                                textStyle: TextStyle(
-                                  color: Colors.white,
                                 ),
                               ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 

@@ -16,9 +16,11 @@ void main() {
 }
 
 class UpdatePass extends StatelessWidget {
-  final TextEditingController currentPasswordController =TextEditingController();
+  final TextEditingController currentPasswordController =
+      TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController confirmNewPasswordController =TextEditingController();
+  final TextEditingController confirmNewPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class UpdatePass extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: const SubHeader(heading: "Update Password"),
-      drawer: buildDrawer(context),
+      drawer: buildDrawer(),
       body: Container(
         decoration: const BoxDecoration(
           color: Color(0xFFC9E9C9),
@@ -90,7 +92,11 @@ class UpdatePass extends StatelessWidget {
                               // Implement password change functionality
                               print("Change Password tapped");
 
-                              updatePass(context, currentPasswordController, newPasswordController, confirmNewPasswordController);
+                              updatePass(
+                                  context,
+                                  currentPasswordController,
+                                  newPasswordController,
+                                  confirmNewPasswordController);
                               // You can use these strings to perform password validation or update logic
                             },
                             child: const Text(
@@ -156,7 +162,10 @@ Future<String?> updatePass(
   try {
     final response = await http.post(
       Uri.parse(apiUrl),
-      headers: {'Content-Type': 'application/json','Authorization': 'Bearer $token'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
       body: json.encode({
         'currentPassword': currentPassword,
         'newPassword': password,

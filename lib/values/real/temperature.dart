@@ -68,7 +68,7 @@ class _TemperatureValueState extends State<TemperatureValue> {
       key: _scaffoldKey,
       appBar: _buildAppBar(context),
       body: _buildBody(),
-      drawer: buildDrawer(context),
+      drawer: buildDrawer(),
     );
   }
 
@@ -215,9 +215,8 @@ class _TemperatureValueState extends State<TemperatureValue> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              width: screenWidth * 0.15, // Adjust width based on screen width
-              height:
-                  screenHeight * 0.065, // Adjust height based on screen height
+              width: screenWidth * 0.3,
+              height: screenHeight * 0.065,
               decoration: BoxDecoration(
                 color: Colors.red, // Color representing minimum value
                 borderRadius: BorderRadius.circular(15),
@@ -226,9 +225,8 @@ class _TemperatureValueState extends State<TemperatureValue> {
                   child: Text('Min 32', style: TextStyle(color: Colors.white))),
             ),
             Container(
-              width: screenWidth * 0.15, // Adjust width based on screen width
-              height:
-                  screenHeight * 0.065, // Adjust height based on screen height
+              width: screenWidth * 0.3,
+              height: screenHeight * 0.065,
               decoration: BoxDecoration(
                 color: Colors.green, // Color representing maximum value
                 borderRadius: BorderRadius.circular(15),

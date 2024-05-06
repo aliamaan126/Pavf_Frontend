@@ -51,7 +51,7 @@ class _SoilNCgraphState extends State<SoilNCgraph> {
       key: _scaffoldKey,
       appBar: _buildAppBar(context),
       body: _buildBody(),
-      drawer: buildDrawer(context),
+      drawer: buildDrawer(),
     );
   }
 

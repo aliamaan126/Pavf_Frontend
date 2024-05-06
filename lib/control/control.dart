@@ -9,32 +9,30 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:PAVF/component/drawer.dart';
 
-
 // Define global variables for speeds
-double temperatureSpeed = double.parse(retrieveData('temp'));
-double lightSpeed = double.parse(retrieveData('light'));
-double humiditySpeed  = double.parse(retrieveData('humid'));
+double temperatureSpeed = 2;
+double lightSpeed = 30;
+double humiditySpeed = 40;
 
+// Future<void> fetchData() async {
+//   try {
+//     // Make the HTTP GET request
+//     final response = await http.get(Uri.parse('$server/data/01/fetch'));
 
+//     // Check if the request was successful (status code 200)
+//     if (response.statusCode == 200) {
+//       // Parse the JSON response
+//       final data = jsonDecode(response.body);
+//       humiditySpeed = 50;
+//     } else {
+//       print('Failed to fetch data: ${response.statusCode}');
+//     }
+//   } catch (error) {
+//     // Handle any exceptions that occur during the request
+//     print('Error fetching data: $error');
+//   }
+// }
 
-Future<void> fetchData() async {
-  try {
-    // Make the HTTP GET request
-    final response = await http.get(Uri.parse('$server/data/01/fetch'));
-
-    // Check if the request was successful (status code 200)
-    if (response.statusCode == 200) {
-      // Parse the JSON response
-      final data = jsonDecode(response.body);
-      humiditySpeed = 50;     
-    } else {
-      print('Failed to fetch data: ${response.statusCode}');
-    }
-  } catch (error) {
-    // Handle any exceptions that occur during the request
-    print('Error fetching data: $error');
-  }
-}
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Function()? onMenuPressed;
 
@@ -111,7 +109,7 @@ class _View1ScreenState extends State<View1Screen> {
           _scaffoldKey.currentState?.openDrawer();
         },
       ),
-      drawer: buildDrawer(context),
+      drawer: buildDrawer(),
       body: LayoutBuilder(
         builder: (context, constraints) {
           bool isSmallScreen = constraints.maxWidth < 600;
@@ -148,7 +146,7 @@ class _View1ScreenState extends State<View1Screen> {
                         builder: (BuildContext context) {
                           return GestureDetector(
                             onTap: () async {
-                              await fetchData();
+                              // await fetchData();
                               setState(() {
                                 dynamicText = button['name'];
                                 selectedIndex = buttonData.indexOf(button);
@@ -478,9 +476,3 @@ class _View1ScreenState extends State<View1Screen> {
     );
   }
 }
-
-
-
-
-
-

@@ -11,12 +11,11 @@ import "package:PAVF/screens/auth/resetPass_screen.dart";
 import 'package:get/get.dart';
 import "package:PAVF/screens/splash.dart";
 
-
 class RouteGenerator {
   static List<GetPage> routes = [
     GetPage(
       name: '/',
-      page: () =>  Splash(),
+      page: () => const Splash(),
     ),
     GetPage(
       name: '/login',
@@ -86,6 +85,4 @@ class RouteGenerator {
   //     );
   //   });
   // }
-
-  
 }

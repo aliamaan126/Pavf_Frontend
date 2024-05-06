@@ -70,7 +70,7 @@ class _NotificationPageState extends State<NotificationPage> {
           _scaffoldKey.currentState?.openDrawer();
         },
       ),
-      drawer: buildDrawer(context),
+      drawer: buildDrawer(),
       body: ListView.builder(
         itemCount: notifications.length,
         itemBuilder: (context, index) {

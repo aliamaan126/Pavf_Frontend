@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
 
@@ -25,8 +26,7 @@ class _ProfileState extends State<Profile> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   File? _profileImage = File(retrieveData('file'));
-  String? imageExist = retrieveData('image') ;
-
+  String? imageExist = retrieveData('image');
 
   @override
   void initState() {
@@ -85,17 +85,15 @@ class _ProfileState extends State<Profile> {
                   alignment: Alignment.center,
                   children: [
                     CircleAvatar(
-                      backgroundImage: imageExist!= ""
-                      ?NetworkImage(userImageDir+retrieveData("image")): 
-                      AssetImage('assets/profile.png')
-                              as ImageProvider, 
+                      backgroundImage: imageExist != ""
+                          ? NetworkImage(userImageDir + retrieveData("image"))
+                          : AssetImage('assets/profile.png') as ImageProvider,
                       radius: 50,
                       backgroundColor: Colors.white,
                       child: Container(
                         alignment: Alignment(0, 0),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          
                         ),
                       ),
                     ),
@@ -137,7 +135,7 @@ class _ProfileState extends State<Profile> {
           ),
         ),
       ),
-      drawer: buildDrawer(context),
+      drawer: buildDrawer(),
       body: SafeArea(
         child: ListView(
           children: <Widget>[
@@ -155,7 +153,8 @@ class _ProfileState extends State<Profile> {
                 children: [
                   ElevatedButton(
                     onPressed: () async {
-                      await _updateProfile(context, _firstNameController, _lastNameController,  _profileImage);
+                      await _updateProfile(context, _firstNameController,
+                          _lastNameController, _profileImage);
                       setState(() {
                         _isEditing = false;
                       });
@@ -207,7 +206,7 @@ class _ProfileState extends State<Profile> {
   ListTile _buildListTile(
       IconData icon, String title, TextEditingController controller) {
     // Check if the title is 'Username' or 'Email'
-    bool canEdit = title != 'Username' && title != 'Email'&& title != 'Role' ;
+    bool canEdit = title != 'Username' && title != 'Email' && title != 'Role';
 
     return ListTile(
       title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
@@ -252,19 +251,16 @@ class _ProfileState extends State<Profile> {
 }
 
 Future<String?> _updateProfile(
-    BuildContext context,
-    TextEditingController firstname,
-    TextEditingController lastname,
-    File? profileImage,
+  BuildContext context,
+  TextEditingController firstname,
+  TextEditingController lastname,
+  File? profileImage,
 ) async {
   final Fname = firstname.text;
   final Lname = lastname.text;
 
-  
-
   // Add your API endpoint URL here
   final apiUrl = '$server/profile/update';
-  
 
   try {
     // Create a multipart request
@@ -292,16 +288,15 @@ Future<String?> _updateProfile(
 
     // Check the response status code
     if (streamedResponse.statusCode == 202) {
-
       await storeData('firstname', Fname);
       await storeData('lastname', Lname);
-      
+
       String userProfile = retrieveData("image");
 
-      final storage = userImageDir+userProfile;
-      
+      final storage = userImageDir + userProfile;
+
       await retriveFile(storage, userProfile);
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Profile Successfully Updated'),
@@ -313,7 +308,8 @@ Future<String?> _updateProfile(
       // Handle other status codes if needed
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to update profile: ${streamedResponse.reasonPhrase}'),
+          content: Text(
+              'Failed to update profile: ${streamedResponse.reasonPhrase}'),
         ),
       );
     }
