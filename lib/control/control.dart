@@ -1,42 +1,24 @@
+import 'package:PAVF/constants/url.dart';
 import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:kdgaugeview/kdgaugeview.dart';
-import 'package:PAVF/constants/url.dart';
-import 'package:PAVF/screens/app/dashboard.dart';
-import 'package:PAVF/screens/user/setting.dart';
+import 'package:PAVF/component/drawer.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:PAVF/component/drawer.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+
 
 // Define global variables for speeds
 double temperatureSpeed = 2;
 double lightSpeed = 30;
 double humiditySpeed = 40;
 
-// Future<void> fetchData() async {
-//   try {
-//     // Make the HTTP GET request
-//     final response = await http.get(Uri.parse('$server/data/01/fetch'));
-
-//     // Check if the request was successful (status code 200)
-//     if (response.statusCode == 200) {
-//       // Parse the JSON response
-//       final data = jsonDecode(response.body);
-//       humiditySpeed = 50;
-//     } else {
-//       print('Failed to fetch data: ${response.statusCode}');
-//     }
-//   } catch (error) {
-//     // Handle any exceptions that occur during the request
-//     print('Error fetching data: $error');
-//   }
-// }
-
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Function()? onMenuPressed;
 
-  CustomAppBar({required this.onMenuPressed});
+  const CustomAppBar({super.key, required this.onMenuPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -117,13 +99,13 @@ class _View1ScreenState extends State<View1Screen> {
   CarouselController _carouselController = CarouselController();
 
   bool isTemperatureOn = false;
-  double temperatureSliderValue = 0.0;
+  double temperatureSliderValue = retrieveData("setTempValue")>0?retrieveData("setTempValue"):temperatureSpeed;
   bool isManualMode = false;
   bool isLightOn = false;
-  double lightSliderValue = 0.0;
+  double lightSliderValue = retrieveData("setLightValue")>0?retrieveData("setLightValue"):lightSpeed;
   bool isHumidityOn = false;
-  double humiditySliderValue = 0.0;
-
+  double humiditySliderValue = retrieveData("setHumidityValue")>0?retrieveData("setHumidityValue"):humiditySpeed;
+  int state = 0;
   List<Map<String, dynamic>> buttonData = [
     {'icon': Icons.thermostat, 'name': 'Temperature'},
     {'icon': Icons.lightbulb, 'name': 'Light Bulb'},
@@ -243,9 +225,18 @@ class _View1ScreenState extends State<View1Screen> {
                     Align(
                       alignment: Alignment.topRight,
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () {      
                           setState(() {
                             isTemperatureOn = !isTemperatureOn;
+                            if(isTemperatureOn==false)
+                            {
+                              state = 0;
+                            }
+                            else
+                            {
+                              state = 1;
+                            }
+                            controlUnit(context, "3d2c5777-25a4-455a-b8f3-fa0e135cc12b", "heating", retrieveData("setHumidityValue"), state);
                           });
                         },
                         child: Text(isTemperatureOn ? 'Turn Off' : 'Turn On'),
@@ -279,6 +270,7 @@ class _View1ScreenState extends State<View1Screen> {
                       onChanged: (value) {
                         setState(() {
                           temperatureSliderValue = value;
+                          storeData("setTempValue", value);
                         });
                       },
                       min: 0,
@@ -293,7 +285,7 @@ class _View1ScreenState extends State<View1Screen> {
                         _buildIconButton(Icons.air, 'Fan', isSmallScreen),
                         _buildIconButton(Icons.ac_unit, 'Cool', isSmallScreen),
                         _buildIconButton(Icons.whatshot, 'Heat', isSmallScreen),
-                        _buildIconButton(Icons.timer, 'Timer', isSmallScreen),
+                        // _buildIconButton(Icons.timer, 'Timer', isSmallScreen),
                       ],
                     ),
                     SizedBox(height: isSmallScreen ? 10 : 20),
@@ -329,6 +321,15 @@ class _View1ScreenState extends State<View1Screen> {
                         onPressed: () {
                           setState(() {
                             isLightOn = !isLightOn;
+                            if(isLightOn==false)
+                            {
+                              state = 0;
+                            }
+                            else
+                            {
+                              state = 1;
+                            }
+                            controlUnit(context, "3d2c5777-25a4-455a-b8f3-fa0e135cc12b", "shelf_light", retrieveData("setLightValue"), state);
                           });
                         },
                         child: Text(isLightOn ? 'Turn Off' : 'Turn On'),
@@ -359,24 +360,30 @@ class _View1ScreenState extends State<View1Screen> {
                     SizedBox(height: isSmallScreen ? 10 : 20),
                     Slider(
                       value: lightSliderValue,
-                      onChanged: (value) {
-                        setState(() {
-                          lightSliderValue = value;
-                        });
-                      },
+                      onChanged: isManualMode
+                      ? null
+                      : (value) {
+                           setState(() {
+                            print('Slider value changed: $value');
+                          temperatureSliderValue = value;
+                          storeData("setLightValue", value);
+                          });
+                        },
                       min: 0,
                       max: 100,
                       divisions: 100,
                       label: lightSliderValue.round().toString(),
+                      activeColor: isManualMode ? Colors.grey:Colors.green,
+                  thumbColor: isManualMode ?  Colors.grey:Colors.green,
                     ),
                     SizedBox(height: isSmallScreen ? 10 : 20),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         // _buildIconButton(Icons.air, 'Fan', isSmallScreen),
                         // _buildIconButton(Icons.ac_unit, 'Cool', isSmallScreen),
                         // _buildIconButton(Icons.whatshot, 'Heat', isSmallScreen),
-                        _buildIconButton(Icons.timer, 'Timer', isSmallScreen),
+                        // _buildIconButton(Icons.timer, 'Timer', isSmallScreen),
                       ],
                     ),
                     SizedBox(height: isSmallScreen ? 10 : 20),
@@ -412,6 +419,15 @@ class _View1ScreenState extends State<View1Screen> {
                         onPressed: () {
                           setState(() {
                             isHumidityOn = !isHumidityOn;
+                            if(isHumidityOn==false)
+                            {
+                              state = 0;
+                            }
+                            else
+                            {
+                              state = 1;
+                            }
+                            controlUnit(context, "3d2c5777-25a4-455a-b8f3-fa0e135cc12b", "humidity", retrieveData("setHumidityValue"), state);
                           });
                         },
                         child: Text(isHumidityOn ? 'Turn Off' : 'Turn On'),
@@ -445,6 +461,7 @@ class _View1ScreenState extends State<View1Screen> {
                       onChanged: (value) {
                         setState(() {
                           humiditySliderValue = value;
+                          storeData("setHumidityValue", value);
                         });
                       },
                       min: 0,
@@ -456,14 +473,10 @@ class _View1ScreenState extends State<View1Screen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildIconButton(
-                          Icons.air,
-                          'wind',
-                          isSmallScreen,
-                        ),
+                        _buildIconButton(Icons.air,'wind',isSmallScreen,),
                         // _buildIconButton(Icons.ac_unit, 'Cool', isSmallScreen),
                         _buildIconButton(Icons.whatshot, 'Heat', isSmallScreen),
-                        _buildIconButton(Icons.timer, 'Timer', isSmallScreen),
+                        // _buildIconButton(Icons.timer, 'Timer', isSmallScreen),
                       ],
                     ),
                     SizedBox(height: isSmallScreen ? 10 : 20),
@@ -523,4 +536,36 @@ class _View1ScreenState extends State<View1Screen> {
       ],
     );
   }
+}
+
+Future<String?> controlUnit(
+    BuildContext context,
+    String deviceId,
+    String action,
+    double value,int state) async {
+  const apiUrl = '$server/profile/device-control';
+  final token = await _secureStorage.read(key: 'auth_token');
+  try {
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+      body: json.encode({
+        'deviceID': deviceId,
+        'action': action,
+        'state':state,
+        'value': value
+      }),
+    );
+    print(response.body);
+    if (response.statusCode == 202) {
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Update failed: $e')),
+    );
+  }
+  return null;
 }

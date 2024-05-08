@@ -1,9 +1,7 @@
 import "package:PAVF/screens/device/add_device.dart";
 import "package:PAVF/screens/device/device_Setup.dart";
-import "package:flutter/material.dart";
 import "package:PAVF/screens/app/dashboard.dart";
 import "package:PAVF/screens/auth/forgotPass_screen.dart";
-import "package:PAVF/screens/home_screen.dart";
 import "package:PAVF/screens/auth/login_screen.dart";
 import "package:PAVF/screens/auth/otp_screen.dart";
 import "package:PAVF/screens/auth/register_screen.dart";
@@ -23,7 +21,7 @@ class RouteGenerator {
     ),
     GetPage(
       name: '/register',
-      page: () => RegisterScreen(),
+      page: () => const RegisterScreen(),
     ),
     GetPage(
       name: '/forgotPass',

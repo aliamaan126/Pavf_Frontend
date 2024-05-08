@@ -1,12 +1,12 @@
 import 'package:PAVF/component/drawer.dart';
 import 'package:PAVF/screens/app/local_storage.dart';
-import 'package:PAVF/values/real/nitrogen.dart';
+import 'package:PAVF/values/real_time/nitrogen.dart';
 
-import 'package:PAVF/values/real/phosphorous.dart';
-import 'package:PAVF/values/real/potassium.dart';
-import 'package:PAVF/values/real/soil_moisture.dart';
-import 'package:PAVF/values/real/soilec.dart';
-import 'package:PAVF/values/real/temperature.dart';
+import 'package:PAVF/values/real_time/phosphorous.dart';
+import 'package:PAVF/values/real_time/potassium.dart';
+import 'package:PAVF/values/real_time/soil_moisture.dart';
+import 'package:PAVF/values/real_time/soilec.dart';
+import 'package:PAVF/values/real_time/temperature.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -321,7 +321,7 @@ Widget _buildMetricCard(
     child: Container(
       padding: EdgeInsets.all(MediaQuery.of(context).size.width *
           0.08), // Adjust padding based on screen width
-      height: MediaQuery.of(context).size.width * 0.599, // Adjusted height
+      height: MediaQuery.of(context).size.height * 0.3, // Adjusted height
       width: MediaQuery.of(context).size.width * 0.445, // Adjusted width
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -343,7 +343,7 @@ Widget _buildMetricCard(
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
-              fontSize: 16,
+              fontSize: MediaQuery.of(context).size.width * 0.038,
             ),
           ),
           SizedBox(

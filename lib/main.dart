@@ -14,7 +14,7 @@ class MainApp extends StatelessWidget {
     return GetMaterialApp(
       title: "PAVF",
       debugShowCheckedModeBanner: false,
-      initialRoute: '/login',
+      initialRoute: '/',
       //onGenerateRoute: RouteGenerator.generateRoute,
       getPages: RouteGenerator.routes,
       routingCallback: (routing) {

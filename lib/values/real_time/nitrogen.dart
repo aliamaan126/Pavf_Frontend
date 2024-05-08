@@ -1,20 +1,19 @@
-import 'package:PAVF/values/graph/graphvalue.dart';
-import 'package:PAVF/values/graph/potassium.dart';
-import 'package:PAVF/values/real/nitrogen.dart';
-import 'package:PAVF/values/real/pH.dart';
-import 'package:PAVF/values/real/phosphorous.dart';
-import 'package:PAVF/values/real/soil_moisture.dart';
+import 'package:PAVF/screens/app/local_storage.dart';
+import 'package:PAVF/values/graph/soil_nitrogen.dart';
+import 'package:PAVF/values/real_time/phosphorous.dart';
+import 'package:PAVF/values/real_time/potassium.dart';
+import 'package:PAVF/values/real_time/soilec.dart';
 import 'package:flutter/material.dart';
 import 'package:kdgaugeview/kdgaugeview.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 import 'package:PAVF/component/drawer.dart';
-import 'package:toggle_switch/toggle_switch.dart'; // Import ToggleSwitch package
 
 // Define the main widget for the real-time screen
-class realTime extends StatefulWidget {
-  realTime({Key? key}) : super(key: key);
+class Nitrogenvalue extends StatefulWidget {
+  Nitrogenvalue({Key? key}) : super(key: key);
 
   @override
-  _RealTimeState createState() => _RealTimeState();
+  _PhosphorusvalueState createState() => _PhosphorusvalueState();
 }
 
 // Add MediaQuery
@@ -22,7 +21,7 @@ late MediaQueryData mediaQueryData;
 late double screenWidth;
 late double screenHeight;
 
-class _RealTimeState extends State<realTime> {
+class _PhosphorusvalueState extends State<Nitrogenvalue> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final String user = "To Agro_Farm";
@@ -32,8 +31,12 @@ class _RealTimeState extends State<realTime> {
   late double screenWidth;
   late double screenHeight;
 
-  final List<String> textData = ["Potassium"];
-  final List<IconData> iconData = [Icons.emoji_nature];
+  final List<String> textData = [
+    "Nitrogen",
+  ];
+  final List<IconData> iconData = [
+    Icons.thermostat, // nitogen  icon
+  ];
   int currentIndex = 0;
   // Global variables for each meter's speed value
   // double speedValue1 =
@@ -49,8 +52,7 @@ class _RealTimeState extends State<realTime> {
 // double temperatureSpeed = double.parse(retrieveData('temp'));
 // double lightSpeed = double.parse(retrieveData('light'));
 // double humiditySpeed  = double.parse(retrieveData('humid'));
-  // int speedValue1 = retrieveData("moisture");
-  int speedValue1 = 30;
+  int speedValue1 = retrieveData("moisture");
 
   Widget build(BuildContext context) {
     // Retrieve MediaQuery
@@ -115,7 +117,7 @@ class _RealTimeState extends State<realTime> {
                   Navigator.push(
                     context,
                     //backward
-                    MaterialPageRoute(builder: (context) => Phosphorusvalue()),
+                    MaterialPageRoute(builder: (context) => SoilEcValue()),
                   );
                 },
                 child: IconButton(
@@ -144,8 +146,7 @@ class _RealTimeState extends State<realTime> {
                   Navigator.push(
                     context,
                     //forward
-                    MaterialPageRoute(
-                        builder: (context) => SoilMoistureValue()),
+                    MaterialPageRoute(builder: (context) => Phosphorusvalue()),
                   );
                 },
                 child: Padding(
@@ -194,12 +195,12 @@ class _RealTimeState extends State<realTime> {
             if (index == 0) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => PhValue()),
+                MaterialPageRoute(builder: (context) => SoilNCgraph()),
               );
             } else if (index == 1) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => realTime()),
+                MaterialPageRoute(builder: (context) => SoilEcValue()),
               );
             }
           },
@@ -258,6 +259,6 @@ class _RealTimeState extends State<realTime> {
 
 void main() {
   runApp(MaterialApp(
-    home: realTime(),
+    home: Nitrogenvalue(),
   ));
 }

@@ -341,6 +341,9 @@ class LoginButton extends StatelessWidget {
         await storeData('role', role.toString());
         await storeData('image', image.toString());
         await storeData('devices', devices.toString());
+        await storeData('setHumidityValue', 0);
+        await storeData('setTempValue', 0);
+        await storeData('setLightValue', 0);
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

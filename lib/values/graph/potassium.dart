@@ -5,7 +5,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:PAVF/component/drawer.dart';
-import 'package:PAVF/values/real/potassium.dart';
+import 'package:PAVF/values/real_time/potassium.dart';
 
 import 'package:intl/intl.dart';
 

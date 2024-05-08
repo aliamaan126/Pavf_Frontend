@@ -1,13 +1,11 @@
 import 'package:PAVF/values/graph/graphvalue.dart';
 import 'package:PAVF/values/graph/soil_nitrogen.dart';
-import 'package:PAVF/values/real/soilec.dart';
+import 'package:PAVF/values/real_time/soilec.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:PAVF/component/drawer.dart';
-import 'package:PAVF/values/real/potassium.dart';
-
 import 'package:intl/intl.dart';
 
 // Define the main widget for the real-time screen

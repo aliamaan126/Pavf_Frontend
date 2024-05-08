@@ -1,10 +1,11 @@
 import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:PAVF/values/graph/graphvalue.dart';
-import 'package:PAVF/values/graph/soil_Ec.dart';
 import 'package:PAVF/values/graph/soil_moisture.dart';
-import 'package:PAVF/values/real/nitrogen.dart';
-import 'package:PAVF/values/real/potassium.dart';
-import 'package:PAVF/values/real/temperature.dart';
+import 'package:PAVF/values/real_time/nitrogen.dart';
+import 'package:PAVF/values/real_time/potassium.dart';
+import 'package:PAVF/values/real_time/soil_moisture.dart';
+import 'package:PAVF/values/real_time/soilec.dart';
+import 'package:PAVF/values/real_time/temperature.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kdgaugeview/kdgaugeview.dart';
@@ -12,11 +13,11 @@ import 'package:toggle_switch/toggle_switch.dart';
 import 'package:PAVF/component/drawer.dart';
 
 // Define the main widget for the real-time screen
-class SoilEcValue extends StatefulWidget {
-  SoilEcValue({Key? key}) : super(key: key);
+class TemperatureValue extends StatefulWidget {
+  TemperatureValue({Key? key}) : super(key: key);
 
   @override
-  _SoilEcValueState createState() => _SoilEcValueState();
+  _TemperatureValueState createState() => _TemperatureValueState();
 }
 
 // Add MediaQuery
@@ -24,7 +25,7 @@ late MediaQueryData mediaQueryData;
 late double screenWidth;
 late double screenHeight;
 
-class _SoilEcValueState extends State<SoilEcValue> {
+class _TemperatureValueState extends State<TemperatureValue> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final String user = "To Agro_Farm";
@@ -35,10 +36,10 @@ class _SoilEcValueState extends State<SoilEcValue> {
   late double screenHeight;
 
   final List<String> textData = [
-    "Soil EC",
+    "Temperature",
   ];
   final List<IconData> iconData = [
-    Icons.eco, // Soil Moisture icon
+    Icons.thermostat, // Soil Moisture icon
   ];
   int currentIndex = 0;
   // Global variables for each meter's speed value
@@ -120,7 +121,8 @@ class _SoilEcValueState extends State<SoilEcValue> {
                   Navigator.push(
                     context,
                     // backwad
-                    MaterialPageRoute(builder: (context) => TemperatureValue()),
+                    MaterialPageRoute(
+                        builder: (context) => SoilMoistureValue()),
                   );
                 },
                 child: IconButton(
@@ -149,7 +151,7 @@ class _SoilEcValueState extends State<SoilEcValue> {
                   Navigator.push(
                     context,
                     //forward
-                    MaterialPageRoute(builder: (context) => Nitrogenvalue()),
+                    MaterialPageRoute(builder: (context) => SoilEcValue()),
                   );
                 },
                 child: Padding(
@@ -198,12 +200,12 @@ class _SoilEcValueState extends State<SoilEcValue> {
             if (index == 0) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SoilECgraph()),
+                MaterialPageRoute(builder: (context) => Soilgraph()),
               );
             } else if (index == 1) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SoilEcValue()),
+                MaterialPageRoute(builder: (context) => TemperatureValue()),
               );
             }
           },
@@ -262,6 +264,6 @@ class _SoilEcValueState extends State<SoilEcValue> {
 
 void main() {
   runApp(MaterialApp(
-    home: SoilEcValue(),
+    home: TemperatureValue(),
   ));
 }

@@ -53,7 +53,6 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    print(imageExist);
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: myBackground,
@@ -294,7 +293,7 @@ Future<String?> _updateProfile(
       String userProfile = retrieveData("image");
 
       final storage = userImageDir + userProfile;
-
+      await storeData('ProfilDir', userImageDir);
       await retriveFile(storage, userProfile);
 
       ScaffoldMessenger.of(context).showSnackBar(

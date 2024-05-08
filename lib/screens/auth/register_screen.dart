@@ -327,6 +327,7 @@ Future<void> registerUser(String username, String email, String password,
       await storeData('lastname', uLastName.toString());
       await storeData('role', urole.toString());
 
+
       // final SharedPreferences? prefs = await _prefs;
       // await prefs?.setString('token', token);
 
@@ -337,7 +338,7 @@ Future<void> registerUser(String username, String email, String password,
       // print(uemail.toString());
       // print(urole.toString());
 
-      Get.offAllNamed('/dashboard');
+      Get.offAllNamed('/');
     } else {
       print('Failed to register user: ${response.body}');
       var responseBody = json.decode(response.body);

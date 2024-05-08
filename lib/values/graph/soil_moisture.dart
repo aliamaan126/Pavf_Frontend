@@ -1,6 +1,6 @@
 import 'package:PAVF/values/graph/graphvalue.dart';
 import 'package:PAVF/values/graph/potassium.dart';
-import 'package:PAVF/values/real/soil_moisture.dart';
+import 'package:PAVF/values/real_time/soil_moisture.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -27,7 +27,6 @@ class _SoilgraphState extends State<Soilgraph> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final String user = "To Agro_Farm";
-  final PageController _pageController = PageController();
   late MediaQueryData mediaQueryData;
   late double screenWidth;
   late double screenHeight;

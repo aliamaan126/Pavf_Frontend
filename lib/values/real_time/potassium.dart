@@ -1,23 +1,20 @@
-import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:PAVF/values/graph/graphvalue.dart';
-import 'package:PAVF/values/graph/soil_moisture.dart';
-import 'package:PAVF/values/real/nitrogen.dart';
-import 'package:PAVF/values/real/potassium.dart';
-import 'package:PAVF/values/real/soil_moisture.dart';
-import 'package:PAVF/values/real/soilec.dart';
-import 'package:PAVF/values/real/temperature.dart';
+import 'package:PAVF/values/graph/potassium.dart';
+import 'package:PAVF/values/real_time/nitrogen.dart';
+import 'package:PAVF/values/real_time/pH.dart';
+import 'package:PAVF/values/real_time/phosphorous.dart';
+import 'package:PAVF/values/real_time/soil_moisture.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:kdgaugeview/kdgaugeview.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 import 'package:PAVF/component/drawer.dart';
+import 'package:toggle_switch/toggle_switch.dart'; // Import ToggleSwitch package
 
 // Define the main widget for the real-time screen
-class TemperatureValue extends StatefulWidget {
-  TemperatureValue({Key? key}) : super(key: key);
+class realTime extends StatefulWidget {
+  realTime({Key? key}) : super(key: key);
 
   @override
-  _TemperatureValueState createState() => _TemperatureValueState();
+  _RealTimeState createState() => _RealTimeState();
 }
 
 // Add MediaQuery
@@ -25,22 +22,18 @@ late MediaQueryData mediaQueryData;
 late double screenWidth;
 late double screenHeight;
 
-class _TemperatureValueState extends State<TemperatureValue> {
+class _RealTimeState extends State<realTime> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final String user = "To Agro_Farm";
   final PageController _pageController = PageController();
-  //media queruy
+  //media queru
   late MediaQueryData mediaQueryData;
   late double screenWidth;
   late double screenHeight;
 
-  final List<String> textData = [
-    "Temperature",
-  ];
-  final List<IconData> iconData = [
-    Icons.thermostat, // Soil Moisture icon
-  ];
+  final List<String> textData = ["Potassium"];
+  final List<IconData> iconData = [Icons.emoji_nature];
   int currentIndex = 0;
   // Global variables for each meter's speed value
   // double speedValue1 =
@@ -56,7 +49,8 @@ class _TemperatureValueState extends State<TemperatureValue> {
 // double temperatureSpeed = double.parse(retrieveData('temp'));
 // double lightSpeed = double.parse(retrieveData('light'));
 // double humiditySpeed  = double.parse(retrieveData('humid'));
-  int speedValue1 = retrieveData("moisture");
+  // int speedValue1 = retrieveData("moisture");
+  int speedValue1 = 30;
 
   Widget build(BuildContext context) {
     // Retrieve MediaQuery
@@ -120,9 +114,8 @@ class _TemperatureValueState extends State<TemperatureValue> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    // backwad
-                    MaterialPageRoute(
-                        builder: (context) => SoilMoistureValue()),
+                    //backward
+                    MaterialPageRoute(builder: (context) => Phosphorusvalue()),
                   );
                 },
                 child: IconButton(
@@ -151,7 +144,8 @@ class _TemperatureValueState extends State<TemperatureValue> {
                   Navigator.push(
                     context,
                     //forward
-                    MaterialPageRoute(builder: (context) => SoilEcValue()),
+                    MaterialPageRoute(
+                        builder: (context) => SoilMoistureValue()),
                   );
                 },
                 child: Padding(
@@ -200,12 +194,12 @@ class _TemperatureValueState extends State<TemperatureValue> {
             if (index == 0) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Soilgraph()),
+                MaterialPageRoute(builder: (context) => PhValue()),
               );
             } else if (index == 1) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => TemperatureValue()),
+                MaterialPageRoute(builder: (context) => realTime()),
               );
             }
           },
@@ -264,6 +258,6 @@ class _TemperatureValueState extends State<TemperatureValue> {
 
 void main() {
   runApp(MaterialApp(
-    home: TemperatureValue(),
+    home: realTime(),
   ));
 }

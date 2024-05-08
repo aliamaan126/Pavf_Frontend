@@ -1,6 +1,6 @@
 import 'package:PAVF/values/graph/soil_Ec.dart';
 import 'package:PAVF/values/graph/soil_moisture.dart';
-import 'package:PAVF/values/real/temperature.dart';
+import 'package:PAVF/values/real_time/temperature.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 

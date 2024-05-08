@@ -1,5 +1,4 @@
 import 'package:PAVF/component/drawer.dart';
-import 'package:PAVF/constants/url.dart';
 import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:PAVF/screens/device/device_Setup.dart';
 import 'package:PAVF/screens/device/shelf.dart';
@@ -45,10 +44,8 @@ class AddDevice extends StatelessWidget {
           color: Color(0xFFC9E9C9),
         ),
         child: ListView.builder(
-          itemCount: items.length + 1, // Add one for the "Add Device" button
+          itemCount: items.length +1, 
           itemBuilder: (context, index) {
-            final screenWidth = MediaQuery.of(context).size.width;
-            final screenHeight = MediaQuery.of(context).size.height;
             if (index < items.length) {
               final item = items[index];
               return CardItem(
@@ -75,7 +72,7 @@ class AddDevice extends StatelessWidget {
                   ),
                   margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   padding: EdgeInsets.all(20),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.add, color: Colors.black),

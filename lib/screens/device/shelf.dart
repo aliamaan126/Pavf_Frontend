@@ -1,5 +1,4 @@
 import 'package:PAVF/screens/app/dashboard.dart';
-import 'package:PAVF/screens/device/device_Setup.dart';
 import 'package:flutter/material.dart';
 import 'package:PAVF/component/drawer.dart';
 import 'package:get/get.dart';

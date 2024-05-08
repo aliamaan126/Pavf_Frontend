@@ -1,12 +1,11 @@
 import 'package:PAVF/values/graph/potassium.dart';
 import 'package:PAVF/values/graph/soil_nitrogen.dart';
-import 'package:PAVF/values/real/phosphorous.dart';
+import 'package:PAVF/values/real_time/phosphorous.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:PAVF/component/drawer.dart';
-import 'package:PAVF/values/real/potassium.dart';
 
 import 'package:intl/intl.dart';
 

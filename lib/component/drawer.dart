@@ -14,6 +14,8 @@ class buildDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? imageExist = retrieveData('image') ?? '';
+
     return Drawer(
       child: Container(
         color: const Color(0xFFC7F2D8),
@@ -26,20 +28,20 @@ class buildDrawer extends StatelessWidget {
                 decoration: const BoxDecoration(
                   color: Colors.black87,
                 ),
-                currentAccountPicture: const Padding(
+                currentAccountPicture: Padding(
                   padding: EdgeInsets.only(left: 0, top: 5),
                   child: CircleAvatar(
-                    radius: 800,
-                    backgroundImage:
-                        AssetImage('assets/profile.png') as ImageProvider,
+                    radius: 80,
+                    backgroundImage: imageExist!.isNotEmpty
+                        ? NetworkImage(userImageDir + retrieveData('image')!)
+                        : const AssetImage('assets/profile.png') as ImageProvider,
                   ),
                 ),
                 accountEmail: Padding(
                   padding: EdgeInsets.symmetric(
-                      vertical:
-                          MediaQuery.of(context).size.width * (5 / 375.0)),
+                      vertical: MediaQuery.of(context).size.width * (5 / 375.0)),
                   child: Text(
-                    retrieveData('email'),
+                    retrieveData('email') ?? '',
                     style: const TextStyle(fontSize: 16.0, color: Colors.white),
                   ),
                 ),
@@ -47,7 +49,7 @@ class buildDrawer extends StatelessWidget {
                   padding: EdgeInsets.only(
                       top: MediaQuery.of(context).size.width * (25 / 375.0)),
                   child: Text(
-                    retrieveData('username'),
+                    retrieveData('username') ?? '',
                     style: const TextStyle(fontSize: 20.0, color: Colors.white),
                   ),
                 ),

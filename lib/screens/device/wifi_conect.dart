@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:PAVF/screens/device/device_Setup.dart';
 
-import 'package:PAVF/screens/device/device_conn.dart';
-
 void main() {
   runApp(MaterialApp(
     home: WifiConn(),

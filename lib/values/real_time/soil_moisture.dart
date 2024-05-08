@@ -1,9 +1,9 @@
 import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:PAVF/values/graph/graphvalue.dart';
 import 'package:PAVF/values/graph/soil_moisture.dart';
-import 'package:PAVF/values/real/nitrogen.dart';
-import 'package:PAVF/values/real/potassium.dart';
-import 'package:PAVF/values/real/temperature.dart';
+import 'package:PAVF/values/real_time/nitrogen.dart';
+import 'package:PAVF/values/real_time/potassium.dart';
+import 'package:PAVF/values/real_time/temperature.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kdgaugeview/kdgaugeview.dart';

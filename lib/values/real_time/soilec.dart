@@ -1,19 +1,22 @@
 import 'package:PAVF/screens/app/local_storage.dart';
-import 'package:PAVF/values/graph/soil_nitrogen.dart';
-import 'package:PAVF/values/real/phosphorous.dart';
-import 'package:PAVF/values/real/potassium.dart';
-import 'package:PAVF/values/real/soilec.dart';
+import 'package:PAVF/values/graph/graphvalue.dart';
+import 'package:PAVF/values/graph/soil_Ec.dart';
+import 'package:PAVF/values/graph/soil_moisture.dart';
+import 'package:PAVF/values/real_time/nitrogen.dart';
+import 'package:PAVF/values/real_time/potassium.dart';
+import 'package:PAVF/values/real_time/temperature.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:kdgaugeview/kdgaugeview.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:PAVF/component/drawer.dart';
 
 // Define the main widget for the real-time screen
-class Nitrogenvalue extends StatefulWidget {
-  Nitrogenvalue({Key? key}) : super(key: key);
+class SoilEcValue extends StatefulWidget {
+  SoilEcValue({Key? key}) : super(key: key);
 
   @override
-  _PhosphorusvalueState createState() => _PhosphorusvalueState();
+  _SoilEcValueState createState() => _SoilEcValueState();
 }
 
 // Add MediaQuery
@@ -21,21 +24,21 @@ late MediaQueryData mediaQueryData;
 late double screenWidth;
 late double screenHeight;
 
-class _PhosphorusvalueState extends State<Nitrogenvalue> {
+class _SoilEcValueState extends State<SoilEcValue> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final String user = "To Agro_Farm";
   final PageController _pageController = PageController();
-  //media queru
+  //media queruy
   late MediaQueryData mediaQueryData;
   late double screenWidth;
   late double screenHeight;
 
   final List<String> textData = [
-    "Nitrogen",
+    "Soil EC",
   ];
   final List<IconData> iconData = [
-    Icons.thermostat, // nitogen  icon
+    Icons.eco, // Soil Moisture icon
   ];
   int currentIndex = 0;
   // Global variables for each meter's speed value
@@ -116,8 +119,8 @@ class _PhosphorusvalueState extends State<Nitrogenvalue> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    //backward
-                    MaterialPageRoute(builder: (context) => SoilEcValue()),
+                    // backwad
+                    MaterialPageRoute(builder: (context) => TemperatureValue()),
                   );
                 },
                 child: IconButton(
@@ -146,7 +149,7 @@ class _PhosphorusvalueState extends State<Nitrogenvalue> {
                   Navigator.push(
                     context,
                     //forward
-                    MaterialPageRoute(builder: (context) => Phosphorusvalue()),
+                    MaterialPageRoute(builder: (context) => Nitrogenvalue()),
                   );
                 },
                 child: Padding(
@@ -195,7 +198,7 @@ class _PhosphorusvalueState extends State<Nitrogenvalue> {
             if (index == 0) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SoilNCgraph()),
+                MaterialPageRoute(builder: (context) => SoilECgraph()),
               );
             } else if (index == 1) {
               Navigator.push(
@@ -259,6 +262,6 @@ class _PhosphorusvalueState extends State<Nitrogenvalue> {
 
 void main() {
   runApp(MaterialApp(
-    home: Nitrogenvalue(),
+    home: SoilEcValue(),
   ));
 }
