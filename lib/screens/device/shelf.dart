@@ -1,4 +1,5 @@
 import 'package:PAVF/screens/app/dashboard.dart';
+import 'package:PAVF/screens/device/shelfconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:PAVF/component/drawer.dart';
 import 'package:get/get.dart';
@@ -48,7 +49,7 @@ class Shelf extends StatelessWidget {
                 // Handle card tap (e.g., navigate to detail page)
                 print('Card tapped: ${item['name']}');
                 // Implement your navigation logic here
-                Get.to(() => Dashboard());
+                Get.to(() => Shelfconfig());
               },
             );
           },
