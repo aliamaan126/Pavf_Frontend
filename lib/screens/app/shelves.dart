@@ -18,11 +18,13 @@ import 'package:PAVF/screens/device/add_device.dart';
 
 final localStorage = LocalStorage('app_data.json');
 
+class HomeController extends GetxController {
+  ChewieController? chewieController;
+}
 
-class Dashboard extends StatelessWidget {
-  Dashboard({Key? key}) : super(key: key);
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+class Shelves extends StatelessWidget {
+  Shelves({Key? key}) : super(key: key);
+ final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final String user = retrieveData("username");
 
   @override
@@ -35,13 +37,12 @@ class Dashboard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Expanded(
+            Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     // Add other widgets above if needed
-                    
                   ],
                 ),
               ),
@@ -142,45 +143,6 @@ class Dashboard extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class CardItem extends StatelessWidget {
-  final int itemId;
-  final String itemName;
-  final VoidCallback onTap;
-
-  CardItem({
-    required this.itemId,
-    required this.itemName,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    // Calculate screen width
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        constraints: BoxConstraints(
-          maxWidth: screenWidth, // Set maximum width to screen width
-          maxHeight: screenHeight,
-        ),
-        child: Card(
-          margin: EdgeInsets.all(10),
-          child: Padding(
-            padding: EdgeInsets.only(top: 30, bottom: 20, left: 20),
-            child: Text(
-              itemName,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
       ),
     );
   }

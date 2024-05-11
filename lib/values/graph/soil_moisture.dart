@@ -42,7 +42,7 @@ class _SoilgraphState extends State<Soilgraph> {
   @override
   void initState() {
     super.initState();
-    chartData = _generateDummyData('1d'); // Initially set data to 1d
+    chartData = _generateData('1d'); // Initially set data to 1d
   }
 
   @override
@@ -224,7 +224,6 @@ class _SoilgraphState extends State<Soilgraph> {
               padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
               child: SizedBox(
                 height: screenHeight * 0.35,
-                child: Expanded(
                   child: Padding(
                     padding:
                         EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
@@ -308,7 +307,7 @@ class _SoilgraphState extends State<Soilgraph> {
                       ),
                     ),
                   ),
-                ),
+                
               ),
             ),
           ],
@@ -326,14 +325,14 @@ class _SoilgraphState extends State<Soilgraph> {
     );
   }
 
-  List<SalesData> _generateDummyData(String interval) {
+  List<SalesData> _generateData(String interval) {
     // Dummy data generation logic based on interval
     List<SalesData> dummyData = [];
     DateTime now = DateTime.now();
     switch (interval) {
       case '1d':
         dummyData = [
-          SalesData(now.subtract(Duration(days: 1)), 10),
+          SalesData(now.subtract(Duration(hours: 7)), 10),
           SalesData(now, 12),
         ];
         break;
@@ -376,7 +375,7 @@ class _SoilgraphState extends State<Soilgraph> {
 
   void updateChartData(String interval) {
     setState(() {
-      chartData = _generateDummyData(interval);
+      chartData = _generateData(interval);
     });
   }
 }

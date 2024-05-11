@@ -1,25 +1,17 @@
-import 'package:PAVF/screens/app/flutter_secure_storage.dart';
-import 'package:PAVF/screens/app/local_storage.dart';
+import 'package:PAVF/controllers/register_controller.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:PAVF/constants/colors.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:get/get.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:PAVF/state_management/g_controller.dart';
 
-// const server = "http://localhost:3000/api/v1";
-final FlutterSecureStorage _storage = FlutterSecureStorage();
-final GController controller = Get.put(GController());
-const server = "https://pavf-gelj.onrender.com/api/v1";
+// final FlutterSecureStorage _storage = FlutterSecureStorage();
 
 class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
+    // Initialize RegisterController using GetX's dependency injection
+    Get.put(RegisterController());
+
     return Scaffold(
       backgroundColor: myBackground,
       body: SafeArea(
@@ -33,6 +25,7 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 }
+
 
 class BackgroundImage extends StatelessWidget {
   @override
@@ -114,8 +107,7 @@ class SignUpForm extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -153,9 +145,7 @@ class SignUpForm extends StatelessWidget {
           emailController: emailController,
           usernameController: usernameController,
           passwordController: passwordController,
-          confirmPasswordController: confirmPasswordController,
-          context: context,
-          buttonWidth: screenWidth * 0.8, // Adjusted width based on screen size
+          confirmPasswordController: confirmPasswordController
         ),
         SizedBox(height: 20),
         LoginLink(),
@@ -209,31 +199,34 @@ class SignUpButton extends StatelessWidget {
   final TextEditingController usernameController;
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
-  final BuildContext context;
-  final double buttonWidth;
 
   SignUpButton({
     required this.emailController,
     required this.usernameController,
     required this.passwordController,
     required this.confirmPasswordController,
-    required this.context,
-    required this.buttonWidth,
   });
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final registerController = Get.find<RegisterController>(); // Get the instance of RegisterController
+
     return SizedBox(
-      width: buttonWidth,
+      width: screenWidth * 0.8,
       height: 50,
       child: ElevatedButton(
-        onPressed: () async {
-          await registerUser(
-            usernameController.text,
-            emailController.text,
-            passwordController.text,
-            confirmPasswordController.text,
-            context,
+        onPressed: () {
+          String user = usernameController.text;
+          String email = emailController.text;
+          String password = passwordController.text;
+          String confirmPassword = confirmPasswordController.text;
+
+          registerController.registerUser( // Call registerUser on the instance
+            user,
+            email,
+            password,
+            confirmPassword,
           );
         },
         child: Text(
@@ -287,81 +280,58 @@ class LoginLink extends StatelessWidget {
 }
 
 // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-Future<void> registerUser(String username, String email, String password,
-    String passwordConfirmation, BuildContext context) async {
-  // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  final apiUrl = '$server/auth/register';
-  try {
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'username': username,
-        'email': email,
-        'password': password,
-        'password_confirmation': passwordConfirmation,
-      }),
-    );
+// Future<void> registerUser(String username, String email, String password,
+//     String passwordConfirmation, BuildContext context) async {
+//   // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+//   final apiUrl = '$server/auth/register';
+//   try {
+//     final response = await http.post(
+//       Uri.parse(apiUrl),
+//       headers: <String, String>{
+//         'Content-Type': 'application/json; charset=UTF-8',
+//       },
+//       body: jsonEncode(<String, String>{
+//         'username': username,
+//         'email': email,
+//         'password': password,
+//         'password_confirmation': passwordConfirmation,
+//       }),
+//     );
 
-    if (response.statusCode == 201) {
-      print('User registered successfully');
-      // ignore: use_build_context_synchronously
-      showSignUpConfirmationDialog(context, 'Account Created',
-          'Your account has been successfully created.');
+//     if (response.statusCode == 201) {
 
-      final json = jsonDecode(response.body);
-      var token = json['access_token'];
-      storeAuthToken(token);
+//       final json = jsonDecode(response.body);
+//       var token = json['access_token'];
+//       storeAuthToken(token);
 
-      var uname = json['user']['username'];
-      var uemail = json['user']['email'];
-      var uFirstName = json['user']['firstname'];
-      var uLastName = json['user']['lastname'];
-      var urole = json['user']['role'];
+//       var uname = json['user']['username'];
+//       var uemail = json['user']['email'];
+//       var uFirstName = json['user']['firstname'];
+//       var uLastName = json['user']['lastname'];
+//       var urole = json['user']['role'];
 
-      await storeData('username', uname.toString());
-      await storeData('email', uemail.toString());
-      await storeData('firstname', uFirstName.toString());
-      await storeData('lastname', uLastName.toString());
-      await storeData('role', urole.toString());
+//       await storeData('username', uname.toString());
+//       await storeData('email', uemail.toString());
+//       await storeData('firstname', uFirstName.toString());
+//       await storeData('lastname', uLastName.toString());
+//       await storeData('role', urole.toString());
 
+//       Get.offAllNamed('/');
+//     } else {
+//       var responseBody = json.decode(response.body);
 
-      // final SharedPreferences? prefs = await _prefs;
-      // await prefs?.setString('token', token);
-
-      // await _storage.write(key: 'token', value: token.toString());
-      // controller.updateUser(uname.toString(), uemail.toString(), uFirstName.toString(), uLastName.toString(), urole.toString());
-      // print(token.toString());
-      // print(uname.toString());
-      // print(uemail.toString());
-      // print(urole.toString());
-
-      Get.offAllNamed('/');
-    } else {
-      print('Failed to register user: ${response.body}');
-      var responseBody = json.decode(response.body);
-
-      if (responseBody['error'] == 'Password too short') {
-        showSignUpErrorDialog(context, 'Registration Failed',
-            'Password is too short. Please use a longer password.');
-      } else {
-        showSignUpErrorDialog(context, 'Registration Failed',
-            'Failed to register user. Please try again.');
-      }
-      if (response.statusCode == 400) {
-        print('Password too short');
-        showSignUpConfirmationDialog(context, 'Registration Failed',
-            'password length must be between 5 to 128 character.');
-      }
-    }
-  } catch (e) {
-    print('Error occurred during registration: $e');
-    showSignUpErrorDialog(
-        context, 'Error', 'An unexpected error occurred. Please try again.');
-  }
-}
+//       if (responseBody['error'] == 'Password too short') {
+//       } else {
+//       }
+//       if (response.statusCode == 400) {
+//       }
+//     }
+//   } catch (e) {
+//     ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text('Signup failed: $e')),
+//       );
+//   }
+// }
 
 void showSignUpConfirmationDialog(
     BuildContext context, String title, String content) {

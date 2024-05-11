@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
 final localStorage = LocalStorage('app_data.json');
-final filestorage = '$userImageDir' + retrieveData("username") + ".jpg";
+final filestorage = "${userImageDir + retrieveData("username")}.jpg";
 
 Future<void> storeData(String key, dynamic value) async {
   await localStorage.ready;

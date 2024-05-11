@@ -19,8 +19,7 @@ class UpdatePass extends StatelessWidget {
   final TextEditingController currentPasswordController =
       TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController confirmNewPasswordController =
-      TextEditingController();
+  final TextEditingController confirmNewPasswordController =TextEditingController();
 
   @override
   Widget build(BuildContext context) {

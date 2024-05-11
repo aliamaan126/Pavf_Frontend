@@ -12,13 +12,10 @@ final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 // Example JSON response containing an array of items
 final jsonResponse = {
   "items": [
-    {"id": 1, "name": "Device 662e81406581365ff8906d33"},
-    {"id": 2, "name": "Device 662ea902a4dc45ab25098207"}
-    // Add more items as needed
   ]
 };
 
-final deviceIds = retrieveData('devices');
+String deviceIds = retrieveData('devices').replaceAll('[', '').replaceAll(']', '') ?? '';
 
 void main() {
   runApp(MaterialApp(
@@ -31,9 +28,15 @@ class AddDevice extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    
+    List<String> deviceIdList = deviceIds.split(',').map((id) => id.trim()).toList();
+    
+    List<String> items = List<String>.from(jsonResponse['items'] ?? []);
 
-    List<dynamic> items =
-        jsonResponse['items']!; // Extract array of items from JSON response
+    // Update items list with device IDs
+    deviceIdList.forEach((deviceId) {
+      items.add("Device $deviceId");
+    });
 
     return Scaffold(
       key: _scaffoldKey, // Assign the scaffold key to the key property
@@ -47,13 +50,14 @@ class AddDevice extends StatelessWidget {
           itemCount: items.length +1, 
           itemBuilder: (context, index) {
             if (index < items.length) {
+              final itemName = items[index];
               final item = items[index];
               return CardItem(
-                itemId: item['id'],
-                itemName: item['name'],
+                itemId: index + 1,
+                itemName: itemName,
                 onTap: () {
                   // Handle card tap (e.g., navigate to detail page)
-                  print('Card tapped: ${item['name']}');
+                  // print('Card tapped: ${item['name']}');
                   Navigator.of(context).pop(); // Close the drawer
                   Get.to(() => Shelf());
                   // Implement your navigation logic here

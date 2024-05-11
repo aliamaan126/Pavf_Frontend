@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:PAVF/screens/app/dashboard.dart';
 import 'package:PAVF/screens/auth/login_screen.dart';
-import 'package:PAVF/utils/socket_client.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

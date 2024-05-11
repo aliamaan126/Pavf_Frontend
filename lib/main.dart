@@ -8,20 +8,14 @@ void main() {
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: "PAVF",
-      debugShowCheckedModeBanner: false,
       initialRoute: '/',
       //onGenerateRoute: RouteGenerator.generateRoute,
       getPages: RouteGenerator.routes,
-      routingCallback: (routing) {
-        if (routing!.current == '/register') {
-          print('register');
-        }
-      },
     );
   }
 }

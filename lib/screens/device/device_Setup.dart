@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:PAVF/screens/device/add_device.dart';
 import 'package:PAVF/screens/device/device_conn.dart'; // Import the AddDevice screen
 import 'package:PAVF/screens/device/wifi_conect.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import 'dart:convert';
@@ -39,14 +40,15 @@ class DeviceSetup extends StatelessWidget {
                   child: ListView(
                     padding: EdgeInsets.symmetric(horizontal: 22),
                     children: [
-                      _buildRow("Connect and Configure Device", "", () {
+                      _buildRow("Bind Device", "", () {
                         // onTap action for Connect and Configure Device
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  DeviceConn()), // Navigate to AddDevice screen
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) =>
+                        //           DeviceConn()), // Navigate to AddDevice screen
+                        // );
+                        Get.toNamed("/deviceConn");
                       }),
                       SizedBox(height: 20),
                       _buildRow("Configure Device only", "", () {

@@ -54,7 +54,8 @@ class _SoilMoistureValueState extends State<SoilMoistureValue> {
 // double temperatureSpeed = double.parse(retrieveData('temp'));
 // double lightSpeed = double.parse(retrieveData('light'));
 // double humiditySpeed  = double.parse(retrieveData('humid'));
-  int speedValue1 = retrieveData("moisture");
+  // int speedValue1 = retrieveData("moisture");
+  int speedValue1 = 20;
 
   Widget build(BuildContext context) {
     // Retrieve MediaQuery

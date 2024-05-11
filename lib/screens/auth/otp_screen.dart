@@ -243,8 +243,6 @@ class LoginButton extends StatelessWidget {
       }
       return otp;
     }
-
-    // Storing the OTP in a variable
     
 
     return SizedBox(
@@ -294,31 +292,20 @@ Future<String?> _otpVerification(BuildContext context, String otpVal) async {
       if (response.statusCode == 201) {
         // Email sent successfully
         final data = json.decode(response.body);
-        String reset_token = data['reset_token'];
+        String resetToken = data['reset_token'];
         String emailRcv = data['email'];
 
         // Navigate to resetpass screen
-        Get.toNamed('/resetPass',arguments: {'reset_token': reset_token, 'email': emailRcv});
+        Get.toNamed('/resetPass',arguments: {'reset_token': resetToken, 'email': emailRcv});
       }        
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to send email: $e'),
-          backgroundColor: Color.fromARGB(255, 232, 6, 6),
-          duration: Duration(seconds: 4),
-        ),
-      );
-        return null;
+        Get.snackbar("Email Sending Fail", "Verify Your Email",backgroundColor: const Color.fromARGB(255, 232, 6, 6),
+          duration: const Duration(seconds: 3),);
       }
     }
     else{
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Incorrect OTP entered Please try Again'),
-            backgroundColor: Color.fromARGB(255, 250, 3, 3),
-            duration: Duration(seconds: 4),
-          ),
-        );
+          Get.snackbar("Incorrect OTP", "Please try Again",backgroundColor: const Color.fromARGB(255, 232, 6, 6),
+          duration: const Duration(seconds: 3),);
     }
   }
   

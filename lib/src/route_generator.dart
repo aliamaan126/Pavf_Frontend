@@ -1,3 +1,5 @@
+import "package:PAVF/screens/app/shelves.dart";
+import "package:PAVF/screens/app/shlef_dashboard.dart";
 import "package:PAVF/screens/device/add_device.dart";
 import "package:PAVF/screens/device/device_Setup.dart";
 import "package:PAVF/screens/app/dashboard.dart";
@@ -6,8 +8,9 @@ import "package:PAVF/screens/auth/login_screen.dart";
 import "package:PAVF/screens/auth/otp_screen.dart";
 import "package:PAVF/screens/auth/register_screen.dart";
 import "package:PAVF/screens/auth/resetPass_screen.dart";
+import "package:PAVF/screens/device/device_conn.dart";
 import 'package:get/get.dart';
-import "package:PAVF/screens/splash.dart";
+import 'package:PAVF/src/splash.dart';
 
 class RouteGenerator {
   static List<GetPage> routes = [
@@ -21,7 +24,7 @@ class RouteGenerator {
     ),
     GetPage(
       name: '/register',
-      page: () => const RegisterScreen(),
+      page: () => RegisterScreen(),
     ),
     GetPage(
       name: '/forgotPass',
@@ -40,12 +43,24 @@ class RouteGenerator {
       page: () => Dashboard(),
     ),
     GetPage(
+      name: '/shelves',
+      page: () => Shelves(),
+    ),
+    GetPage(
+      name: '/shelfdashboard',
+      page: () => ShelfDashboard(),
+    ),
+    GetPage(
       name: '/addDevice',
       page: () => AddDevice(),
     ),
     GetPage(
       name: '/deviceSetup',
       page: () => DeviceSetup(),
+    ),
+    GetPage(
+      name: '/deviceConn',
+      page: () => DeviceConn(),
     ),
   ];
 

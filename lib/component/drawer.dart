@@ -1,4 +1,5 @@
 import 'package:PAVF/constants/url.dart';
+import 'package:PAVF/screens/app/shlef_dashboard.dart';
 import 'package:PAVF/screens/device/add_device.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -58,7 +59,7 @@ class buildDrawer extends StatelessWidget {
             DrawerItem(
               icon: Icons.home,
               text: 'Home',
-              onTap: () => Get.to(() => Dashboard()),
+              onTap: () => Get.to(() => ShelfDashboard()),
             ),
             DrawerItem(
               icon: Icons.device_hub,
@@ -78,7 +79,8 @@ class buildDrawer extends StatelessWidget {
             DrawerItem(
               icon: Icons.person,
               text: 'Profile',
-              onTap: () => Get.to(() => const Profile()),
+              onTap: () =>{
+                Get.to(() => const Profile())},
             ),
             DrawerItem(
               icon: Icons.logout,
@@ -133,7 +135,10 @@ class DrawerItem extends StatelessWidget {
           fontSize: MediaQuery.of(context).size.width * (16 / 375.0),
         ),
       ),
-      onTap: onTap,
+      onTap: () {
+        Get.back();
+        onTap();
+      },
     );
   }
 }

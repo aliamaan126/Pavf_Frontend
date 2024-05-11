@@ -519,13 +519,24 @@ class _View1ScreenState extends State<View1Screen> {
   Widget _buildIconButton(IconData icon, String label, bool isSmallScreen) {
     double iconSize = isSmallScreen ? 50.0 : 50.0;
     double labelSize = isSmallScreen ? 12.0 : 15.0;
-
     return Column(
       children: [
         IconButton(
           icon: Icon(icon),
           iconSize: iconSize, // Set icon size based on screen size
-          onPressed: () {},
+          onPressed: () {
+            isHumidityOn = !isHumidityOn;
+            if(isHumidityOn==false)
+            {
+              state = 0;
+            }
+            else
+            {
+              state = 1;
+            }
+            controlUnit(context, "3d2c5777-25a4-455a-b8f3-fa0e135cc12b", "humidity", retrieveData("setHumidityValue"), state);
+                          
+          },
         ),
         SizedBox(height: isSmallScreen ? 25 : 15),
         Text(

@@ -259,18 +259,12 @@ Future<String?> _resetPass (BuildContext context, TextEditingController password
       );
 
       if (response.statusCode == 201) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Paswword has successfully been changed'),
-          backgroundColor: Color.fromARGB(255, 26, 227, 42), 
-          duration: Duration(seconds: 3),
-          ),         
-        );
+        Get.snackbar("Success", "Password Changed",backgroundColor: Color.fromARGB(255, 26, 227, 42), 
+        duration: Duration(seconds: 3),);
         Get.offAllNamed('/login');
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed: $e')),
-      );
+      Get.snackbar("Login failed:", '$e');
       return null;
     }
   }

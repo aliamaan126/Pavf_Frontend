@@ -1,6 +1,7 @@
 // ignore_for_file: body_might_complete_normally_nullable
 
 import 'package:PAVF/constants/url.dart';
+import 'package:PAVF/controllers/login_controller.dart';
 import 'package:PAVF/screens/app/flutter_secure_storage.dart';
 import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +10,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class LoginScreen extends StatelessWidget {
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final LoginController loginController = Get.put(LoginController());
 
-  LoginScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,10 +20,7 @@ class LoginScreen extends StatelessWidget {
         child: Stack(
           children: [
             BackgroundImage(),
-            CenteredContent(
-              usernameController: usernameController,
-              passwordController: passwordController,
-            ),
+            CenteredContent(),
           ],
         ),
       ),
@@ -60,13 +56,7 @@ class BackgroundImage extends StatelessWidget {
 }
 
 class CenteredContent extends StatelessWidget {
-  final TextEditingController usernameController;
-  final TextEditingController passwordController;
-
-  CenteredContent({
-    required this.usernameController,
-    required this.passwordController,
-  });
+  final LoginController loginController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -78,15 +68,12 @@ class CenteredContent extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               CircleAvatarWidget(),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               LoginText(),
-              SizedBox(height: 20),
-              LoginForm(
-                usernameController: usernameController,
-                passwordController: passwordController,
-              ),
+              const SizedBox(height: 20),
+              LoginForm(),
             ],
           ),
         ),
@@ -94,7 +81,6 @@ class CenteredContent extends StatelessWidget {
     );
   }
 }
-
 class CircleAvatarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -106,9 +92,11 @@ class CircleAvatarWidget extends StatelessWidget {
 }
 
 class LoginText extends StatelessWidget {
+  const LoginText({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return const Text(
       'LOG IN',
       style: TextStyle(
         color: Colors.white,
@@ -120,71 +108,42 @@ class LoginText extends StatelessWidget {
 }
 
 class LoginForm extends StatelessWidget {
-  final TextEditingController usernameController;
-  final TextEditingController passwordController;
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
-  LoginForm({
-    required this.usernameController,
-    required this.passwordController,
-  });
-
+  LoginForm({super.key});
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     return Column(
       children: [
-        InputField(
-          hintText: 'username',
-          controller: usernameController,
-          inputWidth: screenWidth * 0.8, // Adjust input field width
-        ),
-        SizedBox(height: 20),
-        InputField(
-          hintText: 'Password',
-          isPassword: true,
-          controller: passwordController,
-          inputWidth: screenWidth * 0.8, // Adjust input field width
-        ),
-        SizedBox(height: 10),
-        Row(
-          children: [
-            // Checkbox(
-            //   activeColor: Colors.white,
-            //   value: true,
-            //   onChanged: (bool? value) {},
-            // ),
-            // Text(
-            //   'Remember Me',
-            //   style: TextStyle(
-            //     color: Colors.lightGreen,
-            //   ),
-            // ),
-          ],
-        ),
-        SizedBox(height: 10),
+        InputField(hintText: 'username', inputWidth: screenWidth * 0.8, controller: usernameController,),
+        const SizedBox(height: 20),
+        InputField(hintText: 'Password', isPassword: true, inputWidth: screenWidth * 0.8, controller: passwordController,),
+        const SizedBox(height: 10),
         TextButton(
           onPressed: () {
             Get.toNamed('/forgotPass');
           },
-          child: Text(
+          child: const Text(
             'Forgot Password ?',
             style: TextStyle(
               color: Colors.lightGreen,
             ),
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         LoginButton(
           usernameController: usernameController,
           passwordController: passwordController,
-          buttonWidth: screenWidth * 0.8, // Adjust button width
-        ),
-        SizedBox(height: 10),
+          buttonWidth: screenWidth * 0.8, 
+          ),
+        const SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               "Don't have an account? ",
               style: TextStyle(
                 color: Colors.white,
@@ -208,14 +167,13 @@ class LoginForm extends StatelessWidget {
     );
   }
 }
-
 class InputField extends StatelessWidget {
   final String hintText;
   final bool isPassword;
   final TextEditingController controller;
-  final double inputWidth; // Added
+  final double inputWidth; 
 
-  InputField({
+  const InputField({super.key, 
     required this.hintText,
     this.isPassword = false,
     required this.controller,
@@ -229,19 +187,19 @@ class InputField extends StatelessWidget {
       height: 60,
       child: TextField(
         controller: controller,
-        style: TextStyle(color: Colors.black),
+        style: const TextStyle(color: Colors.black),
         obscureText: isPassword,
         decoration: InputDecoration(
-          suffixIcon: Icon(
+          suffixIcon: const Icon(
             Icons.star,
             size: 14,
           ),
           suffixIconColor: Colors.white,
-          suffixStyle: TextStyle(color: Colors.white),
-          fillColor: Color(0xff9CF2Bd).withOpacity(0.5),
+          suffixStyle: const TextStyle(color: Colors.white),
+          fillColor: const Color(0xff9CF2Bd).withOpacity(0.5),
           filled: true,
           hintText: hintText,
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             color: Colors.white,
             fontSize: 20,
           ),
@@ -259,128 +217,51 @@ class LoginButton extends StatelessWidget {
   final TextEditingController usernameController;
   final TextEditingController passwordController;
   final double buttonWidth; // Added
-
   LoginButton({
     required this.usernameController,
     required this.passwordController,
     required this.buttonWidth, // Added
   });
-
-  @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
+    final loginController = Get.find<LoginController>();
 
-    return SizedBox(
-      width: buttonWidth, // Adjusted to buttonWidth
-      height: 50,
-      child: ElevatedButton(
-        onPressed: () async {
-          await fetchLatestSoilData();
-          await _login(context, usernameController, passwordController);
-          // await fetchData();
-        },
-        child: Text(
-          'Login',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-            color: Color(0xff364732),
+    return Obx(() => SizedBox(
+          width: 200,
+          height: 50,
+          child: ElevatedButton(
+            onPressed: () async {
+              loginController.login(
+                usernameController.text,
+                passwordController.text,
+              );
+
+              await fetchLatestSoilData();
+            },
+            child: loginController.isLoading.value
+                ? CircularProgressIndicator()
+                : Text(
+                    'Login',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                      color: Color(0xff364732),
+                    ),
+                  ),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.green,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
           ),
-        ),
-        style: ElevatedButton.styleFrom(
-          primary: Colors.green,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<String?> _login(
-    BuildContext context,
-    TextEditingController usernameController,
-    TextEditingController passwordController,
-  ) async {
-    final username = usernameController.text;
-    final password = passwordController.text;
-
-    // Add your API endpoint URL here
-    final apiUrl = '$server/auth/login';
-
-    try {
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: <String, String>{'Content-Type': 'application/json'},
-        body: json.encode(<String, String>{
-          'username': username,
-          'password': password,
-        }),
-      );
-      print(json.decode(response.body));
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        // print(data);
-        String token = data['access_token'];
-        // print (token);
-        storeAuthToken(token);
-
-        String? user = data['user']?['username'];
-        String? email = data['user']?['email'];
-        String? fname = data['user']?['firstname'];
-        String? lname = data['user']?['lastname'];
-        String? role = data['user']?['role'];
-        String? image = data['user']?['image'];
-        List<dynamic>? devices = data['user']?['devices'];
-
-        await storeData('username', user.toString());
-        await storeData('email', email.toString());
-        await storeData('firstname', fname.toString());
-        await storeData('lastname', lname.toString());
-        await storeData('role', role.toString());
-        await storeData('image', image.toString());
-        await storeData('devices', devices.toString());
-        await storeData('setHumidityValue', 0);
-        await storeData('setTempValue', 0);
-        await storeData('setLightValue', 0);
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Login Successful'),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 4),
-          ),
-        );
-
-        Get.offAllNamed('/dashboard');
-        // print(lname);
-        // Corrected property name
-        // await _storeToken(jwtToken);
-
-        // Get.find().addUser(user,email,fname,lname,'role');
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Login failed: Invalid Username or Password'),
-            backgroundColor: Colors.red,
-            duration: Duration(seconds: 3),
-          ),
-        );
-        return null;
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed: $e')),
-      );
-      return null;
-    }
+        ));
   }
 }
 
+
 Future<void> fetchLatestSoilData() async {
   try {
-    final url = '$server/arduino/fetch-Data';
+    final url = '$server/arduino/sensor-data';
 
     final response = await http.post(
       Uri.parse(url),

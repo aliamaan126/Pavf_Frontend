@@ -1,5 +1,12 @@
+import 'package:PAVF/constants/url.dart';
 import 'package:flutter/material.dart';
 import 'package:PAVF/screens/device/device_Setup.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
 void main() {
   runApp(MaterialApp(
@@ -8,6 +15,10 @@ void main() {
 }
 
 class DeviceConn extends StatelessWidget {
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController =TextEditingController();
+
+  DeviceConn({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,6 +47,7 @@ class DeviceConn extends StatelessWidget {
               ), // Add some space between the text and the text field
               TextField(
                 // Text field for entering the username
+                controller: usernameController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius:
@@ -64,6 +76,7 @@ class DeviceConn extends StatelessWidget {
               ), // Add some space between the text and the text field
               TextField(
                 // Text field for entering the password
+                controller: passwordController,
                 obscureText: true, // Hide the entered text
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
@@ -85,8 +98,9 @@ class DeviceConn extends StatelessWidget {
                   width: 200,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {
-                      // Add your connection logic here
+                    onPressed: () async {
+                     await  deviceBind(context, usernameController, passwordController);
+                     Get.offNamed("/addDevice");
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xFF18A818), // Background color
@@ -144,4 +158,64 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
+}
+
+
+Future<String?> deviceBind(
+    BuildContext context,
+    TextEditingController userNameController,
+    TextEditingController passwordController) async {
+  final username = userNameController.text;
+  final password = passwordController.text;
+
+  // Add your API endpoint URL here
+  const apiUrl = '$server/profile/deviceBind';
+  final token = await _secureStorage.read(key: 'auth_token');
+  try {
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+      body: json.encode({
+        'username': username,
+        'password': password
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Device Connected Successfully'),
+          backgroundColor: Color.fromARGB(255, 26, 227, 42),
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
+
+    else if(response.statusCode == 403){
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Device already Connected to User'),
+          backgroundColor: Color.fromARGB(255, 185, 47, 47),
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
+    else if(response.statusCode == 400){
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Device does not Exist or Invalid Credentials '),
+          backgroundColor: Color.fromARGB(255, 185, 47, 47),
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Update failed: $e')),
+    );
+    return null;
+  }
 }
