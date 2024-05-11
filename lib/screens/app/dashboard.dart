@@ -1,5 +1,6 @@
 import 'package:PAVF/component/drawer.dart';
 import 'package:PAVF/screens/app/local_storage.dart';
+import 'package:PAVF/screens/device/shelfconfig.dart';
 import 'package:PAVF/values/real_time/nitrogen.dart';
 
 import 'package:PAVF/values/real_time/phosphorous.dart';
@@ -18,7 +19,6 @@ import 'package:PAVF/screens/device/add_device.dart';
 
 final localStorage = LocalStorage('app_data.json');
 
-
 class Dashboard extends StatelessWidget {
   Dashboard({Key? key}) : super(key: key);
 
@@ -27,6 +27,12 @@ class Dashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+
+    // Assuming a boolean variable `_isDeviceRegistered` to track device registration status
+    bool _isDeviceRegistered =
+        false; // Set this value based on registration status
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: _buildAppBar(context),
@@ -35,13 +41,58 @@ class Dashboard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Expanded(
+            Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     // Add other widgets above if needed
-                    
+
+                    // Centered Container containing Card Button
+                    Center(
+                      child: Container(
+                        margin: EdgeInsets.all(16.0),
+                        width: screenSize.width * 0.9, // 90% of screen width
+                        height: screenSize.height * 0.1,
+                        child: Card(
+                          color: _isDeviceRegistered
+                              ? Color(0xFFE4F3E0)
+                              : Colors
+                                  .white, // Background color based on registration status
+                          elevation: 4.0,
+                          child: InkWell(
+                            onTap: () {
+                              // Handle onTap event
+                              if (!_isDeviceRegistered) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Shelfconfig()),
+                                );
+                              } else {
+                                // Handle device activation
+                              }
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Center(
+                                child: Text(
+                                  _isDeviceRegistered
+                                      ? "Device registered"
+                                      //? "Device Registered"
+                                      // : "No Device Registered",
+                                      : "Device Registered",
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

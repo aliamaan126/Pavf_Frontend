@@ -36,7 +36,6 @@ class ShelfDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
     print("image:");
     print(retrieveData("image"));
     return Scaffold(
@@ -195,13 +194,13 @@ Widget _buildMetricRows(BuildContext context) {
         "title": "Soil Moisture",
         "description": "Light value of the shelf.",
         "navigationPage": SoilMoistureValue(),
-        "color" : Color(0xFFC9E9C9)
+        "color": Color(0xFFC9E9C9)
       },
       {
         "title": "Soil Temp",
         "description": "Temperature value of the shelf.",
         "navigationPage": TemperatureValue(),
-        "color" : Color(0xFFC9E9C9)
+        "color": Color(0xFFC9E9C9)
       },
     ],
     [
@@ -209,13 +208,13 @@ Widget _buildMetricRows(BuildContext context) {
         "title": "Soil EC",
         "description": "Light Control of the shelf.",
         "navigationPage": SoilEcValue(),
-        "color" : Color(0xFFC9E9C9)
+        "color": Color(0xFFC9E9C9)
       },
       {
         "title": "Soil Nitrogen",
         "description": "Temperature Control of the shelf.",
         "navigationPage": Nitrogenvalue(),
-        "color" : Color(0xFFC9E9C9)
+        "color": Color(0xFFC9E9C9)
       },
     ],
     [
@@ -223,13 +222,13 @@ Widget _buildMetricRows(BuildContext context) {
         "title": "Soil Phosphorus",
         "description": "Moisture Control of the shelf.",
         "navigationPage": Phosphorusvalue(),
-        "color" : Color(0xFFC9E9C9)
+        "color": Color(0xFFC9E9C9)
       },
       {
         "title": "Soil Potassium",
         "description": "Phosphorous level in the soil.",
         "navigationPage": realTime(),
-        "color" : Color(0xFFC9E9C9)
+        "color": Color(0xFFC9E9C9)
       },
     ],
   ];
@@ -240,13 +239,13 @@ Widget _buildMetricRows(BuildContext context) {
         "title": "Light Control",
         "description": "Description for Control Metric 1.",
         "navigationPage": View1Screen(initialIndex: 1),
-        "color" : Color(0xFFC9E9C9)
+        "color": Color(0xFFC9E9C9)
       },
       {
         "title": "Temperature Control",
         "description": "Temprature  Control of the Shelf",
         "navigationPage": control(),
-        "color" : Color(0xFFC9E9C9)
+        "color": Color(0xFFC9E9C9)
       },
     ],
     [
@@ -254,13 +253,13 @@ Widget _buildMetricRows(BuildContext context) {
         "title": "Humidity Control",
         "description": "Description for Control Metric 3.",
         "navigationPage": View1Screen(initialIndex: 2),
-        "color" : Color(0xFFC9E9C9)
+        "color": Color(0xFFC9E9C9)
       },
       {
         "title": "Water Control",
         "description": "Description for Control Metric 4.",
-        "navigationPage": control(),
-        "color" : Color(0xFFC9E9C9)
+        "navigationPage": View1Screen(initialIndex: 3),
+        "color": Color(0xFFC9E9C9)
       },
     ],
   ];
@@ -300,13 +299,11 @@ Widget _buildMetricRow(BuildContext context, String heading,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: row.map((metric) {
                 return _buildMetricCard(
-                  context,
-                  metric["title"],
-                  metric["description"],
-                  metric["navigationPage"],
-                  metric["color"]
-                  
-                );
+                    context,
+                    metric["title"],
+                    metric["description"],
+                    metric["navigationPage"],
+                    metric["color"]);
               }).toList(),
             ),
           );
@@ -316,13 +313,8 @@ Widget _buildMetricRow(BuildContext context, String heading,
   );
 }
 
-Widget _buildMetricCard(
-  BuildContext context,
-  String title,
-  String description,
-  Widget navigationPage,
-  Color color
-) {
+Widget _buildMetricCard(BuildContext context, String title, String description,
+    Widget navigationPage, Color color) {
   return GestureDetector(
     onTap: () {
       Navigator.push(

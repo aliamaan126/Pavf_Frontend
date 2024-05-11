@@ -1,5 +1,6 @@
 import 'package:PAVF/component/drawer.dart';
 import 'package:PAVF/screens/app/local_storage.dart';
+import 'package:PAVF/screens/device/shelfconfig.dart';
 import 'package:PAVF/values/real_time/nitrogen.dart';
 
 import 'package:PAVF/values/real_time/phosphorous.dart';
@@ -24,11 +25,12 @@ class HomeController extends GetxController {
 
 class Shelves extends StatelessWidget {
   Shelves({Key? key}) : super(key: key);
- final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final String user = retrieveData("username");
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       key: _scaffoldKey,
       appBar: _buildAppBar(context),
@@ -43,6 +45,42 @@ class Shelves extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     // Add other widgets above if needed
+
+                    // Centered Container containing Card Button
+                    Center(
+                      child: Container(
+                        margin: EdgeInsets.all(16.0),
+                        width: screenSize.width * 0.9, // 90% of screen width
+                        height: screenSize.height * 0.1,
+                        child: Card(
+                          color: Color(0xFFE4F3E0), // Background color
+                          elevation: 4.0,
+                          child: InkWell(
+                            onTap: () {
+                              // Handle onTap event
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Shelfconfig()),
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Center(
+                                child: Text(
+                                  "Shelf",
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -101,20 +139,6 @@ class Shelves extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            "Device Connection",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-          ),
-          SizedBox(height: 10), // Add space between text and button
-          Text(
-            "No Device Connected",
-            style: TextStyle(
-              fontSize: 16,
-            ),
-          ),
           SizedBox(height: 10), // Add space between text and button
           InkWell(
             onTap: () {

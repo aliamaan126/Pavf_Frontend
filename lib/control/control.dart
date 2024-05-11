@@ -7,8 +7,8 @@ import 'package:PAVF/component/drawer.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
+const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
 // Define global variables for speeds
 double temperatureSpeed = 2;
@@ -99,17 +99,25 @@ class _View1ScreenState extends State<View1Screen> {
   CarouselController _carouselController = CarouselController();
 
   bool isTemperatureOn = false;
-  double temperatureSliderValue = retrieveData("setTempValue")>0?retrieveData("setTempValue"):temperatureSpeed;
+  double temperatureSliderValue = retrieveData("setTempValue") > 0
+      ? retrieveData("setTempValue")
+      : temperatureSpeed;
   bool isManualMode = false;
   bool isLightOn = false;
-  double lightSliderValue = retrieveData("setLightValue")>0?retrieveData("setLightValue"):lightSpeed;
+  double lightSliderValue = retrieveData("setLightValue") > 0
+      ? retrieveData("setLightValue")
+      : lightSpeed;
   bool isHumidityOn = false;
-  double humiditySliderValue = retrieveData("setHumidityValue")>0?retrieveData("setHumidityValue"):humiditySpeed;
+  double humiditySliderValue = retrieveData("setHumidityValue") > 0
+      ? retrieveData("setHumidityValue")
+      : humiditySpeed;
+  bool isWaterReleased = false;
   int state = 0;
   List<Map<String, dynamic>> buttonData = [
     {'icon': Icons.thermostat, 'name': 'Temperature'},
     {'icon': Icons.lightbulb, 'name': 'Light Bulb'},
     {'icon': Icons.opacity, 'name': 'Humidity'},
+    {'icon': Icons.water, 'name': 'Water'},
   ];
 
   // Define GlobalKey instances for each KdGaugeView
@@ -125,6 +133,7 @@ class _View1ScreenState extends State<View1Screen> {
 
   @override
   Widget build(BuildContext context) {
+    Color waterButtonColor = Color(0xFF18A718); // Initial color is green
     return Scaffold(
       key: _scaffoldKey,
       appBar: CustomAppBar(
@@ -225,20 +234,28 @@ class _View1ScreenState extends State<View1Screen> {
                     Align(
                       alignment: Alignment.topRight,
                       child: ElevatedButton(
-                        onPressed: () {      
+                        onPressed: () {
                           setState(() {
                             isTemperatureOn = !isTemperatureOn;
-                            if(isTemperatureOn==false)
-                            {
+                            if (isTemperatureOn == false) {
                               state = 0;
-                            }
-                            else
-                            {
+                            } else {
                               state = 1;
                             }
-                            controlUnit(context, "3d2c5777-25a4-455a-b8f3-fa0e135cc12b", "heating", retrieveData("setHumidityValue"), state);
+                            controlUnit(
+                                context,
+                                "3d2c5777-25a4-455a-b8f3-fa0e135cc12b",
+                                "heating",
+                                retrieveData("setHumidityValue"),
+                                state);
                           });
                         },
+                        style: ElevatedButton.styleFrom(
+                          primary: isLightOn
+                              ? const Color.fromARGB(255, 218, 168, 164)
+                              : Color.fromARGB(255, 42, 172, 42),
+                          // Change button color based on light status
+                        ),
                         child: Text(isTemperatureOn ? 'Turn Off' : 'Turn On'),
                       ),
                     ),
@@ -282,10 +299,13 @@ class _View1ScreenState extends State<View1Screen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildIconButton(Icons.air, 'Fan', isSmallScreen),
+                        _buildIconButton(
+                          Icons.air,
+                          'Fan',
+                          isSmallScreen,
+                        ),
                         _buildIconButton(Icons.ac_unit, 'Cool', isSmallScreen),
                         _buildIconButton(Icons.whatshot, 'Heat', isSmallScreen),
-                        // _buildIconButton(Icons.timer, 'Timer', isSmallScreen),
                       ],
                     ),
                     SizedBox(height: isSmallScreen ? 10 : 20),
@@ -321,17 +341,25 @@ class _View1ScreenState extends State<View1Screen> {
                         onPressed: () {
                           setState(() {
                             isLightOn = !isLightOn;
-                            if(isLightOn==false)
-                            {
+                            if (isLightOn == false) {
                               state = 0;
-                            }
-                            else
-                            {
+                            } else {
                               state = 1;
                             }
-                            controlUnit(context, "3d2c5777-25a4-455a-b8f3-fa0e135cc12b", "shelf_light", retrieveData("setLightValue"), state);
+                            controlUnit(
+                                context,
+                                "3d2c5777-25a4-455a-b8f3-fa0e135cc12b",
+                                "shelf_light",
+                                retrieveData("setLightValue"),
+                                state);
                           });
                         },
+                        style: ElevatedButton.styleFrom(
+                          primary: isLightOn
+                              ? const Color.fromARGB(255, 218, 168, 164)
+                              : Color.fromARGB(255, 42, 172, 42),
+                          // Change button color based on light status
+                        ),
                         child: Text(isLightOn ? 'Turn Off' : 'Turn On'),
                       ),
                     ),
@@ -361,31 +389,23 @@ class _View1ScreenState extends State<View1Screen> {
                     Slider(
                       value: lightSliderValue,
                       onChanged: isManualMode
-                      ? null
-                      : (value) {
-                           setState(() {
-                            print('Slider value changed: $value');
-                          temperatureSliderValue = value;
-                          storeData("setLightValue", value);
-                          });
-                        },
+                          ? null // If manual mode is on, make onChanged null to disable slider
+                          : (value) {
+                              setState(() {
+                                print('Slider value changed: $value');
+                                lightSliderValue =
+                                    value; // Assign the new value to your variable
+                                storeData("setLightValue", value);
+                              });
+                            },
                       min: 0,
                       max: 100,
                       divisions: 100,
                       label: lightSliderValue.round().toString(),
-                      activeColor: isManualMode ? Colors.grey:Colors.green,
-                  thumbColor: isManualMode ?  Colors.grey:Colors.green,
+                      activeColor: isManualMode ? Colors.grey : Colors.green,
+                      thumbColor: isManualMode ? Colors.grey : Colors.green,
                     ),
                     SizedBox(height: isSmallScreen ? 10 : 20),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        // _buildIconButton(Icons.air, 'Fan', isSmallScreen),
-                        // _buildIconButton(Icons.ac_unit, 'Cool', isSmallScreen),
-                        // _buildIconButton(Icons.whatshot, 'Heat', isSmallScreen),
-                        // _buildIconButton(Icons.timer, 'Timer', isSmallScreen),
-                      ],
-                    ),
                     SizedBox(height: isSmallScreen ? 10 : 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -419,17 +439,25 @@ class _View1ScreenState extends State<View1Screen> {
                         onPressed: () {
                           setState(() {
                             isHumidityOn = !isHumidityOn;
-                            if(isHumidityOn==false)
-                            {
+                            if (isHumidityOn == false) {
                               state = 0;
-                            }
-                            else
-                            {
+                            } else {
                               state = 1;
                             }
-                            controlUnit(context, "3d2c5777-25a4-455a-b8f3-fa0e135cc12b", "humidity", retrieveData("setHumidityValue"), state);
+                            controlUnit(
+                                context,
+                                "3d2c5777-25a4-455a-b8f3-fa0e135cc12b",
+                                "humidity",
+                                retrieveData("setHumidityValue"),
+                                state);
                           });
                         },
+                        style: ElevatedButton.styleFrom(
+                          primary: isLightOn
+                              ? const Color.fromARGB(255, 218, 168, 164)
+                              : Color.fromARGB(255, 42, 172, 42),
+                          // Change button color based on light status
+                        ),
                         child: Text(isHumidityOn ? 'Turn Off' : 'Turn On'),
                       ),
                     ),
@@ -473,7 +501,11 @@ class _View1ScreenState extends State<View1Screen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildIconButton(Icons.air,'wind',isSmallScreen,),
+                        _buildIconButton(
+                          Icons.air,
+                          'wind',
+                          isSmallScreen,
+                        ),
                         // _buildIconButton(Icons.ac_unit, 'Cool', isSmallScreen),
                         _buildIconButton(Icons.whatshot, 'Heat', isSmallScreen),
                         // _buildIconButton(Icons.timer, 'Timer', isSmallScreen),
@@ -505,7 +537,108 @@ class _View1ScreenState extends State<View1Screen> {
                         ),
                       ],
                     ),
-                  ],
+                  ] else if (dynamicText == 'Water') ...[
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            isLightOn = !isLightOn;
+                            if (isLightOn == false) {
+                              state = 0;
+                            } else {
+                              state = 1;
+                            }
+                            controlUnit(
+                                context,
+                                "3d2c5777-25a4-455a-b8f3-fa0e135cc12b",
+                                "shelf_light",
+                                retrieveData("setLightValue"),
+                                state);
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: isLightOn
+                              ? const Color.fromARGB(255, 218, 168, 164)
+                              : Color.fromARGB(255, 42, 172, 42),
+                          // Change button color based on light status
+                        ),
+                        child: Text(isLightOn ? 'Turn Off' : 'Turn On'),
+                      ),
+                    ),
+                    Container(
+                      width: isSmallScreen ? 300 : 400,
+                      height: isSmallScreen ? 300 : 400,
+                      padding: EdgeInsets.all(isSmallScreen ? 5 : 10),
+                      child: KdGaugeView(
+                        key: lightGaugeKey, // Use GlobalKey instance
+                        minSpeed: 0,
+                        maxSpeed: 100,
+                        speed: lightSpeed,
+                        animate: true,
+                        duration: Duration(seconds: 5),
+                        alertSpeedArray: [40, 80, 90],
+                        alertColorArray: [
+                          Colors.green,
+                          Colors.indigo,
+                          Colors.green
+                        ],
+                        unitOfMeasurement: "",
+                        gaugeWidth: 20,
+                        fractionDigits: 0,
+                      ),
+                    ),
+                    SizedBox(height: isSmallScreen ? 10 : 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          // Perform water release action here
+                          // For example, you can send a command to a control unit
+
+                          // Toggle the state of isWaterReleased
+                          isWaterReleased = !isWaterReleased;
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: isWaterReleased
+                            ? Color.fromARGB(255, 42, 172, 42)
+                            : const Color.fromARGB(255, 218, 168, 164),
+                        // Change button color based on water release status
+                      ),
+                      child: Text(
+                          isWaterReleased ? 'Water Release' : 'Stop Water'),
+                    ),
+                    SizedBox(height: isSmallScreen ? 10 : 20),
+                    SizedBox(height: isSmallScreen ? 10 : 20),
+                    SizedBox(height: isSmallScreen ? 10 : 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Manual',
+                          style: TextStyle(
+                            fontSize: isSmallScreen ? 12.0 : 16.0,
+                          ),
+                        ),
+                        Switch(
+                          value: isManualMode,
+                          onChanged: (value) {
+                            setState(() {
+                              isManualMode = value;
+                            });
+                          },
+                        ),
+                        Text(
+                          'Auto',
+                          style: TextStyle(
+                            fontSize: isSmallScreen ? 12.0 : 16.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ]
+
+                  // here add more if needed
                 ],
               ),
             ),
@@ -526,16 +659,13 @@ class _View1ScreenState extends State<View1Screen> {
           iconSize: iconSize, // Set icon size based on screen size
           onPressed: () {
             isHumidityOn = !isHumidityOn;
-            if(isHumidityOn==false)
-            {
+            if (isHumidityOn == false) {
               state = 0;
-            }
-            else
-            {
+            } else {
               state = 1;
             }
-            controlUnit(context, "3d2c5777-25a4-455a-b8f3-fa0e135cc12b", "humidity", retrieveData("setHumidityValue"), state);
-                          
+            controlUnit(context, "3d2c5777-25a4-455a-b8f3-fa0e135cc12b",
+                "humidity", retrieveData("setHumidityValue"), state);
           },
         ),
         SizedBox(height: isSmallScreen ? 25 : 15),
@@ -549,11 +679,8 @@ class _View1ScreenState extends State<View1Screen> {
   }
 }
 
-Future<String?> controlUnit(
-    BuildContext context,
-    String deviceId,
-    String action,
-    double value,int state) async {
+Future<String?> controlUnit(BuildContext context, String deviceId,
+    String action, double value, int state) async {
   const apiUrl = '$server/profile/device-control';
   final token = await _secureStorage.read(key: 'auth_token');
   try {
@@ -566,13 +693,12 @@ Future<String?> controlUnit(
       body: json.encode({
         'deviceID': deviceId,
         'action': action,
-        'state':state,
+        'state': state,
         'value': value
       }),
     );
     print(response.body);
-    if (response.statusCode == 202) {
-    }
+    if (response.statusCode == 202) {}
   } catch (e) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Update failed: $e')),
