@@ -7,7 +7,7 @@ import 'package:PAVF/values/real_time/phosphorous.dart';
 import 'package:PAVF/values/real_time/potassium.dart';
 import 'package:PAVF/values/real_time/soil_moisture.dart';
 import 'package:PAVF/values/real_time/soilec.dart';
-import 'package:PAVF/values/real_time/temperature.dart';
+
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

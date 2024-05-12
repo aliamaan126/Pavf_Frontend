@@ -1,8 +1,9 @@
 import 'package:PAVF/values/graph/potassium.dart';
-
-import 'package:PAVF/values/graph/soil_nitrogen.dart';
-import 'package:PAVF/values/real_time/phosphorous.dart';
-
+import 'package:PAVF/values/graph/soil_Ec.dart';
+import 'package:PAVF/values/graph/soil_moisture.dart';
+import 'package:PAVF/values/real_time/pH.dart';
+import 'package:PAVF/values/real_time/soil_moisture.dart';
+import 'package:PAVF/values/real_time/soilec.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -15,18 +16,18 @@ import 'package:intl/intl.dart';
 // Define the main widget for the real-time screen
 void main() {
   runApp(MaterialApp(
-    home: SoilPhosphorusgraph(),
+    home: Phgraph(),
   ));
 }
 
-class SoilPhosphorusgraph extends StatefulWidget {
-  SoilPhosphorusgraph({Key? key}) : super(key: key);
+class Phgraph extends StatefulWidget {
+  Phgraph({Key? key}) : super(key: key);
 
   @override
-  _SoilPhosphorusgraphState createState() => _SoilPhosphorusgraphState();
+  _PhgraphState createState() => _PhgraphState();
 }
 
-class _SoilPhosphorusgraphState extends State<SoilPhosphorusgraph> {
+class _PhgraphState extends State<Phgraph> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final String user = "To Agro_Farm";
@@ -35,10 +36,11 @@ class _SoilPhosphorusgraphState extends State<SoilPhosphorusgraph> {
   late double screenHeight;
 
   final List<String> textData = [
-    "Phosphorus",
+    "PH Value",
   ];
   final List<IconData> iconData = [
-    Icons.terrain,
+    Icons.connected_tv_sharp,
+    //  Icons.thermostat,
   ];
   int currentIndex = 0;
 
@@ -112,7 +114,7 @@ class _SoilPhosphorusgraphState extends State<SoilPhosphorusgraph> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed('/soilnitro');
+                    Get.toNamed('/potassgraph');
                   },
                   child: IconButton(
                     icon: Icon(Icons.arrow_back_ios),
@@ -136,7 +138,7 @@ class _SoilPhosphorusgraphState extends State<SoilPhosphorusgraph> {
                 SizedBox(width: screenWidth * 0.03),
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed('/potassgraph');
+                    Get.toNamed('/soilmois');
                   },
                   child: Padding(
                     padding:
@@ -166,9 +168,9 @@ class _SoilPhosphorusgraphState extends State<SoilPhosphorusgraph> {
               radiusStyle: true,
               onToggle: (index) {
                 if (index == 0) {
-                  Get.toNamed('/phosgraph');
+                  Get.toNamed('/PGRAPH');
                 } else if (index == 1) {
-                  Get.toNamed('/phosvalue');
+                  Get.toNamed('/ph');
                 }
               },
             ),

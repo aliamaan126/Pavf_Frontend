@@ -1,14 +1,24 @@
-import 'package:PAVF/values/graph/graphvalue.dart';
+import 'package:PAVF/values/graph/soil_moisture.dart';
+
 import 'package:PAVF/values/graph/soil_nitrogen.dart';
+
 import 'package:PAVF/values/real_time/soilec.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:PAVF/component/drawer.dart';
+
 import 'package:intl/intl.dart';
 
 // Define the main widget for the real-time screen
+void main() {
+  runApp(MaterialApp(
+    home: SoilECgraph(),
+  ));
+}
+
 class SoilECgraph extends StatefulWidget {
   SoilECgraph({Key? key}) : super(key: key);
 
@@ -20,30 +30,32 @@ class _SoilgECraphState extends State<SoilECgraph> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final String user = "To Agro_Farm";
-  final PageController _pageController = PageController();
+  late MediaQueryData mediaQueryData;
+  late double screenWidth;
+  late double screenHeight;
 
-  final List<String> textData = [
-    "Soil EC",
-  ];
+  final List<String> textData = ["Soil EC"];
   final List<IconData> iconData = [
-    Icons.warning, // Temperature icon
+    Icons.warning,
   ];
   int currentIndex = 0;
 
   int speedValue1 = 0;
 
-  // Define chart data
-  final List<SalesData> chartData = [
-    SalesData(
-      DateTime(1, 1),
-      10,
-    ),
-    SalesData(DateTime(2, 1), 12),
-    SalesData(DateTime(3, 1), 13),
-    SalesData(DateTime(4, 1), 15),
-  ];
+  List<SalesData> chartData = [];
 
+  @override
+  void initState() {
+    super.initState();
+    chartData = _generateData('1d'); // Initially set data to 1d
+  }
+
+  @override
   Widget build(BuildContext context) {
+    mediaQueryData = MediaQuery.of(context);
+    screenWidth = mediaQueryData.size.width;
+    screenHeight = mediaQueryData.size.height;
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: _buildAppBar(context),
@@ -65,14 +77,13 @@ class _SoilgECraphState extends State<SoilECgraph> {
         },
       ),
       title: Text(
-        'Welcome $user', // Display the greeting with the username
+        'Welcome $user',
         style: TextStyle(
           color: Colors.white,
           fontSize: 22,
           fontWeight: FontWeight.bold,
         ),
       ),
-      // actions: [_buildProfileIcon()],
     );
   }
 
@@ -88,248 +99,273 @@ class _SoilgECraphState extends State<SoilECgraph> {
   }
 
   Widget _buildBody() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 30.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Tempgraph()),
-                  );
-                },
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back_ios),
-                  onPressed: null,
-                ),
-              ),
-              SizedBox(width: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: Icon(
-                  iconData[currentIndex],
-                  size: 40,
-                ),
-              ),
-              Text(
-                textData[currentIndex],
-                style: TextStyle(fontSize: 24),
-              ),
-              SizedBox(width: 0),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    //forward move
-                    MaterialPageRoute(builder: (context) => SoilNCgraph()),
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed('/soilmois');
+                  },
                   child: IconButton(
-                    icon: Icon(Icons.arrow_forward_ios),
+                    icon: Icon(Icons.arrow_back_ios),
                     onPressed: null,
                   ),
                 ),
-              ),
-            ],
-          ),
-          Expanded(
-            child: PageView(
-              controller: _pageController,
-              children: [
-                _buildTextScreen(0, speedValue1),
+                SizedBox(width: 10),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+                  child: Icon(
+                    iconData[currentIndex],
+                    size: screenWidth * 0.08,
+                  ),
+                ),
+                Text(
+                  textData[currentIndex],
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.05,
+                  ),
+                ),
+                SizedBox(width: screenWidth * 0.03),
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed('/soilnitro');
+                  },
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_forward_ios),
+                      onPressed: null,
+                    ),
+                  ),
+                ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTextScreen(int index, int speedValue) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(height: 10),
-        ToggleSwitch(
-          minWidth: 90.0,
-          cornerRadius: 100.0,
-          activeBgColors: [
-            [Color(0xFF18A818)],
-            [Color(0xFF18A818)]
-          ],
-          activeFgColor: Color.fromARGB(255, 6, 6, 6),
-          inactiveBgColor: Color(0xFFC9E9C9),
-          inactiveFgColor: Color.fromARGB(255, 0, 0, 0),
-          initialLabelIndex: 1,
-          totalSwitches: 2,
-          labels: ['Graph', 'Realtime'],
-          radiusStyle: true,
-          onToggle: (index) {
-            if (index == 0) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SoilECgraph()),
-              );
-            } else if (index == 1) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SoilEcValue()),
-              );
-            }
-          },
-        ),
-        SizedBox(height: 30), // Add this line
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              width: 70,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Colors.red, // Color representing minimum value
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Center(
-                  child: Text('Min 32', style: TextStyle(color: Colors.white))),
+            SizedBox(height: 10),
+            ToggleSwitch(
+              minWidth: screenWidth * 0.25,
+              cornerRadius: 100.0,
+              activeBgColors: [
+                [Color(0xFF18A818)],
+                [Color(0xFF18A818)]
+              ],
+              activeFgColor: Color.fromARGB(255, 6, 6, 6),
+              inactiveBgColor: Color(0xFFC9E9C9),
+              inactiveFgColor: Color.fromARGB(255, 0, 0, 0),
+              initialLabelIndex: 1,
+              totalSwitches: 2,
+              labels: ['Graph', 'Realtime'],
+              radiusStyle: true,
+              onToggle: (index) {
+                if (index == 0) {
+                  Get.toNamed('/Egraph');
+                } else if (index == 1) {
+                  Get.toNamed('/ecvalue');
+                }
+              },
             ),
-            Container(
-              width: 70,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Colors.green, // Color representing maximum value
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Center(
-                  child: Text('Max 52', style: TextStyle(color: Colors.white))),
-            ),
-          ],
-        ),
-        SizedBox(height: 40), // Add this line
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _buildIntervalButton('1d'),
-            _buildIntervalButton('3d'),
-            _buildIntervalButton('7d'),
-            _buildIntervalButton('1m'),
-            _buildIntervalButton('1y'),
-          ],
-        ),
-        SizedBox(height: 40), // Add this line
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SizedBox(
-            height: 350,
-            child: Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: Card(
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  width: screenWidth * 0.3,
+                  height: screenHeight * 0.065,
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            height: 300,
-                            child: SfCartesianChart(
-                              backgroundColor: Colors.white,
-                              primaryXAxis: DateTimeAxis(
-                                title: AxisTitle(
-                                  text: 'Date',
-                                  textStyle: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                  child: Center(
+                      child: Text('Min 32',
+                          style: TextStyle(color: Colors.white))),
+                ),
+                Container(
+                  width: screenWidth * 0.3,
+                  height: screenHeight * 0.065,
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Center(
+                      child: Text('Max 52',
+                          style: TextStyle(color: Colors.white))),
+                ),
+              ],
+            ),
+            SizedBox(height: 40),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildIntervalButton('1d'),
+                _buildIntervalButton('3d'),
+                _buildIntervalButton('7d'),
+                _buildIntervalButton('1m'),
+                _buildIntervalButton('3m'),
+              ],
+            ),
+            SizedBox(height: 40),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
+              child: SizedBox(
+                height: screenHeight * 0.35,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+                  child: Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: screenWidth * 0.03),
+                            child: SizedBox(
+                              height: screenHeight * 0.3,
+                              child: SfCartesianChart(
+                                backgroundColor: Colors.white,
+                                primaryXAxis: DateTimeAxis(
+                                  title: AxisTitle(
+                                    text: 'Date',
+                                    textStyle: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
                                   ),
-                                ),
-                                majorGridLines: MajorGridLines(
-                                  width: 1,
-                                  color: Colors.grey[300],
-                                ),
-                                plotOffset: 0,
-                              ),
-                              primaryYAxis: NumericAxis(
-                                title: AxisTitle(
-                                  text: 'Value',
-                                  textStyle: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                                  majorGridLines: MajorGridLines(
+                                    width: 1,
+                                    color: Colors.grey[300],
                                   ),
+                                  plotOffset: 0,
+                                  dateFormat: DateFormat
+                                      .MMMd(), // Add this line to format dates
                                 ),
-                                axisLine: AxisLine(
-                                  width: 1,
-                                  color: Colors.grey[300],
+                                primaryYAxis: NumericAxis(
+                                  title: AxisTitle(
+                                    text: 'Value',
+                                    textStyle: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  axisLine: AxisLine(
+                                    width: 1,
+                                    color: Colors.grey[300],
+                                  ),
+                                  majorTickLines: MajorTickLines(
+                                    size: 5,
+                                    color: Colors.grey[300],
+                                  ),
+                                  numberFormat: NumberFormat.compact(),
                                 ),
-                                majorTickLines: MajorTickLines(
-                                  size: 5,
-                                  color: Colors.grey[300],
-                                ),
-                                numberFormat: NumberFormat.compact(),
-                              ),
-                              // Remove plotArea here
-                              series: <CartesianSeries>[
-                                LineSeries<SalesData, DateTime>(
-                                  dataSource: chartData,
-                                  xValueMapper: (SalesData sales, _) =>
-                                      sales.year,
-                                  yValueMapper: (SalesData sales, _) =>
-                                      sales.sales,
-                                  color: Colors.blue,
-                                  width: 2,
-                                  markerSettings: MarkerSettings(
-                                    isVisible: true,
+                                series: <CartesianSeries>[
+                                  LineSeries<SalesData, DateTime>(
+                                    dataSource: chartData,
+                                    xValueMapper: (SalesData sales, _) =>
+                                        sales.year,
+                                    yValueMapper: (SalesData sales, _) =>
+                                        sales.sales,
                                     color: Colors.blue,
+                                    width: 2,
+                                    markerSettings: MarkerSettings(
+                                      isVisible: true,
+                                      color: Colors.blue,
+                                    ),
                                   ),
-                                ),
-                              ],
-                              tooltipBehavior: TooltipBehavior(
-                                enable: true,
-                                textStyle: TextStyle(
-                                  color: Colors.white,
+                                ],
+                                tooltipBehavior: TooltipBehavior(
+                                  enable: true,
+                                  textStyle: TextStyle(
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
   Widget _buildIntervalButton(String interval) {
     return ElevatedButton(
       onPressed: () {
-        // Handle button press for the given interval
-        // Update chart data based on the selected interval
+        updateChartData(interval);
       },
       child: Text(interval),
     );
   }
-}
 
-void main() {
-  runApp(MaterialApp(
-    home: SoilECgraph(),
-  ));
+  List<SalesData> _generateData(String interval) {
+    // Dummy data generation logic based on interval
+    List<SalesData> dummyData = [];
+    DateTime now = DateTime.now();
+    switch (interval) {
+      case '1d':
+        dummyData = [
+          SalesData(now.subtract(Duration(hours: 7)), 10),
+          SalesData(now, 12),
+        ];
+        break;
+      case '3d':
+        dummyData = [
+          SalesData(now.subtract(Duration(days: 3)), 8),
+          SalesData(now.subtract(Duration(days: 2)), 9),
+          SalesData(now.subtract(Duration(days: 1)), 10),
+          SalesData(now, 12),
+        ];
+        break;
+      // Add cases for other intervals if needed
+      case '7d':
+        dummyData = [
+          SalesData(now.subtract(Duration(days: 3)), 8),
+          SalesData(now.subtract(Duration(days: 2)), 9),
+          SalesData(now.subtract(Duration(days: 5)), 11),
+          SalesData(now, 12),
+        ];
+        break;
+      case '1m':
+        dummyData = [
+          SalesData(now.subtract(Duration(days: 4)), 8),
+          SalesData(now.subtract(Duration(days: 2)), 9),
+          SalesData(now.subtract(Duration(days: 5)), 11),
+          SalesData(now, 12),
+        ];
+        break;
+      case '3m':
+        dummyData = [
+          SalesData(now.subtract(Duration(days: 7)), 8),
+          SalesData(now.subtract(Duration(days: 21)), 9),
+          SalesData(now.subtract(Duration(days: 5)), 11),
+          SalesData(now, 12),
+        ];
+        break;
+    }
+    return dummyData;
+  }
+
+  void updateChartData(String interval) {
+    setState(() {
+      chartData = _generateData(interval);
+    });
+  }
 }
 
 class SalesData {

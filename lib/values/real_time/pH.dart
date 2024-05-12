@@ -1,5 +1,4 @@
 import 'package:PAVF/screens/app/local_storage.dart';
-import 'package:PAVF/values/graph/graphvalue.dart';
 import 'package:PAVF/values/real_time/phosphorous.dart';
 
 import 'package:PAVF/values/real_time/potassium.dart';
@@ -118,11 +117,8 @@ class _PhValueState extends State<PhValue> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    // backwad
-                    MaterialPageRoute(builder: (context) => Phosphorusvalue()),
-                  );
+                  // backwad
+                  Get.toNamed('/potassvalue');
                 },
                 child: IconButton(
                   icon: Icon(Icons.arrow_back_ios),
@@ -147,11 +143,8 @@ class _PhValueState extends State<PhValue> {
               SizedBox(width: screenWidth * 0.03),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    //forward
-                    MaterialPageRoute(builder: (context) => realTime()),
-                  );
+                  //forward
+                  Get.toNamed('/soilmoisture');
                 },
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
@@ -197,15 +190,9 @@ class _PhValueState extends State<PhValue> {
           radiusStyle: true,
           onToggle: (index) {
             if (index == 0) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Tempgraph()),
-              );
+              Get.toNamed('/PGRAPH');
             } else if (index == 1) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PhValue()),
-              );
+              Get.toNamed('/ph');
             }
           },
         ),

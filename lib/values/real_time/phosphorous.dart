@@ -116,11 +116,8 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    //backward
-                    MaterialPageRoute(builder: (context) => Nitrogenvalue()),
-                  );
+                  //backward
+                  Get.toNamed('/Nitrovalue');
                 },
                 child: IconButton(
                   icon: Icon(Icons.arrow_back_ios),
@@ -145,11 +142,8 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
               SizedBox(width: screenWidth * 0.03),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    //forward
-                    MaterialPageRoute(builder: (context) => PhValue()),
-                  );
+                  Get.toNamed('/potassvalue');
+                  //forward
                 },
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
@@ -195,15 +189,9 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
           radiusStyle: true,
           onToggle: (index) {
             if (index == 0) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SoilPhosphorusgraph()),
-              );
+              Get.toNamed('/phosgraph');
             } else if (index == 1) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Phosphorusvalue()),
-              );
+              Get.toNamed('/phosvalue');
             }
           },
         ),

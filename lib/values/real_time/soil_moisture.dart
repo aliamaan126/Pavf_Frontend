@@ -1,9 +1,10 @@
 import 'package:PAVF/screens/app/local_storage.dart';
-import 'package:PAVF/values/graph/graphvalue.dart';
+
 import 'package:PAVF/values/graph/soil_moisture.dart';
 import 'package:PAVF/values/real_time/nitrogen.dart';
 import 'package:PAVF/values/real_time/potassium.dart';
-import 'package:PAVF/values/real_time/temperature.dart';
+import 'package:PAVF/values/real_time/soilec.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kdgaugeview/kdgaugeview.dart';
@@ -117,10 +118,7 @@ class _SoilMoistureValueState extends State<SoilMoistureValue> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => realTime()),
-                  );
+                  Get.toNamed('/ph');
                 },
                 child: IconButton(
                   icon: Icon(Icons.arrow_back_ios),
@@ -145,10 +143,8 @@ class _SoilMoistureValueState extends State<SoilMoistureValue> {
               SizedBox(width: screenWidth * 0.03),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => TemperatureValue()),
-                  );
+                  // Get.toNamed("/Ecvalue");
+                  Get.offNamed('/ecvalue');
                 },
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
@@ -194,15 +190,9 @@ class _SoilMoistureValueState extends State<SoilMoistureValue> {
           radiusStyle: true,
           onToggle: (index) {
             if (index == 0) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Soilgraph()),
-              );
+              Get.toNamed('/soilmois');
             } else if (index == 1) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => realTime()),
-              );
+              Get.toNamed('/soilmoisture');
             }
           },
         ),

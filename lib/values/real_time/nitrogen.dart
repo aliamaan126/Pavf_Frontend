@@ -4,6 +4,7 @@ import 'package:PAVF/values/real_time/phosphorous.dart';
 import 'package:PAVF/values/real_time/potassium.dart';
 import 'package:PAVF/values/real_time/soilec.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:kdgaugeview/kdgaugeview.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:PAVF/component/drawer.dart';
@@ -54,7 +55,6 @@ class _PhosphorusvalueState extends State<Nitrogenvalue> {
 // double humiditySpeed  = double.parse(retrieveData('humid'));
   // int speedValue1 = retrieveData("moisture");
   int speedValue1 = 20;
-  
 
   Widget build(BuildContext context) {
     // Retrieve MediaQuery
@@ -116,11 +116,8 @@ class _PhosphorusvalueState extends State<Nitrogenvalue> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    //backward
-                    MaterialPageRoute(builder: (context) => SoilEcValue()),
-                  );
+                  // backwad
+                  Get.toNamed('/ecvalue');
                 },
                 child: IconButton(
                   icon: Icon(Icons.arrow_back_ios),
@@ -145,11 +142,8 @@ class _PhosphorusvalueState extends State<Nitrogenvalue> {
               SizedBox(width: screenWidth * 0.03),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    //forward
-                    MaterialPageRoute(builder: (context) => Phosphorusvalue()),
-                  );
+                  //forward
+                  Get.toNamed('/phosvalue');
                 },
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
@@ -195,15 +189,9 @@ class _PhosphorusvalueState extends State<Nitrogenvalue> {
           radiusStyle: true,
           onToggle: (index) {
             if (index == 0) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SoilNCgraph()),
-              );
+              Get.toNamed('/soilnitro');
             } else if (index == 1) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SoilEcValue()),
-              );
+              Get.toNamed('/Nitrovalue');
             }
           },
         ),

@@ -1,7 +1,10 @@
-import 'package:PAVF/values/graph/graphvalue.dart';
+import 'package:PAVF/values/graph/ph_graph.dart';
 import 'package:PAVF/values/graph/potassium.dart';
+import 'package:PAVF/values/graph/soil_Ec.dart';
 import 'package:PAVF/values/real_time/soil_moisture.dart';
+import 'package:PAVF/values/real_time/soilec.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'package:toggle_switch/toggle_switch.dart';
@@ -105,11 +108,7 @@ class _SoilgraphState extends State<Soilgraph> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Soilpotassiumgraph()),
-                    );
+                    Get.toNamed('/PGRAPH');
                   },
                   child: IconButton(
                     icon: Icon(Icons.arrow_back_ios),
@@ -133,10 +132,7 @@ class _SoilgraphState extends State<Soilgraph> {
                 SizedBox(width: screenWidth * 0.03),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Tempgraph()),
-                    );
+                    Get.toNamed('/Egraph');
                   },
                   child: Padding(
                     padding:
@@ -166,17 +162,9 @@ class _SoilgraphState extends State<Soilgraph> {
               radiusStyle: true,
               onToggle: (index) {
                 if (index == 0) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SoilMoistureValue()),
-                  );
+                  Get.toNamed('/soilmois');
                 } else if (index == 1) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SoilMoistureValue()),
-                  );
+                  Get.toNamed('/soilmoisture');
                 }
               },
             ),
@@ -224,90 +212,88 @@ class _SoilgraphState extends State<Soilgraph> {
               padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
               child: SizedBox(
                 height: screenHeight * 0.35,
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
-                    child: Card(
-                      elevation: 3,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: screenWidth * 0.03),
-                              child: SizedBox(
-                                height: screenHeight * 0.3,
-                                child: SfCartesianChart(
-                                  backgroundColor: Colors.white,
-                                  primaryXAxis: DateTimeAxis(
-                                    title: AxisTitle(
-                                      text: 'Date',
-                                      textStyle: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    majorGridLines: MajorGridLines(
-                                      width: 1,
-                                      color: Colors.grey[300],
-                                    ),
-                                    plotOffset: 0,
-                                    dateFormat: DateFormat
-                                        .MMMd(), // Add this line to format dates
-                                  ),
-                                  primaryYAxis: NumericAxis(
-                                    title: AxisTitle(
-                                      text: 'Value',
-                                      textStyle: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    axisLine: AxisLine(
-                                      width: 1,
-                                      color: Colors.grey[300],
-                                    ),
-                                    majorTickLines: MajorTickLines(
-                                      size: 5,
-                                      color: Colors.grey[300],
-                                    ),
-                                    numberFormat: NumberFormat.compact(),
-                                  ),
-                                  series: <CartesianSeries>[
-                                    LineSeries<SalesData, DateTime>(
-                                      dataSource: chartData,
-                                      xValueMapper: (SalesData sales, _) =>
-                                          sales.year,
-                                      yValueMapper: (SalesData sales, _) =>
-                                          sales.sales,
-                                      color: Colors.blue,
-                                      width: 2,
-                                      markerSettings: MarkerSettings(
-                                        isVisible: true,
-                                        color: Colors.blue,
-                                      ),
-                                    ),
-                                  ],
-                                  tooltipBehavior: TooltipBehavior(
-                                    enable: true,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+                  child: Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: screenWidth * 0.03),
+                            child: SizedBox(
+                              height: screenHeight * 0.3,
+                              child: SfCartesianChart(
+                                backgroundColor: Colors.white,
+                                primaryXAxis: DateTimeAxis(
+                                  title: AxisTitle(
+                                    text: 'Date',
                                     textStyle: TextStyle(
-                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
                                     ),
+                                  ),
+                                  majorGridLines: MajorGridLines(
+                                    width: 1,
+                                    color: Colors.grey[300],
+                                  ),
+                                  plotOffset: 0,
+                                  dateFormat: DateFormat
+                                      .MMMd(), // Add this line to format dates
+                                ),
+                                primaryYAxis: NumericAxis(
+                                  title: AxisTitle(
+                                    text: 'Value',
+                                    textStyle: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  axisLine: AxisLine(
+                                    width: 1,
+                                    color: Colors.grey[300],
+                                  ),
+                                  majorTickLines: MajorTickLines(
+                                    size: 5,
+                                    color: Colors.grey[300],
+                                  ),
+                                  numberFormat: NumberFormat.compact(),
+                                ),
+                                series: <CartesianSeries>[
+                                  LineSeries<SalesData, DateTime>(
+                                    dataSource: chartData,
+                                    xValueMapper: (SalesData sales, _) =>
+                                        sales.year,
+                                    yValueMapper: (SalesData sales, _) =>
+                                        sales.sales,
+                                    color: Colors.blue,
+                                    width: 2,
+                                    markerSettings: MarkerSettings(
+                                      isVisible: true,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                ],
+                                tooltipBehavior: TooltipBehavior(
+                                  enable: true,
+                                  textStyle: TextStyle(
+                                    color: Colors.white,
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                
+                ),
               ),
             ),
           ],

@@ -6,7 +6,7 @@ import 'package:PAVF/values/real_time/phosphorous.dart';
 import 'package:PAVF/values/real_time/potassium.dart';
 import 'package:PAVF/values/real_time/soil_moisture.dart';
 import 'package:PAVF/values/real_time/soilec.dart';
-import 'package:PAVF/values/real_time/temperature.dart';
+
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -197,37 +197,37 @@ Widget _buildMetricRows(BuildContext context) {
         "color": Color(0xFFC9E9C9)
       },
       {
-        "title": "Soil Temp",
-        "description": "Temperature value of the shelf.",
-        "navigationPage": TemperatureValue(),
-        "color": Color(0xFFC9E9C9)
-      },
-    ],
-    [
-      {
         "title": "Soil EC",
         "description": "Light Control of the shelf.",
         "navigationPage": SoilEcValue(),
         "color": Color(0xFFC9E9C9)
       },
+    ],
+    [
       {
         "title": "Soil Nitrogen",
         "description": "Temperature Control of the shelf.",
         "navigationPage": Nitrogenvalue(),
         "color": Color(0xFFC9E9C9)
       },
-    ],
-    [
       {
         "title": "Soil Phosphorus",
         "description": "Moisture Control of the shelf.",
         "navigationPage": Phosphorusvalue(),
         "color": Color(0xFFC9E9C9)
       },
+    ],
+    [
       {
         "title": "Soil Potassium",
         "description": "Phosphorous level in the soil.",
-        "navigationPage": realTime(),
+        "navigationPage": potassiumvalue(),
+        "color": Color(0xFFC9E9C9)
+      },
+      {
+        "title": "PH",
+        "description": "Phosphorous level in the soil.",
+        "navigationPage": potassiumvalue(),
         "color": Color(0xFFC9E9C9)
       },
     ],

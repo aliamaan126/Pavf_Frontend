@@ -1,17 +1,17 @@
-import 'package:PAVF/values/graph/graphvalue.dart';
 import 'package:PAVF/values/graph/potassium.dart';
 import 'package:PAVF/values/real_time/nitrogen.dart';
 import 'package:PAVF/values/real_time/pH.dart';
 import 'package:PAVF/values/real_time/phosphorous.dart';
 import 'package:PAVF/values/real_time/soil_moisture.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:kdgaugeview/kdgaugeview.dart';
 import 'package:PAVF/component/drawer.dart';
 import 'package:toggle_switch/toggle_switch.dart'; // Import ToggleSwitch package
 
 // Define the main widget for the real-time screen
-class realTime extends StatefulWidget {
-  realTime({Key? key}) : super(key: key);
+class potassiumvalue extends StatefulWidget {
+  potassiumvalue({Key? key}) : super(key: key);
 
   @override
   _RealTimeState createState() => _RealTimeState();
@@ -22,7 +22,7 @@ late MediaQueryData mediaQueryData;
 late double screenWidth;
 late double screenHeight;
 
-class _RealTimeState extends State<realTime> {
+class _RealTimeState extends State<potassiumvalue> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final String user = "To Agro_Farm";
@@ -112,11 +112,8 @@ class _RealTimeState extends State<realTime> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    //backward
-                    MaterialPageRoute(builder: (context) => Phosphorusvalue()),
-                  );
+                  //backward
+                  Get.toNamed('/phosvalue');
                 },
                 child: IconButton(
                   icon: Icon(Icons.arrow_back_ios),
@@ -141,12 +138,8 @@ class _RealTimeState extends State<realTime> {
               SizedBox(width: screenWidth * 0.03),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    //forward
-                    MaterialPageRoute(
-                        builder: (context) => SoilMoistureValue()),
-                  );
+                  //forward
+                  Get.toNamed('/ph');
                 },
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
@@ -192,15 +185,9 @@ class _RealTimeState extends State<realTime> {
           radiusStyle: true,
           onToggle: (index) {
             if (index == 0) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PhValue()),
-              );
+              Get.toNamed('/potassgraph');
             } else if (index == 1) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => realTime()),
-              );
+              Get.toNamed('/potassvalue');
             }
           },
         ),
@@ -258,6 +245,6 @@ class _RealTimeState extends State<realTime> {
 
 void main() {
   runApp(MaterialApp(
-    home: realTime(),
+    home: potassiumvalue(),
   ));
 }

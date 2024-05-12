@@ -1,10 +1,10 @@
 import 'package:PAVF/screens/app/local_storage.dart';
-import 'package:PAVF/values/graph/graphvalue.dart';
+
 import 'package:PAVF/values/graph/soil_Ec.dart';
 import 'package:PAVF/values/graph/soil_moisture.dart';
 import 'package:PAVF/values/real_time/nitrogen.dart';
 import 'package:PAVF/values/real_time/potassium.dart';
-import 'package:PAVF/values/real_time/temperature.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kdgaugeview/kdgaugeview.dart';
@@ -117,11 +117,8 @@ class _SoilEcValueState extends State<SoilEcValue> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    // backwad
-                    MaterialPageRoute(builder: (context) => TemperatureValue()),
-                  );
+                  // backwad
+                  Get.toNamed('/soilmoisture');
                 },
                 child: IconButton(
                   icon: Icon(Icons.arrow_back_ios),
@@ -146,11 +143,8 @@ class _SoilEcValueState extends State<SoilEcValue> {
               SizedBox(width: screenWidth * 0.03),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    //forward
-                    MaterialPageRoute(builder: (context) => Nitrogenvalue()),
-                  );
+                  //forward
+                  Get.toNamed('/Nitrovalue');
                 },
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
@@ -196,15 +190,9 @@ class _SoilEcValueState extends State<SoilEcValue> {
           radiusStyle: true,
           onToggle: (index) {
             if (index == 0) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SoilECgraph()),
-              );
+              Get.toNamed('/Egraph');
             } else if (index == 1) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SoilEcValue()),
-              );
+              Get.toNamed('/ecvalue');
             }
           },
         ),
