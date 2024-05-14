@@ -282,6 +282,12 @@ class _SoilgraphState extends State<Soilgraph> {
                                 ],
                                 tooltipBehavior: TooltipBehavior(
                                   enable: true,
+                                  header: '',
+                                  // Dynamic tooltip format based on interval
+                                  format: currentIndex == 0
+                                      ? 'point.x : point.y'
+                                      : 'point.x : point.y',
+                                  canShowMarker: true,
                                   textStyle: TextStyle(
                                     color: Colors.white,
                                   ),
@@ -318,7 +324,9 @@ class _SoilgraphState extends State<Soilgraph> {
     switch (interval) {
       case '1d':
         dummyData = [
-          SalesData(now.subtract(Duration(hours: 7)), 10),
+          SalesData(now.subtract(const Duration(hours: 1)), 8),
+          SalesData(now.subtract(const Duration(minutes: 30)), 9),
+          SalesData(now.subtract(const Duration(minutes: 15)), 10),
           SalesData(now, 12),
         ];
         break;

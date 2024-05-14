@@ -1,4 +1,6 @@
 import 'package:PAVF/component/drawer.dart';
+import 'package:PAVF/screens/user/About.dart';
+import 'package:PAVF/screens/user/Terms&polices.dart';
 import 'package:PAVF/screens/user/updatepass.dart';
 import 'package:flutter/material.dart';
 import 'package:PAVF/screens/user/profile.dart';
@@ -36,10 +38,13 @@ class Settings extends StatelessWidget {
                           _buildRow("Notification", () {
                             print("Notification tapped");
                           }),
-                          _buildRow("Privacy and Security", () {
-                            print("Privacy and Security tapped");
-                          }),
                           _buildRow("Terms and Policies", () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => TermPolicy()),
+                            );
+
                             print("Terms and Policies tapped");
                           }),
                           _buildRow("Change Password", () {
@@ -51,6 +56,11 @@ class Settings extends StatelessWidget {
                             print("Change Password tapped");
                           }),
                           _buildRow("About", () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => About()),
+                            );
+
                             print("About tapped");
                           }),
                         ],
