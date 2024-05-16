@@ -129,11 +129,20 @@ class SplashScreenContent extends StatelessWidget {
         await storeData('firstname', fname.toString());
         await storeData('lastname', lname.toString());
         await storeData('role', role.toString());
+      
         await storeData('image', image.toString());
+
+        
         await storeData('devices', devices.toString());
         await storeData('setHumidityValue', 0.0);
         await storeData('setTempValue', 0.0);
         await storeData('setLightValue', 0.0);
+
+        // await storeData('setHumidityValue', 0.0);
+        // await storeData('setTempValue', 0.0);
+        // await storeData('setLightValue', 0.0);
+
+        Get.toNamed("/shelfdashboard");
         print(retrieveData("devices"));
         // Handle user profile data as needed
       } else {

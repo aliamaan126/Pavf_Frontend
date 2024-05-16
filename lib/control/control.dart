@@ -112,6 +112,10 @@ class _View1ScreenState extends State<View1Screen> {
       ? retrieveData("setHumidityValue")
       : humiditySpeed;
   bool isWaterReleased = false;
+  bool isFanOn = false;
+  bool isCoolOn = false;
+
+
   int state = 0;
   List<Map<String, dynamic>> buttonData = [
     {'icon': Icons.thermostat, 'name': 'Temperature'},
@@ -301,11 +305,11 @@ class _View1ScreenState extends State<View1Screen> {
                       children: [
                         _buildIconButton(
                           Icons.air,
-                          'Fan',
-                          isSmallScreen,
+                          'fan',
+                          isSmallScreen,isFanOn
                         ),
-                        _buildIconButton(Icons.ac_unit, 'Cool', isSmallScreen),
-                        _buildIconButton(Icons.whatshot, 'Heat', isSmallScreen),
+                        _buildIconButton(Icons.ac_unit, 'cooling', isSmallScreen,isCoolOn),
+                        _buildIconButton(Icons.whatshot, 'heating', isSmallScreen,isTemperatureOn),
                       ],
                     ),
                     SizedBox(height: isSmallScreen ? 10 : 20),
@@ -504,10 +508,10 @@ class _View1ScreenState extends State<View1Screen> {
                         _buildIconButton(
                           Icons.air,
                           'wind',
-                          isSmallScreen,
+                          isSmallScreen,isFanOn
                         ),
                         // _buildIconButton(Icons.ac_unit, 'Cool', isSmallScreen),
-                        _buildIconButton(Icons.whatshot, 'Heat', isSmallScreen),
+                        _buildIconButton(Icons.whatshot, 'heating', isSmallScreen,isTemperatureOn),
                         // _buildIconButton(Icons.timer, 'Timer', isSmallScreen),
                       ],
                     ),
@@ -543,8 +547,8 @@ class _View1ScreenState extends State<View1Screen> {
                       child: ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            isLightOn = !isLightOn;
-                            if (isLightOn == false) {
+                            isWaterReleased = !isWaterReleased;
+                            if (isWaterReleased == false) {
                               state = 0;
                             } else {
                               state = 1;
@@ -552,7 +556,7 @@ class _View1ScreenState extends State<View1Screen> {
                             controlUnit(
                                 context,
                                 "3d2c5777-25a4-455a-b8f3-fa0e135cc12b",
-                                "shelf_light",
+                                "water",
                                 retrieveData("setLightValue"),
                                 state);
                           });
@@ -594,7 +598,18 @@ class _View1ScreenState extends State<View1Screen> {
                         setState(() {
                           // Perform water release action here
                           // For example, you can send a command to a control unit
-
+                            isWaterReleased = !isWaterReleased;
+                            if (isWaterReleased == false) {
+                              state = 0;
+                            } else {
+                              state = 1;
+                            }
+                            controlUnit(
+                                context,
+                                "3d2c5777-25a4-455a-b8f3-fa0e135cc12b",
+                                "water",
+                                retrieveData("setLightValue"),
+                                state);
                           // Toggle the state of isWaterReleased
                           isWaterReleased = !isWaterReleased;
                         });
@@ -649,7 +664,7 @@ class _View1ScreenState extends State<View1Screen> {
   }
 
   //handel icon code
-  Widget _buildIconButton(IconData icon, String label, bool isSmallScreen) {
+  Widget _buildIconButton(IconData icon, String label, bool isSmallScreen, bool control) {
     double iconSize = isSmallScreen ? 50.0 : 50.0;
     double labelSize = isSmallScreen ? 12.0 : 15.0;
     return Column(
@@ -658,14 +673,14 @@ class _View1ScreenState extends State<View1Screen> {
           icon: Icon(icon),
           iconSize: iconSize, // Set icon size based on screen size
           onPressed: () {
-            isHumidityOn = !isHumidityOn;
-            if (isHumidityOn == false) {
+            control = !control;
+            if (control == false) {
               state = 0;
             } else {
               state = 1;
             }
             controlUnit(context, "3d2c5777-25a4-455a-b8f3-fa0e135cc12b",
-                "humidity", retrieveData("setHumidityValue"), state);
+                label, retrieveData("setHumidityValue"), state);
           },
         ),
         SizedBox(height: isSmallScreen ? 25 : 15),

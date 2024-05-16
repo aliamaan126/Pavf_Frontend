@@ -1,12 +1,10 @@
-import 'package:PAVF/values/graph/ph_graph.dart';
-import 'package:PAVF/values/graph/potassium.dart';
-import 'package:PAVF/values/graph/soil_Ec.dart';
-import 'package:PAVF/values/real_time/soil_moisture.dart';
-import 'package:PAVF/values/real_time/soilec.dart';
+import 'package:PAVF/constants/url.dart';
+import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:PAVF/component/drawer.dart';
 
@@ -311,15 +309,31 @@ class _SoilgraphState extends State<Soilgraph> {
     );
   }
 
+  Widget _buildIntervalButton1D(String interval) {
+    return ElevatedButton(
+      onPressed: () {
+        updateChartData(interval);
+      },
+      child: Text(interval),
+    );
+  }
+
   List<SalesData> _generateData(String interval) {
     // Dummy data generation logic based on interval
     List<SalesData> dummyData = [];
     DateTime now = DateTime.now();
     switch (interval) {
       case '1d':
+
         dummyData = [
-          SalesData(now.subtract(Duration(hours: 7)), 10),
-          SalesData(now, 12),
+          SalesData(now.subtract(Duration(hours: 6)), 7),
+          SalesData(now.subtract(Duration(hours: 5)), 8),
+          SalesData(now.subtract(Duration(hours: 4)), 9),
+          SalesData(now.subtract(Duration(hours: 3)), 10),
+          SalesData(now.subtract(Duration(hours: 2)), 11),
+          SalesData(now.subtract(Duration(hours: 1)), 13),
+          SalesData(now, 4),
+
         ];
         break;
       case '3d':
@@ -365,6 +379,68 @@ class _SoilgraphState extends State<Soilgraph> {
     });
   }
 }
+
+
+
+Future<void> fetchChartData(String deviceID, int shelfId) async {
+  try {
+    final url = '$server/arduino/sensor-data/single-shelf-single-element/?deviceId=';
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{'Content-Type': 'application/json'},
+      body: json.encode(<String, String>{
+        'deviceID':
+            "3d2c5777-25a4-455a-b8f3-fa0e135cc12b", // Ensure deviceID is defined or passed as a parameter
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+
+      // Access the 'device' object from the JSON response
+      final device = jsonData['device'];
+
+      // Access the 'shelfs' array under the 'device' object
+      final shelfs = device['shelfs'] as List<dynamic>;
+
+      // Check if 'shelfs' array is not empty and retrieve the first shelf
+      if (shelfs.isNotEmpty) {
+        // Retrieve the first shelf
+        final firstShelf = shelfs[0];
+
+        // Access the 'soil_data' array under the first shelf
+        final soilDataArray = firstShelf['soil_data'] as List<dynamic>;
+        if (soilDataArray.isNotEmpty) {
+          final firstSoilData = soilDataArray[0];
+
+          // Extract field values from the first soil data object
+          final moisture = firstSoilData['Moisture'] ?? 0;
+          final temperature = firstSoilData['Temperature'] ?? 0;
+          final conductivity = firstSoilData['Conductivity'] ?? 0;
+          final pH = firstSoilData['pH'] ?? 0;
+          final dateTime = firstSoilData['DateTime'] ?? '';
+
+          await storeData('moisture', moisture);
+          await storeData('temperature', temperature);
+          await storeData('conductivity', conductivity);
+          await storeData('pH', pH);
+        } else {
+          print('No soil data available');
+        }
+      } else {
+        print('No shelf data available');
+      }
+    } else {
+      throw Exception(
+          'Failed to fetch device data: HTTP ${response.statusCode}');
+    }
+  } catch (error) {
+    print('Error fetching soil data: $error');
+    // Handle the error gracefully, e.g., display a message to the user
+  }
+}
+
 
 class SalesData {
   SalesData(this.year, this.sales);

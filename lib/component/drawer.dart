@@ -3,8 +3,6 @@ import 'package:PAVF/screens/app/shlef_dashboard.dart';
 import 'package:PAVF/screens/device/add_device.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:PAVF/screens/app/notification.dart';
-import 'package:PAVF/screens/app/dashboard.dart';
 import 'package:PAVF/screens/user/setting.dart';
 import 'package:PAVF/screens/user/profile.dart';
 import 'package:PAVF/screens/app/flutter_secure_storage.dart';
@@ -66,11 +64,11 @@ class buildDrawer extends StatelessWidget {
               text: 'Devices',
               onTap: () => Get.to(() => AddDevice()),
             ),
-            DrawerItem(
-              icon: Icons.notifications,
-              text: 'Notifications',
-              onTap: () => Get.to(() => NotificationPage()),
-            ),
+            // DrawerItem(
+            //   icon: Icons.notifications,
+            //   text: 'Notifications',
+            //   onTap: () => Get.to(() => NotificationPage()),
+            // ),
             DrawerItem(
               icon: Icons.settings,
               text: 'Settings',

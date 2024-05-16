@@ -49,7 +49,7 @@ class LoginController extends GetxController {
         await storeData('setTempValue', 0.0);
         await storeData('setLightValue', 0.0);
         Get.snackbar("Success", "Login Successful",backgroundColor: Colors.green,duration: const Duration(seconds: 3) );
-        Get.offAllNamed('/dashboard');
+        Get.offAllNamed('/shelfdashboard');
 
         // Get.find().addUser(user,email,fname,lname,'role');
       } else {
