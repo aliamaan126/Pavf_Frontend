@@ -3,6 +3,8 @@
 import 'package:PAVF/constants/url.dart';
 import 'package:PAVF/controllers/login_controller.dart';
 import 'package:PAVF/screens/app/flutter_secure_storage.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -81,6 +83,7 @@ class CenteredContent extends StatelessWidget {
     );
   }
 }
+
 class CircleAvatarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -118,9 +121,18 @@ class LoginForm extends StatelessWidget {
 
     return Column(
       children: [
-        InputField(hintText: 'username', inputWidth: screenWidth * 0.8, controller: usernameController,),
+        InputField(
+          hintText: 'username',
+          inputWidth: screenWidth * 0.8,
+          controller: usernameController,
+        ),
         const SizedBox(height: 20),
-        InputField(hintText: 'Password', isPassword: true, inputWidth: screenWidth * 0.8, controller: passwordController,),
+        InputField(
+          hintText: 'Password',
+          isPassword: true,
+          inputWidth: screenWidth * 0.8,
+          controller: passwordController,
+        ),
         const SizedBox(height: 10),
         TextButton(
           onPressed: () {
@@ -137,8 +149,8 @@ class LoginForm extends StatelessWidget {
         LoginButton(
           usernameController: usernameController,
           passwordController: passwordController,
-          buttonWidth: screenWidth * 0.8, 
-          ),
+          buttonWidth: screenWidth * 0.8,
+        ),
         const SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -167,13 +179,15 @@ class LoginForm extends StatelessWidget {
     );
   }
 }
+
 class InputField extends StatelessWidget {
   final String hintText;
   final bool isPassword;
   final TextEditingController controller;
-  final double inputWidth; 
+  final double inputWidth;
 
-  const InputField({super.key, 
+  const InputField({
+    super.key,
     required this.hintText,
     this.isPassword = false,
     required this.controller,
@@ -257,7 +271,6 @@ class LoginButton extends StatelessWidget {
         ));
   }
 }
-
 
 Future<void> fetchLatestSoilData() async {
   try {

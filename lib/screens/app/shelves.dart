@@ -28,6 +28,9 @@ class Shelves extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final String user = retrieveData("username");
 
+  // Sample data for shelves (replace it with your actual data)
+  final List<String> shelfNames = ["Shelf 1", "Shelf 2", "Shelf 3"];
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -40,49 +43,11 @@ class Shelves extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    // Add other widgets above if needed
-
-                    // Centered Container containing Card Button
-                    Center(
-                      child: Container(
-                        margin: EdgeInsets.all(16.0),
-                        width: screenSize.width * 0.9, // 90% of screen width
-                        height: screenSize.height * 0.1,
-                        child: Card(
-                          color: Color(0xFFE4F3E0), // Background color
-                          elevation: 4.0,
-                          child: InkWell(
-                            onTap: () {
-                              // Handle onTap event
-
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Shelfconfig()),
-                              );
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: Center(
-                                child: Text(
-                                  "Shelf",
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              child: ListView.builder(
+                itemCount: shelfNames.length,
+                itemBuilder: (context, index) {
+                  return _buildShelfCard(context, shelfNames[index]);
+                },
               ),
             ),
             _buildRecommendationSection(context),
@@ -105,7 +70,7 @@ class Shelves extends StatelessWidget {
         },
       ),
       title: Text(
-        'Welcome $user', // Display the greeting with the username
+        'Welcome $user',
         style: TextStyle(
           color: Colors.white,
           fontSize: 22,
@@ -126,20 +91,54 @@ class Shelves extends StatelessWidget {
     );
   }
 
+  Widget _buildShelfCard(BuildContext context, String shelfName) {
+    return Center(
+      child: Container(
+        margin: EdgeInsets.all(16.0),
+        width: MediaQuery.of(context).size.width * 0.9,
+        height: MediaQuery.of(context).size.height * 0.1,
+        child: Card(
+          color: Color(0xFFE4F3E0),
+          elevation: 4.0,
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Shelfconfig()),
+              );
+            },
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Center(
+                child: Text(
+                  shelfName,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildRecommendationSection(BuildContext context) {
     return Container(
       alignment: Alignment.bottomCenter,
       height: 150,
-      width: double.infinity, // For responsive
+      width: double.infinity,
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 201, 233, 201), // Set the background color
+        color: Color.fromARGB(255, 201, 233, 201),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: 10), // Add space between text and button
+          SizedBox(height: 10),
           InkWell(
             onTap: () {
               Get.to(() => AddDevice());
