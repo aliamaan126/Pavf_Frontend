@@ -48,12 +48,31 @@ class LoginController extends GetxController {
         await storeData('setHumidityValue', 0.0);
         await storeData('setTempValue', 0.0);
         await storeData('setLightValue', 0.0);
-        Get.snackbar("Success", "Login Successful",backgroundColor: Colors.green,duration: const Duration(seconds: 3) );
-        Get.offAllNamed('/shelfdashboard');
+        Get.snackbar("Success", "Login Successful",
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 3));
+        Get.offAllNamed('/dashboard');
 
         // Get.find().addUser(user,email,fname,lname,'role');
+      }
+      //user name check
+      if (response.statusCode == 201) {
+        Get.snackbar('Error', 'Username Field is empty');
+      }
+      if (response.statusCode == 201) {
+        Get.snackbar('Error', 'Incorrect Username');
+      }
+//PASSWORD HECK
+      if (response.statusCode == 201) {
+        Get.snackbar('Error', 'Password Field is empty');
+      }
+      if (response.statusCode == 201) {
+        Get.snackbar('Error', 'Incorrect Password');
       } else {
-        Get.snackbar("Request Failed", "Login failed: Invalid Username or Password",backgroundColor: const Color.fromARGB(255, 221, 92, 82),duration: const Duration(seconds: 3) );
+        Get.snackbar(
+            "Request Failed", "Login failed: Invalid Username or Password",
+            backgroundColor: const Color.fromARGB(255, 221, 92, 82),
+            duration: const Duration(seconds: 3));
       }
     } catch (e) {
       // Handle exceptions

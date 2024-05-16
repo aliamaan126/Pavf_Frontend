@@ -1,6 +1,8 @@
 import 'package:PAVF/constants/url.dart';
+import 'package:PAVF/screens/app/shelves.dart';
 import 'package:PAVF/screens/app/shlef_dashboard.dart';
 import 'package:PAVF/screens/device/add_device.dart';
+import 'package:PAVF/screens/device/shelfconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:PAVF/screens/user/setting.dart';
@@ -33,12 +35,14 @@ class buildDrawer extends StatelessWidget {
                     radius: 80,
                     backgroundImage: imageExist!.isNotEmpty
                         ? NetworkImage(userImageDir + retrieveData('image')!)
-                        : const AssetImage('assets/profile.png') as ImageProvider,
+                        : const AssetImage('assets/profile.png')
+                            as ImageProvider,
                   ),
                 ),
                 accountEmail: Padding(
                   padding: EdgeInsets.symmetric(
-                      vertical: MediaQuery.of(context).size.width * (5 / 375.0)),
+                      vertical:
+                          MediaQuery.of(context).size.width * (5 / 375.0)),
                   child: Text(
                     retrieveData('email') ?? '',
                     style: const TextStyle(fontSize: 16.0, color: Colors.white),
@@ -75,10 +79,14 @@ class buildDrawer extends StatelessWidget {
               onTap: () => Get.to(() => Settings()),
             ),
             DrawerItem(
+              icon: Icons.device_hub,
+              text: 'shelf',
+              onTap: () => Get.to(() => Shelves()),
+            ),
+            DrawerItem(
               icon: Icons.person,
               text: 'Profile',
-              onTap: () =>{
-                Get.to(() => const Profile())},
+              onTap: () => {Get.to(() => const Profile())},
             ),
             DrawerItem(
               icon: Icons.logout,

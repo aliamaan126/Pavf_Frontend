@@ -2,28 +2,48 @@ import 'package:PAVF/component/drawer.dart';
 import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:PAVF/screens/device/shelfconfig.dart';
 import 'package:PAVF/values/real_time/nitrogen.dart';
-
 import 'package:PAVF/values/real_time/phosphorous.dart';
 import 'package:PAVF/values/real_time/potassium.dart';
 import 'package:PAVF/values/real_time/soil_moisture.dart';
 import 'package:PAVF/values/real_time/soilec.dart';
-
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:localstorage/localstorage.dart';
-
 import 'package:PAVF/control/control.dart';
-
 import 'package:PAVF/screens/device/add_device.dart';
 
 final localStorage = LocalStorage('app_data.json');
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
   Dashboard({Key? key}) : super(key: key);
 
+  @override
+  _DashboardState createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final String user = retrieveData("username");
+
+  // List to hold connected devices
+  List<String> connectedDevices = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch connected devices here, and update the list
+    fetchConnectedDevices();
+  }
+
+  // Method to fetch connected devices (you need to implement this)
+  void fetchConnectedDevices() {
+    // Fetch connected devices logic goes here
+    // For demonstration purpose, I'm adding some sample devices
+    setState(() {
+      connectedDevices = ['Device 1', 'Device 2', 'Device 3'];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,10 +98,8 @@ class Dashboard extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   _isDeviceRegistered
-                                      ? "Not register"
-                                      //? "Device Registered"
-                                      // : "No Device Registered",
-                                      : "Device Registered",
+                                      ? "Device Registered"
+                                      : "Device Not Registered",
                                   style: TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.bold,
@@ -93,6 +111,9 @@ class Dashboard extends StatelessWidget {
                         ),
                       ),
                     ),
+
+                    // Display connected devices dynamically
+                    _buildConnectedDevices(),
                   ],
                 ),
               ),
@@ -101,6 +122,51 @@ class Dashboard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildConnectedDevices() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            "Connected Devices",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+        ),
+        GridView.builder(
+          shrinkWrap: true,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, // Number of columns in the grid
+            mainAxisSpacing: 10.0, // Spacing between rows
+            crossAxisSpacing: 10.0, // Spacing between columns
+            childAspectRatio: 1.0, // Aspect ratio of each grid item
+          ),
+          itemCount: connectedDevices.length,
+          itemBuilder: (context, index) {
+            return Card(
+              elevation: 4.0,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Center(
+                  child: Text(
+                    connectedDevices[index],
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 

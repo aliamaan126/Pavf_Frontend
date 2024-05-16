@@ -119,7 +119,7 @@ class SplashScreenContent extends StatelessWidget {
         String? lname = data['user']?['lastname'];
         String? role = data['user']?['role'];
         String? image = data['user']?['image'];
-        List<dynamic>? devices = data['user']?['devices'];
+        List<String>? devices = data['user']?['devices'];
 
         print("data obj: $data");
         print("username: $user");
