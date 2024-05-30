@@ -1,4 +1,5 @@
 import 'package:PAVF/component/drawer.dart';
+import 'package:PAVF/screens/device/remove_device.dart';
 import 'package:PAVF/screens/user/About.dart';
 import 'package:PAVF/screens/user/Terms&polices.dart';
 import 'package:PAVF/screens/user/updatepass.dart';
@@ -35,19 +36,15 @@ class Settings extends StatelessWidget {
                       child: ListView(
                         padding: EdgeInsets.symmetric(horizontal: 22),
                         children: [
-                          _buildRow("Notification", () {
-                            print("Notification tapped");
-                          }),
-                          _buildRow("Terms and Policies", () {
+                          _buildRow("Terms and Policies", Icons.policy, () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => TermPolicy()),
                             );
-
                             print("Terms and Policies tapped");
                           }),
-                          _buildRow("Change Password", () {
+                          _buildRow("Change Password", Icons.lock, () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -55,7 +52,15 @@ class Settings extends StatelessWidget {
                             );
                             print("Change Password tapped");
                           }),
-                          _buildRow("About", () {
+                          _buildRow("Remove Device", Icons.remove, () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RemoveDevice()),
+                            );
+                            print("remove device tapped");
+                          }),
+                          _buildRow("About", Icons.info, () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => About()),
@@ -76,7 +81,7 @@ class Settings extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(String label, VoidCallback onTap) {
+  Widget _buildRow(String label, IconData icon, VoidCallback onTap) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Container(
@@ -95,6 +100,10 @@ class Settings extends StatelessWidget {
           ],
         ),
         child: ListTile(
+          leading: Icon(
+            icon,
+            color: Colors.black,
+          ),
           title: Text(
             label,
             style: TextStyle(
