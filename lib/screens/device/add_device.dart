@@ -15,7 +15,7 @@ final jsonResponse = {
   ]
 };
 
-String deviceIds = retrieveData('devices').replaceAll('[', '').replaceAll(']', '') ?? '';
+String deviceIds = "[6928ebaey378]";
 
 void main() {
   runApp(MaterialApp(
@@ -29,14 +29,12 @@ class AddDevice extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     
-    List<String> deviceIdList = deviceIds.split(',').map((id) => id.trim()).toList();
+    // List<String> deviceIdList = deviceIds.split(',').map((id) => id.trim()).toList();
     
-    List<String> items = List<String>.from(jsonResponse['items'] ?? []);
+    List<String> items = ["556474","shshdj"];
 
     // Update items list with device IDs
-    deviceIdList.forEach((deviceId) {
-      items.add("Device $deviceId");
-    });
+    
 
     return Scaffold(
       key: _scaffoldKey, // Assign the scaffold key to the key property

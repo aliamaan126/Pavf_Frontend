@@ -1,15 +1,7 @@
 // ignore_for_file: body_might_complete_normally_nullable
-
-import 'package:PAVF/constants/url.dart';
 import 'package:PAVF/controllers/login_controller.dart';
-import 'package:PAVF/screens/app/flutter_secure_storage.dart';
-import 'package:permission_handler/permission_handler.dart';
-
-import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class LoginScreen extends StatelessWidget {
   final LoginController loginController = Get.put(LoginController());
@@ -231,11 +223,12 @@ class LoginButton extends StatelessWidget {
   final TextEditingController usernameController;
   final TextEditingController passwordController;
   final double buttonWidth; // Added
-  LoginButton({
+  const LoginButton({super.key, 
     required this.usernameController,
     required this.passwordController,
     required this.buttonWidth, // Added
   });
+  @override
   Widget build(BuildContext context) {
     final loginController = Get.find<LoginController>();
 
@@ -248,12 +241,16 @@ class LoginButton extends StatelessWidget {
                 usernameController.text,
                 passwordController.text,
               );
-
-              await fetchLatestSoilData();
             },
+            style: ElevatedButton.styleFrom(
+              primary: Colors.green,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
             child: loginController.isLoading.value
-                ? CircularProgressIndicator()
-                : Text(
+                ? const CircularProgressIndicator()
+                : const Text(
                     'Login',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -261,75 +258,69 @@ class LoginButton extends StatelessWidget {
                       color: Color(0xff364732),
                     ),
                   ),
-            style: ElevatedButton.styleFrom(
-              primary: Colors.green,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
           ),
         ));
   }
 }
 
-Future<void> fetchLatestSoilData() async {
-  try {
-    final url = '$server/arduino/sensor-data';
+// // Future<void> fetchLatestSoilData() async {
+//   try {
+//     final url = '$server/arduino/sensor-data';
 
-    final response = await http.post(
-      Uri.parse(url),
-      headers: <String, String>{'Content-Type': 'application/json'},
-      body: json.encode(<String, String>{
-        'deviceID':
-            "3d2c5777-25a4-455a-b8f3-fa0e135cc12b", // Ensure deviceID is defined or passed as a parameter
-      }),
-    );
+//     final response = await http.post(
+//       Uri.parse(url),
+//       headers: <String, String>{'Content-Type': 'application/json'},
+//       body: json.encode(<String, String>{
+//         'deviceID':
+//             "3d2c5777-25a4-455a-b8f3-fa0e135cc12b", // Ensure deviceID is defined or passed as a parameter
+//       }),
+//     );
 
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
+//     if (response.statusCode == 200) {
+//       final jsonData = json.decode(response.body);
 
-      // Access the 'device' object from the JSON response
-      final device = jsonData['device'];
+//       // Access the 'device' object from the JSON response
+//       final device = jsonData['device'];
 
-      // Access the 'shelfs' array under the 'device' object
-      final shelfs = device['shelfs'] as List<dynamic>;
+//       // Access the 'shelfs' array under the 'device' object
+//       final shelfs = device['shelfs'] as List<dynamic>;
 
-      // Check if 'shelfs' array is not empty and retrieve the first shelf
-      if (shelfs.isNotEmpty) {
-        // Retrieve the first shelf
-        final firstShelf = shelfs[0];
+//       // Check if 'shelfs' array is not empty and retrieve the first shelf
+//       if (shelfs.isNotEmpty) {
+//         // Retrieve the first shelf
+//         final firstShelf = shelfs[0];
 
-        // Access the 'soil_data' array under the first shelf
-        final soilDataArray = firstShelf['soil_data'] as List<dynamic>;
-        if (soilDataArray.isNotEmpty) {
-          final firstSoilData = soilDataArray[0];
+//         // Access the 'soil_data' array under the first shelf
+//         final soilDataArray = firstShelf['soil_data'] as List<dynamic>;
+//         if (soilDataArray.isNotEmpty) {
+//           final firstSoilData = soilDataArray[0];
 
-          // Extract field values from the first soil data object
-          final moisture = firstSoilData['Moisture'] ?? 0;
-          final temperature = firstSoilData['Temperature'] ?? 0;
-          final conductivity = firstSoilData['Conductivity'] ?? 0;
-          final pH = firstSoilData['pH'] ?? 0;
-          final dateTime = firstSoilData['DateTime'] ?? '';
+//           // Extract field values from the first soil data object
+//           final moisture = firstSoilData['Moisture'] ?? 0;
+//           final temperature = firstSoilData['Temperature'] ?? 0;
+//           final conductivity = firstSoilData['Conductivity'] ?? 0;
+//           final pH = firstSoilData['pH'] ?? 0;
+//           final dateTime = firstSoilData['DateTime'] ?? '';
 
-          await storeData('moisture', moisture);
-          await storeData('temperature', temperature);
-          await storeData('conductivity', conductivity);
-          await storeData('pH', pH);
-        } else {
-          print('No soil data available');
-        }
-      } else {
-        print('No shelf data available');
-      }
-    } else {
-      throw Exception(
-          'Failed to fetch device data: HTTP ${response.statusCode}');
-    }
-  } catch (error) {
-    print('Error fetching soil data: $error');
-    // Handle the error gracefully, e.g., display a message to the user
-  }
-}
+//           await storeData('moisture', moisture);
+//           await storeData('temperature', temperature);
+//           await storeData('conductivity', conductivity);
+//           await storeData('pH', pH);
+//         } else {
+//           print('No soil data available');
+//         }
+//       } else {
+//         print('No shelf data available');
+//       }
+//     } else {
+//       throw Exception(
+//           'Failed to fetch device data: HTTP ${response.statusCode}');
+//     }
+//   } catch (error) {
+//     print('Error fetching soil data: $error');
+//     // Handle the error gracefully, e.g., display a message to the user
+//   }
+// }
 
 String getImagePath(String imageName) {
   return 'assets/$imageName';

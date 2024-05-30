@@ -1,3 +1,4 @@
+import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:PAVF/values/graph/potassium.dart';
 import 'package:PAVF/values/real_time/nitrogen.dart';
 import 'package:PAVF/values/real_time/pH.dart';
@@ -50,7 +51,7 @@ class _RealTimeState extends State<potassiumvalue> {
 // double lightSpeed = double.parse(retrieveData('light'));
 // double humiditySpeed  = double.parse(retrieveData('humid'));
   // int speedValue1 = retrieveData("moisture");
-  int speedValue1 = 30;
+  int speedValue1 = 37;
 
   Widget build(BuildContext context) {
     // Retrieve MediaQuery
@@ -79,7 +80,7 @@ class _RealTimeState extends State<potassiumvalue> {
         },
       ),
       title: Text(
-        'Welcome $user', // Display the greeting with the username
+        retrieveData("plantName"), // Display the greeting with the username
         style: TextStyle(
           color: Colors.white,
           fontSize: 22,
@@ -203,7 +204,7 @@ class _RealTimeState extends State<potassiumvalue> {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Center(
-                  child: Text('Min 32', style: TextStyle(color: Colors.white))),
+                  child: Text('Min '+retrieveData("potaMin").toString(), style: TextStyle(color: Colors.white))),
             ),
             Container(
               width: screenWidth * 0.3,
@@ -213,7 +214,7 @@ class _RealTimeState extends State<potassiumvalue> {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Center(
-                  child: Text('Max 52', style: TextStyle(color: Colors.white))),
+                  child: Text('Max '+retrieveData("potaMax").toString(), style: TextStyle(color: Colors.white))),
             ),
           ],
         ),
@@ -224,8 +225,8 @@ class _RealTimeState extends State<potassiumvalue> {
               height: screenWidth * 0.9,
               padding: EdgeInsets.all(12),
               child: KdGaugeView(
-                minSpeed: 0,
-                maxSpeed: 100,
+                minSpeed: 150,
+                maxSpeed: 300,
                 speed: speedValue.toDouble(),
                 animate: true,
                 duration: Duration(seconds: 5),

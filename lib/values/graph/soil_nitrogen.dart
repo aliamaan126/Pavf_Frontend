@@ -1,9 +1,4 @@
-import 'package:PAVF/values/graph/potassium.dart';
-import 'package:PAVF/values/graph/soil_Ec.dart';
-import 'package:PAVF/values/graph/soilphosporous.dart';
-import 'package:PAVF/values/real_time/nitrogen.dart';
-import 'package:PAVF/values/real_time/soil_moisture.dart';
-import 'package:PAVF/values/real_time/soilec.dart';
+import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -80,7 +75,7 @@ class _SoilNCgraphState extends State<SoilNCgraph> {
         },
       ),
       title: Text(
-        'Welcome $user',
+        retrieveData("plantName"),
         style: TextStyle(
           color: Colors.white,
           fontSize: 22,
@@ -185,7 +180,7 @@ class _SoilNCgraphState extends State<SoilNCgraph> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Center(
-                      child: Text('Min 32',
+                      child: Text('Min '+retrieveData("nitroMin").toString(),
                           style: TextStyle(color: Colors.white))),
                 ),
                 Container(
@@ -196,7 +191,7 @@ class _SoilNCgraphState extends State<SoilNCgraph> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Center(
-                      child: Text('Max 52',
+                      child: Text('Max '+retrieveData("nitroMax").toString(),
                           style: TextStyle(color: Colors.white))),
                 ),
               ],

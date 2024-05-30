@@ -1,5 +1,6 @@
 import 'package:PAVF/constants/url.dart';
 import 'package:PAVF/screens/app/local_storage.dart';
+import 'package:PAVF/utils/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:kdgaugeview/kdgaugeview.dart';
@@ -7,63 +8,19 @@ import 'package:PAVF/component/drawer.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:provider/provider.dart';
+import 'package:PAVF/utils/socket_client.dart';
+
+
+
 
 const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
 // Define global variables for speeds
-double temperatureSpeed = 2;
-double lightSpeed = 30;
-double humiditySpeed = 40;
-
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Function()? onMenuPressed;
-
-  const CustomAppBar({super.key, required this.onMenuPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    double appBarHeight = kToolbarHeight * 2;
-
-    return Stack(
-      children: [
-        Image.asset(
-          'assets/plant.jpg', // Path to your background image
-          fit: BoxFit.cover,
-          width: double.infinity,
-          height: appBarHeight, // Set the height here
-        ),
-        AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          centerTitle: true,
-          automaticallyImplyLeading: false, // Hide the default leading icon
-
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.only(top: 20.0), // Add space from the top
-                child: IconButton(
-                  icon: Icon(Icons.menu, size: 35),
-                  onPressed: onMenuPressed,
-                  color: Colors.white, // Set the color to white
-                ),
-              ),
-              Expanded(
-                  child:
-                      Container()), // Empty Expanded to push the menu icon to the left corner
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight * 2);
-}
+double temperatureSpeed = 23;
+double lightSpeed = 100;
+double humiditySpeed = 30;
 
 class control extends StatelessWidget {
   @override
@@ -84,7 +41,7 @@ class control extends StatelessWidget {
 
 class View1Screen extends StatefulWidget {
   final int initialIndex;
-
+  
   View1Screen({this.initialIndex = 0}); // Define initialIndex parameter
 
   @override
@@ -95,6 +52,8 @@ class _View1ScreenState extends State<View1Screen> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String dynamicText = 'Temperature';
 
+  // late IO.Socket socket;
+
   int selectedIndex = 0;
   CarouselController _carouselController = CarouselController();
 
@@ -104,9 +63,9 @@ class _View1ScreenState extends State<View1Screen> {
       : temperatureSpeed;
   bool isManualMode = false;
   bool isLightOn = false;
-  double lightSliderValue = retrieveData("setLightValue") > 0
-      ? retrieveData("setLightValue")
-      : lightSpeed;
+  // double lightSliderValue = retrieveData("setLightValue") > 0
+  //     ? retrieveData("setLightValue")
+  //     : lightSpeed;
   bool isHumidityOn = false;
   double humiditySliderValue = retrieveData("setHumidityValue") > 0
       ? retrieveData("setHumidityValue")
@@ -128,15 +87,30 @@ class _View1ScreenState extends State<View1Screen> {
   GlobalKey<KdGaugeViewState> temperatureGaugeKey = GlobalKey();
   GlobalKey<KdGaugeViewState> lightGaugeKey = GlobalKey();
   GlobalKey<KdGaugeViewState> humidityGaugeKey = GlobalKey();
+
+
   @override
   void initState() {
     super.initState();
+    
     selectedIndex = widget.initialIndex; // Set selectedIndex to initialIndex
     dynamicText = buttonData[widget.initialIndex]['name']; // Set dynamicText
+    // connectToServer();
   }
 
+// void connectToServer() {
+//     socket = IO.io('http://192.168.1.12:3000', <String, dynamic>{
+//       'transports': ['websocket'],
+//       'autoConnect': false,
+//     });
+//     socket.connect();
+//   }
+  
   @override
   Widget build(BuildContext context) {
+    final socketService = Provider.of<SocketService>(context);
+    final notificationService = Provider.of<NotificationService>(context);
+
     Color waterButtonColor = Color(0xFF18A718); // Initial color is green
     return Scaffold(
       key: _scaffoldKey,
@@ -239,13 +213,22 @@ class _View1ScreenState extends State<View1Screen> {
                       alignment: Alignment.topRight,
                       child: ElevatedButton(
                         onPressed: () {
-                          setState(() {
+                            setState(() {
                             isTemperatureOn = !isTemperatureOn;
                             if (isTemperatureOn == false) {
                               state = 0;
+                              socketService.emitAction('controlAction', {
+                                "action":"control",
+                                "component":"heat",
+                                "value":0}
+                                );
                             } else {
                               state = 1;
-                            }
+                              socketService.emitAction('controlAction', {
+                                "action":"control",
+                                "component":"heat",
+                                "value":1}
+                                );                            }
                             controlUnit(
                                 context,
                                 "3d2c5777-25a4-455a-b8f3-fa0e135cc12b",
@@ -255,7 +238,7 @@ class _View1ScreenState extends State<View1Screen> {
                           });
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: isLightOn
+                          primary: isTemperatureOn
                               ? const Color.fromARGB(255, 218, 168, 164)
                               : Color.fromARGB(255, 42, 172, 42),
                           // Change button color based on light status
@@ -316,26 +299,26 @@ class _View1ScreenState extends State<View1Screen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Manual',
-                          style: TextStyle(
-                            fontSize: isSmallScreen ? 12.0 : 16.0,
-                          ),
-                        ),
-                        Switch(
-                          value: isManualMode,
-                          onChanged: (value) {
-                            setState(() {
-                              isManualMode = value;
-                            });
-                          },
-                        ),
-                        Text(
-                          'Auto',
-                          style: TextStyle(
-                            fontSize: isSmallScreen ? 12.0 : 16.0,
-                          ),
-                        ),
+                        // Text(
+                        //   'Manual',
+                        //   style: TextStyle(
+                        //     fontSize: isSmallScreen ? 12.0 : 16.0,
+                        //   ),
+                        // ),
+                        // Switch(
+                        //   value: isManualMode,
+                        //   onChanged: (value) {
+                        //     setState(() {
+                        //       isManualMode = value;
+                        //     });
+                        //   },
+                        // ),
+                        // Text(
+                        //   'Auto',
+                        //   style: TextStyle(
+                        //     fontSize: isSmallScreen ? 12.0 : 16.0,
+                        //   ),
+                        // ),
                       ],
                     ),
                   ] else if (dynamicText == 'Light Bulb') ...[
@@ -343,20 +326,34 @@ class _View1ScreenState extends State<View1Screen> {
                       alignment: Alignment.topRight,
                       child: ElevatedButton(
                         onPressed: () {
-                          setState(() {
-                            isLightOn = !isLightOn;
-                            if (isLightOn == false) {
-                              state = 0;
-                            } else {
-                              state = 1;
-                            }
-                            controlUnit(
-                                context,
-                                "3d2c5777-25a4-455a-b8f3-fa0e135cc12b",
-                                "shelf_light",
-                                retrieveData("setLightValue"),
-                                state);
-                          });
+
+                          notificationService.showNotification("title", "body");
+                          // setState(() {
+                            // isLightOn = !isLightOn;
+                            // if (isLightOn == false) {
+                            //   state = 0;
+                            //   socketService.emitAction('controlAction', {
+                            //     "action":"control",
+                            //     "component":"led",
+                            //     "value":0});
+                            //     lightSpeed =0;
+                            // } else {
+                            //   state = 1;
+                            //   socketService.emitAction('controlAction', {
+                            //     "action":"control",
+                            //     "component":"led",
+                            //     "value":1});
+                            //     lightSpeed =100;
+
+                            // }
+                            // controlUnit(
+                            //     context,
+                            //     "3d2c5777-25a4-455a-b8f3-fa0e135cc12b",
+                            //     "shelf_light",
+                            //     retrieveData("setLightValue"),
+                            //     state);
+                          // }
+                          // );
                         },
                         style: ElevatedButton.styleFrom(
                           primary: isLightOn
@@ -390,50 +387,50 @@ class _View1ScreenState extends State<View1Screen> {
                       ),
                     ),
                     SizedBox(height: isSmallScreen ? 10 : 20),
-                    Slider(
-                      value: lightSliderValue,
-                      onChanged: isManualMode
-                          ? null // If manual mode is on, make onChanged null to disable slider
-                          : (value) {
-                              setState(() {
-                                print('Slider value changed: $value');
-                                lightSliderValue =
-                                    value; // Assign the new value to your variable
-                                storeData("setLightValue", value);
-                              });
-                            },
-                      min: 0,
-                      max: 100,
-                      divisions: 100,
-                      label: lightSliderValue.round().toString(),
-                      activeColor: isManualMode ? Colors.grey : Colors.green,
-                      thumbColor: isManualMode ? Colors.grey : Colors.green,
-                    ),
+                    // Slider(
+                    //   value: lightSliderValue,
+                    //   onChanged: isManualMode
+                    //       ? null // If manual mode is on, make onChanged null to disable slider
+                    //       : (value) {
+                    //           setState(() {
+                    //             print('Slider value changed: $value');
+                    //             lightSliderValue =
+                    //                 value; // Assign the new value to your variable
+                    //             storeData("setLightValue", value);
+                    //           });
+                    //         },
+                    //   min: 0,
+                    //   max: 100,
+                    //   divisions: 100,
+                    //   label: lightSliderValue.round().toString(),
+                    //   activeColor: isManualMode ? Colors.grey : Colors.green,
+                    //   thumbColor: isManualMode ? Colors.grey : Colors.green,
+                    // ),
                     SizedBox(height: isSmallScreen ? 10 : 20),
                     SizedBox(height: isSmallScreen ? 10 : 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Manual',
-                          style: TextStyle(
-                            fontSize: isSmallScreen ? 12.0 : 16.0,
-                          ),
-                        ),
-                        Switch(
-                          value: isManualMode,
-                          onChanged: (value) {
-                            setState(() {
-                              isManualMode = value;
-                            });
-                          },
-                        ),
-                        Text(
-                          'Auto',
-                          style: TextStyle(
-                            fontSize: isSmallScreen ? 12.0 : 16.0,
-                          ),
-                        ),
+                        // Text(
+                        //   'Manual',
+                        //   style: TextStyle(
+                        //     fontSize: isSmallScreen ? 12.0 : 16.0,
+                        //   ),
+                        // ),
+                        // Switch(
+                        //   value: isManualMode,
+                        //   onChanged: (value) {
+                        //     setState(() {
+                        //       isManualMode = value;
+                        //     });
+                        //   },
+                        // ),
+                        // Text(
+                        //   'Auto',
+                        //   style: TextStyle(
+                        //     fontSize: isSmallScreen ? 12.0 : 16.0,
+                        //   ),
+                        // ),
                       ],
                     ),
                   ] else if (dynamicText == 'Humidity') ...[
@@ -445,8 +442,18 @@ class _View1ScreenState extends State<View1Screen> {
                             isHumidityOn = !isHumidityOn;
                             if (isHumidityOn == false) {
                               state = 0;
+                              socketService.emitAction('controlAction', {
+                                "action":"control",
+                                "component":"humidifier",
+                                "value":0});
+                
                             } else {
                               state = 1;
+                              socketService.emitAction('controlAction', {
+                                "action":"control",
+                                "component":"humidifier",
+                                "value":1});
+                            
                             }
                             controlUnit(
                                 context,
@@ -457,7 +464,7 @@ class _View1ScreenState extends State<View1Screen> {
                           });
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: isLightOn
+                          primary: isHumidityOn
                               ? const Color.fromARGB(255, 218, 168, 164)
                               : Color.fromARGB(255, 42, 172, 42),
                           // Change button color based on light status
@@ -507,7 +514,7 @@ class _View1ScreenState extends State<View1Screen> {
                       children: [
                         _buildIconButton(
                           Icons.air,
-                          'wind',
+                          'fan',
                           isSmallScreen,isFanOn
                         ),
                         // _buildIconButton(Icons.ac_unit, 'Cool', isSmallScreen),
@@ -519,26 +526,26 @@ class _View1ScreenState extends State<View1Screen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Manual',
-                          style: TextStyle(
-                            fontSize: isSmallScreen ? 12.0 : 16.0,
-                          ),
-                        ),
-                        Switch(
-                          value: isManualMode,
-                          onChanged: (value) {
-                            setState(() {
-                              isManualMode = value;
-                            });
-                          },
-                        ),
-                        Text(
-                          'Auto',
-                          style: TextStyle(
-                            fontSize: isSmallScreen ? 12.0 : 16.0,
-                          ),
-                        ),
+                        // Text(
+                        //   'Manual',
+                        //   style: TextStyle(
+                        //     fontSize: isSmallScreen ? 12.0 : 16.0,
+                        //   ),
+                        // ),
+                        // Switch(
+                        //   value: isManualMode,
+                        //   onChanged: (value) {
+                        //     setState(() {
+                        //       isManualMode = value;
+                        //     });
+                        //   },
+                        // ),
+                        // Text(
+                        //   'Auto',
+                        //   style: TextStyle(
+                        //     fontSize: isSmallScreen ? 12.0 : 16.0,
+                        //   ),
+                        // ),
                       ],
                     ),
                   ] else if (dynamicText == 'Water') ...[
@@ -550,8 +557,16 @@ class _View1ScreenState extends State<View1Screen> {
                             isWaterReleased = !isWaterReleased;
                             if (isWaterReleased == false) {
                               state = 0;
+                              socketService.emitAction('controlAction', {
+                                "action":"control",
+                                "component":"water",
+                                "value":0});
                             } else {
                               state = 1;
+                              socketService.emitAction('controlAction', {
+                                "action":"control",
+                                "component":"water",
+                                "value":1});
                             }
                             controlUnit(
                                 context,
@@ -562,7 +577,7 @@ class _View1ScreenState extends State<View1Screen> {
                           });
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: isLightOn
+                          primary: isWaterReleased
                               ? const Color.fromARGB(255, 218, 168, 164)
                               : Color.fromARGB(255, 42, 172, 42),
                           // Change button color based on light status
@@ -629,26 +644,26 @@ class _View1ScreenState extends State<View1Screen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Manual',
-                          style: TextStyle(
-                            fontSize: isSmallScreen ? 12.0 : 16.0,
-                          ),
-                        ),
-                        Switch(
-                          value: isManualMode,
-                          onChanged: (value) {
-                            setState(() {
-                              isManualMode = value;
-                            });
-                          },
-                        ),
-                        Text(
-                          'Auto',
-                          style: TextStyle(
-                            fontSize: isSmallScreen ? 12.0 : 16.0,
-                          ),
-                        ),
+                        // Text(
+                        //   'Manual',
+                        //   style: TextStyle(
+                        //     fontSize: isSmallScreen ? 12.0 : 16.0,
+                        //   ),
+                        // ),
+                        // Switch(
+                        //   value: isManualMode,
+                        //   onChanged: (value) {
+                        //     setState(() {
+                        //       isManualMode = value;
+                        //     });
+                        //   },
+                        // ),
+                        // Text(
+                        //   'Auto',
+                        //   style: TextStyle(
+                        //     fontSize: isSmallScreen ? 12.0 : 16.0,
+                        //   ),
+                        // ),
                       ],
                     ),
                   ]
@@ -667,6 +682,8 @@ class _View1ScreenState extends State<View1Screen> {
   Widget _buildIconButton(IconData icon, String label, bool isSmallScreen, bool control) {
     double iconSize = isSmallScreen ? 50.0 : 50.0;
     double labelSize = isSmallScreen ? 12.0 : 15.0;
+        final socketService = Provider.of<SocketService>(context);
+
     return Column(
       children: [
         IconButton(
@@ -676,8 +693,17 @@ class _View1ScreenState extends State<View1Screen> {
             control = !control;
             if (control == false) {
               state = 0;
+              socketService.emitAction('controlAction', {
+                                "action":"control",
+                                "component":label,
+                                "value":0});
+              
             } else {
               state = 1;
+              socketService.emitAction('controlAction', {
+                                "action":"control",
+                                "component":label,
+                                "value":1});
             }
             controlUnit(context, "3d2c5777-25a4-455a-b8f3-fa0e135cc12b",
                 label, retrieveData("setHumidityValue"), state);
@@ -720,4 +746,53 @@ Future<String?> controlUnit(BuildContext context, String deviceId,
     );
   }
   return null;
+}
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final Function()? onMenuPressed;
+
+  const CustomAppBar({super.key, required this.onMenuPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    double appBarHeight = kToolbarHeight * 2;
+
+    return Stack(
+      children: [
+        Image.asset(
+          'assets/plant.jpg', // Path to your background image
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: appBarHeight, // Set the height here
+        ),
+        AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: true,
+          automaticallyImplyLeading: false, // Hide the default leading icon
+
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.only(top: 20.0), // Add space from the top
+                child: IconButton(
+                  icon: Icon(Icons.menu, size: 35),
+                  onPressed: onMenuPressed,
+                  color: Colors.white, // Set the color to white
+                ),
+              ),
+              Expanded(
+                  child:
+                      Container()), // Empty Expanded to push the menu icon to the left corner
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight * 2);
 }

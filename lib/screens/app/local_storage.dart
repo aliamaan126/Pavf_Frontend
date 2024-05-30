@@ -10,7 +10,8 @@ final filestorage = "${userImageDir + retrieveData("username")}.jpg";
 
 Future<void> storeData(String key, dynamic value) async {
   await localStorage.ready;
-  localStorage.setItem(key, value);
+  await localStorage.setItem(key, value);
+  await Future.delayed(const Duration(seconds: 1));
 }
 
 // Retrieve data

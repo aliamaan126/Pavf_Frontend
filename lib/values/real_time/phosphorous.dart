@@ -54,7 +54,7 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
 // double temperatureSpeed = double.parse(retrieveData('temp'));
 // double lightSpeed = double.parse(retrieveData('light'));
 // double humiditySpeed  = double.parse(retrieveData('humid'));
-  int speedValue1 = retrieveData("moisture");
+  int speedValue1 = 41;
 
   Widget build(BuildContext context) {
     // Retrieve MediaQuery
@@ -83,7 +83,7 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
         },
       ),
       title: Text(
-        'Welcome $user', // Display the greeting with the username
+        retrieveData("plantName"), // Display the greeting with the username
         style: TextStyle(
           color: Colors.white,
           fontSize: 22,
@@ -207,7 +207,7 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Center(
-                  child: Text('Min 32', style: TextStyle(color: Colors.white))),
+                  child: Text('Min '+retrieveData("phosMin").toString(), style: TextStyle(color: Colors.white))),
             ),
             Container(
               width: screenWidth * 0.3,
@@ -217,7 +217,7 @@ class _PhosphorusvalueState extends State<Phosphorusvalue> {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Center(
-                  child: Text('Max 52', style: TextStyle(color: Colors.white))),
+                  child: Text('Max '+retrieveData("phosMax").toString(), style: TextStyle(color: Colors.white))),
             ),
           ],
         ),

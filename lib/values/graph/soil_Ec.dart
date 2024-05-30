@@ -1,3 +1,4 @@
+import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:PAVF/values/graph/soil_moisture.dart';
 
 import 'package:PAVF/values/graph/soil_nitrogen.dart';
@@ -77,7 +78,7 @@ class _SoilgECraphState extends State<SoilECgraph> {
         },
       ),
       title: Text(
-        'Welcome $user',
+        retrieveData("plantName"),
         style: TextStyle(
           color: Colors.white,
           fontSize: 22,
@@ -182,7 +183,7 @@ class _SoilgECraphState extends State<SoilECgraph> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Center(
-                      child: Text('Min 32',
+                      child: Text('Min '+retrieveData("ecMin").toString(),
                           style: TextStyle(color: Colors.white))),
                 ),
                 Container(
@@ -193,7 +194,7 @@ class _SoilgECraphState extends State<SoilECgraph> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Center(
-                      child: Text('Max 52',
+                      child: Text('Max '+retrieveData("ecMax").toString(),
                           style: TextStyle(color: Colors.white))),
                 ),
               ],

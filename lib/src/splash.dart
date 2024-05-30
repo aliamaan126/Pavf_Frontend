@@ -1,17 +1,15 @@
-import 'package:PAVF/screens/app/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:PAVF/constants/url.dart';
 import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:PAVF/screens/app/dashboard.dart';
 import 'package:PAVF/screens/auth/login_screen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
 void main() {
   runApp(const Splash());
@@ -30,8 +28,7 @@ class Splash extends StatelessWidget {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                    'assets/5.png'), // Corrected path to background image
+                image: AssetImage('assets/5.png'), // Corrected path to background image
                 fit: BoxFit.cover,
               ),
             ),
@@ -66,35 +63,44 @@ class SplashScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<bool>(
-        future: _checkTokenExists(),
+      body: FutureBuilder<void>(
+        future: _initializeApp(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
           } else {
-            if (snapshot.data == true) {
-              return FutureBuilder<void>(
-                future: _fetchUserProfile(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    socketCLient("http://localhost:3000");
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else {
-                    return Dashboard();
-                  }
-                },
-              );
-            } else {
-              return LoginScreen();
-            }
+            return Container(); // This will be replaced by navigation to Dashboard or LoginScreen
           }
         },
       ),
     );
+  }
+
+  Future<void> _initializeApp() async {
+    bool tokenExists = await _checkTokenExists();
+    if (tokenExists) {
+      int stCode = await _fetchUserProfile();
+
+      if(stCode == 401 || stCode == 404){
+        deleteData("key");
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.offNamed('/login');
+      });
+      }
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.offNamed('/dashboard');
+      });
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.offNamed('/login');
+      });
+    }
   }
 
   Future<bool> _checkTokenExists() async {
@@ -102,16 +108,19 @@ class SplashScreenContent extends StatelessWidget {
     return token != null && token.isNotEmpty;
   }
 
-  Future<void> _fetchUserProfile() async {
+  Future<int> _fetchUserProfile() async {
     try {
-      final apiUrl = '$server/profile';
+      const apiUrl = '$server/profile';
       final token = await _secureStorage.read(key: 'auth_token');
       final response = await http.get(
         Uri.parse(apiUrl),
-        headers: {'Authorization': 'Bearer $token'},
+        headers: {'Authorization': 'bearer $token'},
       );
+      print(response.statusCode);
+      print("token:$token");
 
       if (response.statusCode == 200) {
+        print("200 obtained");
         final data = json.decode(response.body);
         String? user = data['user']?['username'];
         String? email = data['user']?['email'];
@@ -119,44 +128,31 @@ class SplashScreenContent extends StatelessWidget {
         String? lname = data['user']?['lastname'];
         String? role = data['user']?['role'];
         String? image = data['user']?['image'];
-        List<String>? devices = data['user']?['devices'];
+        List<dynamic>? devices = data['user']?['devices'];
 
-        print("data obj: $data");
-        print("username: $user");
-        print(image);
         await storeData('username', user.toString());
         await storeData('email', email.toString());
         await storeData('firstname', fname.toString());
         await storeData('lastname', lname.toString());
         await storeData('role', role.toString());
-      
         await storeData('image', image.toString());
+        await storeData('devices', devices);
 
         
-        await storeData('devices', devices.toString());
+
+
         await storeData('setHumidityValue', 0.0);
         await storeData('setTempValue', 0.0);
         await storeData('setLightValue', 0.0);
-
-        // await storeData('setHumidityValue', 0.0);
-        // await storeData('setTempValue', 0.0);
-        // await storeData('setLightValue', 0.0);
-
-        Get.toNamed("/shelfdashboard");
-        print(retrieveData("devices"));
-        // Handle user profile data as needed
-      } else {
-        // Handle HTTP error response
-        await deleteData('username');
-        await deleteData('email');
-        await deleteData('firstname');
-        await deleteData('lastname');
-        await deleteData('slug');
-        await deleteData('image');
-        await deleteData('devices');
-        await deleteToken("auth_token");
-        Get.offAllNamed('/login');
+        return 200;
+      } 
+      else if(response.statusCode==401){
+        // // Handle HTTP error response
+        // Get.snackbar("error", "message");
+        return 401;
+        // Get.offAllNamed("/login");
       }
+      return response.statusCode;
     } catch (e) {
       // Handle exception
       print('Error fetching user profile: $e');
@@ -164,9 +160,6 @@ class SplashScreenContent extends StatelessWidget {
     }
   }
 }
-
-// Existing code from your question
-// Place your existing code for Dashboard, LoginScreen, and other widgets here
 
 class CenteredContent extends StatelessWidget {
   @override
@@ -250,44 +243,6 @@ Future<void> fetchLatestSoilData(String deviceID) async {
       }),
     );
     print(response.statusCode);
-    // if (response.statusCode == 200) {
-    //   final jsonData = json.decode(response.body);
-    //   final shelfs = jsonData['shelfs'] as List;
-
-    //   // Iterate over each shelf object
-    //   shelfs.forEach((shelf) {
-    //     final soilDataArray = shelf['soil_data'] as List;
-
-    //     // Sort soil data array by DateTime in descending order
-    //     soilDataArray.sort((a, b) => DateTime.parse(b['DateTime']).compareTo(DateTime.parse(a['DateTime'])));
-
-    //     // Retrieve the most recent soil data entry
-    //     final latestEntry = soilDataArray.isNotEmpty ? soilDataArray.first : null;
-
-    //     if (latestEntry != null) {
-    //       // Extract fields from the latest entry
-    //       final moisture = latestEntry['Moisture'];
-    //       final temperature = latestEntry['Temperature'];
-    //       final conductivity = latestEntry['Conductivity'];
-    //       final pH = latestEntry['pH'];
-    //       final dateTime = latestEntry['DateTime'];
-
-    //       // Now you can use these variables as needed
-    //       print('Latest Moisture: $moisture');
-    //       print('Latest Temperature: $temperature');
-    //       print('Latest Conductivity: $conductivity');
-    //       print('Latest pH: $pH');
-    //       print('Latest DateTime: $dateTime');
-
-    //       // Example: Store moisture in a variable
-    //       int humidity = int.parse(moisture);
-    //     } else {
-    //       print('No soil data available');
-    //     }
-    //   });
-    // } else {
-    //   throw Exception('Failed to fetch device data');
-    // }
   } catch (error) {
     print('Error fetching soil data: $error');
     // Handle the error gracefully, e.g., display a message to the user

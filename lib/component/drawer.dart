@@ -1,8 +1,6 @@
 import 'package:PAVF/constants/url.dart';
-import 'package:PAVF/screens/app/shelves.dart';
-import 'package:PAVF/screens/app/shlef_dashboard.dart';
-import 'package:PAVF/screens/device/add_device.dart';
-import 'package:PAVF/screens/device/shelfconfig.dart';
+import 'package:PAVF/screens/app/dashboard.dart';
+import 'package:PAVF/screens/app/shelf_dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:PAVF/screens/user/setting.dart';
@@ -61,13 +59,13 @@ class buildDrawer extends StatelessWidget {
             DrawerItem(
               icon: Icons.home,
               text: 'Home',
-              onTap: () => Get.to(() => ShelfDashboard()),
+              onTap: () => Get.to(() => const Dashboard()),
             ),
-            DrawerItem(
-              icon: Icons.device_hub,
-              text: 'Devices',
-              onTap: () => Get.to(() => AddDevice()),
-            ),
+            // DrawerItem(
+            //   icon: Icons.device_hub,
+            //   text: 'Devices',
+            //   onTap: () => Get.to(() => AddDevice()),
+            // ),
             // DrawerItem(
             //   icon: Icons.notifications,
             //   text: 'Notifications',
@@ -78,11 +76,11 @@ class buildDrawer extends StatelessWidget {
               text: 'Settings',
               onTap: () => Get.to(() => Settings()),
             ),
-            DrawerItem(
-              icon: Icons.device_hub,
-              text: 'shelf',
-              onTap: () => Get.to(() => Shelves()),
-            ),
+            // DrawerItem(
+            //   icon: Icons.device_hub,
+            //   text: 'shelf',
+            //   onTap: () => Get.to(() => Shelves()),
+            // ),
             DrawerItem(
               icon: Icons.person,
               text: 'Profile',
@@ -92,21 +90,25 @@ class buildDrawer extends StatelessWidget {
               icon: Icons.logout,
               text: 'Logout',
               onTap: () async {
-                await deleteData('username');
-                await deleteData('email');
-                await deleteData('firstname');
-                await deleteData('lastname');
-                await deleteData('slug');
-                await deleteData('image');
-                await deleteData('devices');
-                await deleteToken("auth_token");
+               try {
+    await deleteData('username');
+    await deleteData('email');
+    await deleteData('firstname');
+    await deleteData('lastname');
+    await deleteData('slug');
+    await deleteData('image');
+    await deleteData('devices');
+    await deleteToken("auth_token");
 
-                await deleteData('moisture');
-                await deleteData('temperature');
-                await deleteData('conductivity');
-                await deleteToken("pH");
+    await deleteData('moisture');
+    await deleteData('temperature');
+    await deleteData('conductivity');
+    await deleteToken("pH");
 
-                Get.offAllNamed('/login');
+    Get.offAllNamed('/login'); 
+  } catch (e) {
+    Get.snackbar("Error","Error occurred while deleting data: $e");
+  }
               },
             ),
           ],

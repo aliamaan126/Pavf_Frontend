@@ -55,7 +55,7 @@ class _PhValueState extends State<PhValue> {
 // double temperatureSpeed = double.parse(retrieveData('temp'));
 // double lightSpeed = double.parse(retrieveData('light'));
 // double humiditySpeed  = double.parse(retrieveData('humid'));
-  int speedValue1 = retrieveData("moisture");
+  int speedValue1 = 7;
 
   Widget build(BuildContext context) {
     // Retrieve MediaQuery
@@ -84,7 +84,7 @@ class _PhValueState extends State<PhValue> {
         },
       ),
       title: Text(
-        'Welcome $user', // Display the greeting with the username
+        retrieveData("plantName"), // Display the greeting with the username
         style: TextStyle(
           color: Colors.white,
           fontSize: 22,
@@ -208,7 +208,7 @@ class _PhValueState extends State<PhValue> {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Center(
-                  child: Text('Min 32', style: TextStyle(color: Colors.white))),
+                  child: Text('Min '+retrieveData("phMin").toString(), style: TextStyle(color: Colors.white))),
             ),
             Container(
               width: screenWidth * 0.3,
@@ -218,7 +218,7 @@ class _PhValueState extends State<PhValue> {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Center(
-                  child: Text('Max 52', style: TextStyle(color: Colors.white))),
+                  child: Text('Max '+retrieveData("phMax").toString(), style: TextStyle(color: Colors.white))),
             ),
           ],
         ),
@@ -230,7 +230,7 @@ class _PhValueState extends State<PhValue> {
               padding: EdgeInsets.all(12),
               child: KdGaugeView(
                 minSpeed: 0,
-                maxSpeed: 100,
+                maxSpeed: 14,
                 speed: speedValue.toDouble(),
                 animate: true,
                 duration: Duration(seconds: 5),

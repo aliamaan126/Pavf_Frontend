@@ -17,6 +17,8 @@ void main() {
 class DeviceConn extends StatelessWidget {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController =TextEditingController();
+  final ButtonController buttonController = Get.put(ButtonController());
+
 
   DeviceConn({super.key});
   @override
@@ -97,23 +99,35 @@ class DeviceConn extends StatelessWidget {
                 child: SizedBox(
                   width: 200,
                   height: 50,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                     await  deviceBind(context, usernameController, passwordController);
-                     Get.offNamed("/addDevice");
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF18A818), // Background color
-                    ),
-                    child: Text(
-                      'Connect',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold, // Make text bold
-                        fontSize: 20, // Adjust text size
-                        color: Colors.white, // Change text color to white
-                      ),
-                    ),
+                  child: Obx(() => ElevatedButton(
+                  onPressed: buttonController.isLoading.value
+                      ? null
+                      : () async {
+                          buttonController.isLoading.value = true;
+                          bool success = await deviceBind(context, usernameController, passwordController);
+                          buttonController.isLoading.value = false;
+                          if (success) {
+                            Get.offNamed("/dashboard");
+                          } else {
+                            // Handle failure (optional)
+                          }
+                        },
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFF18A818), // Background color
                   ),
+                  child: buttonController.isLoading.value
+                      ? CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        )
+                      : Text(
+                          'Connect',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold, // Make text bold
+                            fontSize: 20, // Adjust text size
+                            color: Colors.white, // Change text color to white
+                          ),
+                        ),
+                )),
                 ),
               ),
             ],
@@ -135,11 +149,7 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Color(0xFFC9E9C9),
       leading: GestureDetector(
         onTap: () {
-          // Navigate to the AddDevice screen
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => DeviceSetup()),
-          );
+          Get.offAndToNamed("/dashboard");
         },
         child: Icon(Icons.chevron_left), // Changed icon to "<"
       ),
@@ -161,12 +171,31 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
 }
 
 
-Future<String?> deviceBind(
+Future<bool> deviceBind(
     BuildContext context,
     TextEditingController userNameController,
     TextEditingController passwordController) async {
   final username = userNameController.text;
   final password = passwordController.text;
+
+  if(username == ""&&password=="")
+  {
+    Get.snackbar("Error", "Both fields must be filled",backgroundColor: const Color.fromARGB(255, 250, 50, 35),
+            duration: const Duration(seconds: 3));
+    return false;
+  }
+  if(username == "")
+  {
+    Get.snackbar("Error", "Username field must be filled",backgroundColor: const Color.fromARGB(255, 250, 50, 35),
+            duration: const Duration(seconds: 3));
+    return false;
+  }
+  if(password=="")
+  {
+    Get.snackbar("Error", "Password field must be filled",backgroundColor: const Color.fromARGB(255, 250, 50, 35),
+            duration: const Duration(seconds: 3));
+    return false;
+  }
 
   // Add your API endpoint URL here
   const apiUrl = '$server/profile/deviceBind';
@@ -183,25 +212,18 @@ Future<String?> deviceBind(
         'password': password
       }),
     );
-
-    if (response.statusCode == 201) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Device Connected Successfully'),
-          backgroundColor: Color.fromARGB(255, 26, 227, 42),
-          duration: Duration(seconds: 3),
-        ),
-      );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      Get.snackbar("Success", 'Device Connected Successfully',backgroundColor: Color.fromARGB(255, 26, 227, 42),
+      duration: Duration(seconds: 3));
+      return true;
     }
 
-    else if(response.statusCode == 403){
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Device already Connected to User'),
-          backgroundColor: Color.fromARGB(255, 185, 47, 47),
-          duration: Duration(seconds: 3),
-        ),
-      );
+    else if(response.statusCode == 401){
+
+      Get.snackbar("Error", 'Device already Connected to User',backgroundColor: Color.fromARGB(255, 185, 47, 47),
+          duration: Duration(seconds: 3));
+            return false;
     }
     else if(response.statusCode == 400){
       ScaffoldMessenger.of(context).showSnackBar(
@@ -211,11 +233,19 @@ Future<String?> deviceBind(
           duration: Duration(seconds: 3),
         ),
       );
+                  return false;
+
     }
+                return false;
+
   } catch (e) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Update failed: $e')),
     );
-    return null;
+    return false;
   }
+}
+
+class ButtonController extends GetxController {
+  var isLoading = false.obs;
 }

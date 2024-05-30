@@ -1,8 +1,16 @@
+import 'package:PAVF/constants/plants.dart';
+import 'package:PAVF/constants/url.dart';
+import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:PAVF/screens/app/dashboard.dart';
 import 'package:PAVF/screens/device/device_Setup.dart';
-import 'package:PAVF/screens/user/profile.dart';
-import 'package:PAVF/screens/user/setting.dart';
+import 'package:get/get.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+
 
 void main() {
   runApp(MaterialApp(
@@ -14,17 +22,24 @@ class Shelfconfig extends StatelessWidget {
   // Declare text controllers
   final TextEditingController _plantController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
+  final String shelfId = Get.arguments['shelfId'];
+  final String deviceId = Get.arguments['deviceID'];
+  final String deviceName = Get.arguments['deviceName'];
+  List<dynamic> shelfs = Get.arguments['shelfs'];
 
+
+  Map<String, dynamic>? plantData;
   @override
   Widget build(BuildContext context) {
     // Define a list of plants
-    List<String> plants = [
-      'Plant A',
-      'Plant B',
-      'Plant C'
-    ]; // Add your list of plants here
-
+    // List<dynamic> plants = [
+    //   'Plant A',
+    //   'Plant B',
+    //   'Plant C'
+    // ]; // Add your list of plants here
+    List<String> plantNames = plantsDatabase.map((plant) => plant['name'] as String).toList();
     // Define a variable to hold the selected plant and initialize it with null
+    
     String? selectedPlant;
 
     return Scaffold(
@@ -53,11 +68,15 @@ class Shelfconfig extends StatelessWidget {
               ), // Add some space between the text and the text field
               DropdownButtonFormField<String>(
                 value: selectedPlant,
-                onChanged: (String? newValue) {
+                onChanged: (dynamic? newValue) {
                   // When a new plant is selected, update the selectedPlant variable
                   selectedPlant = newValue;
+                  plantData = plantsDatabase.firstWhere((plant) => plant['name'] == selectedPlant );
+
+                  print("plant selected: $plantData");
+
                 },
-                items: plants.map<DropdownMenuItem<String>>((String value) {
+                items: plantNames.map<DropdownMenuItem<String>>((dynamic value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
@@ -77,36 +96,36 @@ class Shelfconfig extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 30,
-              ),
-              Text(
-                'Date', // Password text
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ), // Add some space between the text and the text field
-              TextFormField(
-                // Text field for entering the date
-                controller: _dateController, // Attach text controller
-
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(color: Color(0xFFE4E4E4)),
-                  ),
-                  hintText: 'Enter Date',
-                  filled: true,
-                  fillColor: Color(0xFFF9FAF9),
-                ),
-              ),
-              SizedBox(
                 height: 100,
               ),
+              // Text(
+              //   'Date', // Password text
+              //   style: TextStyle(
+              //     fontSize: 25,
+              //     fontWeight: FontWeight.bold,
+              //     color: Colors.black,
+              //   ),
+              // ),
+              // SizedBox(
+              //   height: 15,
+              // ), // Add some space between the text and the text field
+              // TextFormField(
+              //   // Text field for entering the date
+              //   controller: _dateController, // Attach text controller
+
+              //   // decoration: InputDecoration(
+              //   //   border: OutlineInputBorder(
+              //   //     borderRadius: BorderRadius.circular(10.0),
+              //   //     borderSide: BorderSide(color: Color(0xFFE4E4E4)),
+              //   //   ),
+              //   //   hintText: 'Enter Date',
+              //   //   filled: true,
+              //   //   fillColor: Color(0xFFF9FAF9),
+              //   // ),
+              // ),
+              // SizedBox(
+              //   height: 100,
+              // ),
               Center(
                 child: SizedBox(
                   width: 200,
@@ -115,7 +134,9 @@ class Shelfconfig extends StatelessWidget {
                     onPressed: () {
                       // Access entered text using text controllers
                       String selectedPlant = _plantController.text;
-                      String enteredDate = _dateController.text;
+                      // String enteredDate = _dateController.text;
+                      plantConfig(context,deviceId,shelfId,plantData!);
+                      Get.offAndToNamed("/shelves",arguments: {"deviceName":deviceName,"deviceId":deviceId,"shelfs":shelfs});
                       // Add your connection logic here
                     },
                     style: ElevatedButton.styleFrom(
@@ -152,10 +173,7 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
       leading: GestureDetector(
         onTap: () {
           // Navigate to the AddDevice screen
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => DeviceSetup()),
-          );
+          Get.offAndToNamed("/shelves");
         },
         child: Icon(Icons.chevron_left), // Changed icon to "<"
       ),
@@ -174,4 +192,50 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
+}
+
+
+
+Future<String?> plantConfig(
+    BuildContext context,
+    String deviceId,
+    String shelfId,
+    Map<String, dynamic> plantContent) async {
+
+  // Add your API endpoint URL here
+  print("device ID: "+deviceId);
+    print("shelf ID: "+shelfId);
+      print(plantContent);
+
+
+  const apiUrl = '$server/profile/add-plant';
+  final token = await _secureStorage.read(key: 'auth_token');
+  try {
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer $token'
+      },  
+      body: json.encode({
+        "deviceId":deviceId,
+        "shelfId":shelfId,
+        "plant_data":plantContent
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      Get.snackbar("Success", "Shelf connfigured successfully");
+      // Get.offNamed("/shelves",arguments: {"deviceID":deviceId});
+    }
+
+    if (response.statusCode == 400) {
+
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Update failed: $e')),
+    );
+    return null;
+  }
 }

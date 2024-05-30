@@ -1,6 +1,7 @@
 import 'package:PAVF/component/drawer.dart';
 import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:PAVF/values/real_time/nitrogen.dart';
+import 'package:PAVF/values/real_time/pH.dart';
 
 import 'package:PAVF/values/real_time/phosphorous.dart';
 import 'package:PAVF/values/real_time/potassium.dart';
@@ -38,6 +39,8 @@ class ShelfDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     print("image:");
     print(retrieveData("image"));
+        print(retrieveData("ecMin"));
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: _buildAppBar(context),
@@ -74,7 +77,7 @@ class ShelfDashboard extends StatelessWidget {
         },
       ),
       title: Text(
-        'Welcome $user', // Display the greeting with the username
+        retrieveData("plantName").toString(), // Display the greeting with the username
         style: TextStyle(
           color: Colors.white,
           fontSize: 22,
@@ -227,7 +230,7 @@ Widget _buildMetricRows(BuildContext context) {
       {
         "title": "PH",
         "description": "Phosphorous level in the soil.",
-        "navigationPage": potassiumvalue(),
+        "navigationPage": PhValue(),
         "color": Color(0xFFC9E9C9)
       },
     ],
@@ -392,7 +395,7 @@ Padding _buildRecommendationSection(BuildContext context) {
   return Padding(
     padding: const EdgeInsets.all(0),
     child: Container(
-      height: 150,
+      height: 50,
       width: double.infinity, // For responsive
       decoration: BoxDecoration(
         color: Color.fromARGB(255, 201, 233,
@@ -402,49 +405,49 @@ Padding _buildRecommendationSection(BuildContext context) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "Device Connection",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-          ),
-          SizedBox(height: 10), // Add space between text and button
-          Text(
-            "No Device Connected",
-            style: TextStyle(
-              fontSize: 16,
-            ),
-          ),
-          SizedBox(height: 10), // Add space between text and button
-          InkWell(
-            onTap: () {
-              Get.to(() => AddDevice());
-            },
-            child: Container(
-              height: 40,
-              width: 150,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 255, 255, 255),
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(
-                  color: const Color.fromARGB(255, 255, 253, 253),
-                  width: 2.0,
-                ),
-              ),
-              child: const Center(
-                child: Text(
-                  "Bind the device",
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 40, 176, 6),
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+        // children: [
+        //   Text(
+        //     "Device Connection",
+        //     style: TextStyle(
+        //       fontWeight: FontWeight.bold,
+        //       fontSize: 18,
+        //     ),
+        //   ),
+        //   SizedBox(height: 10), // Add space between text and button
+        //   Text(
+        //     "No Device Connected",
+        //     style: TextStyle(
+        //       fontSize: 16,
+        //     ),
+        //   ),
+        //   SizedBox(height: 10), // Add space between text and button
+        //   InkWell(
+        //     onTap: () {
+        //       Get.to(() => AddDevice());
+        //     },
+        //     child: Container(
+        //       height: 40,
+        //       width: 150,
+        //       decoration: BoxDecoration(
+        //         color: Color.fromARGB(255, 255, 255, 255),
+        //         borderRadius: BorderRadius.circular(30),
+        //         border: Border.all(
+        //           color: const Color.fromARGB(255, 255, 253, 253),
+        //           width: 2.0,
+        //         ),
+        //       ),
+        //       child: const Center(
+        //         child: Text(
+        //           "Bind the device",
+        //           style: TextStyle(
+        //             color: Color.fromARGB(255, 40, 176, 6),
+        //             fontSize: 16,
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ],
       ),
     ),
   );

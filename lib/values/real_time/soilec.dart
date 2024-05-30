@@ -1,10 +1,4 @@
 import 'package:PAVF/screens/app/local_storage.dart';
-
-import 'package:PAVF/values/graph/soil_Ec.dart';
-import 'package:PAVF/values/graph/soil_moisture.dart';
-import 'package:PAVF/values/real_time/nitrogen.dart';
-import 'package:PAVF/values/real_time/potassium.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kdgaugeview/kdgaugeview.dart';
@@ -55,7 +49,7 @@ class _SoilEcValueState extends State<SoilEcValue> {
 // double temperatureSpeed = double.parse(retrieveData('temp'));
 // double lightSpeed = double.parse(retrieveData('light'));
 // double humiditySpeed  = double.parse(retrieveData('humid'));
-  int speedValue1 = retrieveData("moisture");
+  int speedValue1 = 2;
 
   Widget build(BuildContext context) {
     // Retrieve MediaQuery
@@ -84,7 +78,7 @@ class _SoilEcValueState extends State<SoilEcValue> {
         },
       ),
       title: Text(
-        'Welcome $user', // Display the greeting with the username
+        retrieveData("plantName"), // Display the greeting with the username
         style: TextStyle(
           color: Colors.white,
           fontSize: 22,
@@ -208,7 +202,7 @@ class _SoilEcValueState extends State<SoilEcValue> {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Center(
-                  child: Text('Min 32', style: TextStyle(color: Colors.white))),
+                  child: Text('Min '+retrieveData("ecMin").toString(), style: TextStyle(color: Colors.white))),
             ),
             Container(
               width: screenWidth * 0.3,
@@ -218,7 +212,7 @@ class _SoilEcValueState extends State<SoilEcValue> {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Center(
-                  child: Text('Max 52', style: TextStyle(color: Colors.white))),
+                  child: Text('Max '+retrieveData("ecMax").toString(), style: TextStyle(color: Colors.white))),
             ),
           ],
         ),
@@ -230,7 +224,7 @@ class _SoilEcValueState extends State<SoilEcValue> {
               padding: EdgeInsets.all(12),
               child: KdGaugeView(
                 minSpeed: 0,
-                maxSpeed: 100,
+                maxSpeed: 3.5,
                 speed: speedValue.toDouble(),
                 animate: true,
                 duration: Duration(seconds: 5),

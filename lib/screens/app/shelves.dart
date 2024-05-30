@@ -1,26 +1,16 @@
 import 'package:PAVF/component/drawer.dart';
 import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:PAVF/screens/device/shelfconfig.dart';
-import 'package:PAVF/values/real_time/nitrogen.dart';
-
-import 'package:PAVF/values/real_time/phosphorous.dart';
-import 'package:PAVF/values/real_time/potassium.dart';
-import 'package:PAVF/values/real_time/soil_moisture.dart';
-import 'package:PAVF/values/real_time/soilec.dart';
-
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:localstorage/localstorage.dart';
-
-import 'package:PAVF/control/control.dart';
-
 import 'package:PAVF/screens/device/add_device.dart';
 
-final localStorage = LocalStorage('app_data.json');
 
 class HomeController extends GetxController {
   ChewieController? chewieController;
+
+  
 }
 
 class Shelves extends StatelessWidget {
@@ -29,8 +19,12 @@ class Shelves extends StatelessWidget {
   final String user = retrieveData("username");
 
   // Sample data for shelves (replace it with your actual data)
-  final List<String> shelfNames = ["Shelf 1", "Shelf 2", "Shelf 3"];
+  
+  final String deviceName = Get.arguments['deviceName'];
+  final String deviceId = Get.arguments['deviceId'];
+  List<dynamic> shelfs = Get.arguments['shelfs'];
 
+  
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -44,9 +38,9 @@ class Shelves extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: ListView.builder(
-                itemCount: shelfNames.length,
+                itemCount: shelfs.length,
                 itemBuilder: (context, index) {
-                  return _buildShelfCard(context, shelfNames[index]);
+                  return _buildShelfCard(context, "Shelf ID: "+shelfs[index]["shelf_id"],shelfs[index]);
                 },
               ),
             ),
@@ -70,7 +64,7 @@ class Shelves extends StatelessWidget {
         },
       ),
       title: Text(
-        'Welcome $user',
+        deviceName,
         style: TextStyle(
           color: Colors.white,
           fontSize: 22,
@@ -91,7 +85,7 @@ class Shelves extends StatelessWidget {
     );
   }
 
-  Widget _buildShelfCard(BuildContext context, String shelfName) {
+  Widget _buildShelfCard(BuildContext context, String ShelfId,Map<String, dynamic>? Shelves) {
     return Center(
       child: Container(
         margin: EdgeInsets.all(16.0),
@@ -101,17 +95,46 @@ class Shelves extends StatelessWidget {
           color: Color(0xFFE4F3E0),
           elevation: 4.0,
           child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Shelfconfig()),
-              );
+            onTap: () async {
+              // isConfig?Get.toNamed("/shelfdashboard"):Get.toNamed("/shelfConfig");
+              if(Shelves?["isConfigured"] == true){
+                // Get.toNamed("/shelfdashboard");
+                // storeData("plantName", Shelves);
+                // print(Shelves["temprature"]["min"]);
+                print(Shelves?["plant_data"]);
+                // print("  ....");
+                // print(Shelves!["plant_data"]["temperature"]);
+                await storeData("plantName", Shelves!["plant_data"]["name"]);
+                await storeData("tempMin", Shelves!["plant_data"]["temperature"]["min"]);
+                await storeData("tempMax", Shelves!["plant_data"]["temperature"]["max"]);
+                await storeData("moisMin", Shelves!["plant_data"]["moisture"]["min"]);
+                await storeData("moisMax", Shelves!["plant_data"]["moisture"]["max"]);
+                await storeData("ecMin", Shelves!["plant_data"]["electrical_conductivity"]["min"]);
+                await storeData("ecMax", Shelves!["plant_data"]["electrical_conductivity"]["max"]);
+                await storeData("humiMin", Shelves!["plant_data"]["humidity"]["min"]);
+                await storeData("humiMax", Shelves!["plant_data"]["humidity"]["max"]);
+                await storeData("nitroMin", Shelves!["plant_data"]["nitrogen"]["min"]);
+                await storeData("nitroMax", Shelves!["plant_data"]["nitrogen"]["max"]);
+                await storeData("phosMin", Shelves!["plant_data"]["phosphorus"]["min"]);
+                await storeData("phosMax", Shelves!["plant_data"]["phosphorus"]["max"]);
+                await storeData("potaMin", Shelves!["plant_data"]["potassium"]["min"]);
+                await storeData("potaMax", Shelves!["plant_data"]["potassium"]["max"]);
+                await storeData("phMax", Shelves!["plant_data"]["ph"]["min"]);
+                await storeData("phMin", Shelves!["plant_data"]["ph"]["max"]);
+
+                Get.toNamed("/shelfdashboard");
+                               
+              }
+              else
+              {
+                Get.toNamed("/shelfConfig",arguments: {"deviceID":deviceId,"shelfId":ShelfId,"deviceName":deviceName,"shelfs":shelfs});
+              }
             },
             child: Padding(
               padding: EdgeInsets.all(16.0),
               child: Center(
                 child: Text(
-                  shelfName,
+                  ShelfId,
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,
@@ -125,47 +148,54 @@ class Shelves extends StatelessWidget {
     );
   }
 
-  Widget _buildRecommendationSection(BuildContext context) {
+ Widget _buildRecommendationSection(BuildContext context) {
     return Container(
       alignment: Alignment.bottomCenter,
-      height: 150,
-      width: double.infinity,
+      height: 80,
+      width: double.infinity, // For responsive
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 201, 233, 201),
+        color: Color.fromARGB(255, 201, 233, 201), // Set the background color
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(height: 10),
-          InkWell(
-            onTap: () {
-              Get.to(() => AddDevice());
-            },
-            child: Container(
-              height: 40,
-              width: 150,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 255, 255, 255),
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(
-                  color: const Color.fromARGB(255, 255, 253, 253),
-                  width: 2.0,
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  "Bind the device",
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 40, 176, 6),
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+        // children: [
+          // Text(
+          //   "Device Connection",
+          //   style: TextStyle(
+          //     fontWeight: FontWeight.bold,
+          //     fontSize: 18,
+          //   ),
+          // ),
+          // SizedBox(height: 10), // Add space between text and button
+          // InkWell(
+          //   onTap: () {
+          //     Get.toNamed("/deviceConn");
+          //   },
+          //   child: Container(
+          //     height: 40,
+          //     width: 150,
+          //     decoration: BoxDecoration(
+          //       color: Color.fromARGB(255, 255, 255, 255),
+          //       borderRadius: BorderRadius.circular(30),
+          //       border: Border.all(
+          //         color: const Color.fromARGB(255, 255, 253, 253),
+          //         width: 2.0,
+          //       ),
+          //     ),
+          //     child: Center(
+          //       child: Text(
+          //         "Bind the device",
+          //         style: TextStyle(
+          //           color: Color.fromARGB(255, 40, 176, 6),
+          //           fontSize: 16,
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+        // ],
       ),
     );
   }

@@ -73,7 +73,7 @@ class _SoilgraphState extends State<Soilgraph> {
         },
       ),
       title: Text(
-        'Welcome $user',
+        retrieveData("plantName"),
         style: TextStyle(
           color: Colors.white,
           fontSize: 22,
@@ -178,7 +178,7 @@ class _SoilgraphState extends State<Soilgraph> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Center(
-                      child: Text('Min 32',
+                      child: Text('Min '+retrieveData("moisMin").toString(),
                           style: TextStyle(color: Colors.white))),
                 ),
                 Container(
@@ -189,7 +189,7 @@ class _SoilgraphState extends State<Soilgraph> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Center(
-                      child: Text('Max 52',
+                      child: Text('Max '+retrieveData("moisMax").toString(),
                           style: TextStyle(color: Colors.white))),
                 ),
               ],
@@ -332,43 +332,54 @@ class _SoilgraphState extends State<Soilgraph> {
       case '1d':
 
         dummyData = [
-          SalesData(now.subtract(const Duration(hours: 1)), 8),
-          SalesData(now.subtract(const Duration(minutes: 30)), 9),
-          SalesData(now.subtract(const Duration(minutes: 15)), 10),
-          SalesData(now, 12),
+          SalesData(now.subtract(const Duration(hours: 1)), 51),
+          SalesData(now.subtract(const Duration(minutes: 30)), 57),
+          SalesData(now.subtract(const Duration(minutes: 15)), 59),
+          SalesData(now, 59),
         ];
         break;
       case '3d':
         dummyData = [
-          SalesData(now.subtract(Duration(days: 3)), 8),
-          SalesData(now.subtract(Duration(days: 2)), 9),
-          SalesData(now.subtract(Duration(days: 1)), 10),
-          SalesData(now, 12),
+           SalesData(now.subtract(Duration(days: 5)), 51),
+          SalesData(now.subtract(Duration(days: 4)), 52),
+          SalesData(now.subtract(Duration(days: 3)), 55),
+          SalesData(now.subtract(Duration(days: 2)), 53),
+          SalesData(now.subtract(Duration(days: 1)), 58),
+          SalesData(now, 59),
         ];
         break;
       // Add cases for other intervals if needed
       case '7d':
         dummyData = [
-          SalesData(now.subtract(Duration(days: 3)), 8),
-          SalesData(now.subtract(Duration(days: 2)), 9),
-          SalesData(now.subtract(Duration(days: 5)), 11),
-          SalesData(now, 12),
+          SalesData(now.subtract(Duration(days: 5)), 51),
+          SalesData(now.subtract(Duration(days: 4)), 52),
+          SalesData(now.subtract(Duration(days: 3)), 55),
+          SalesData(now.subtract(Duration(days: 2)), 53),
+          SalesData(now.subtract(Duration(days: 1)), 58),
+          SalesData(now, 59),
         ];
         break;
       case '1m':
         dummyData = [
-          SalesData(now.subtract(Duration(days: 4)), 8),
-          SalesData(now.subtract(Duration(days: 2)), 9),
-          SalesData(now.subtract(Duration(days: 5)), 11),
-          SalesData(now, 12),
+          SalesData(now.subtract(Duration(days: 5)), 51),
+          SalesData(now.subtract(Duration(days: 4)), 52),
+          SalesData(now.subtract(Duration(days: 3)), 55),
+          SalesData(now.subtract(Duration(days: 2)), 53),
+          SalesData(now.subtract(Duration(days: 1)), 58),
+          SalesData(now, 59),
         ];
         break;
       case '3m':
         dummyData = [
-          SalesData(now.subtract(Duration(days: 7)), 8),
-          SalesData(now.subtract(Duration(days: 21)), 9),
-          SalesData(now.subtract(Duration(days: 5)), 11),
-          SalesData(now, 12),
+          SalesData(now.subtract(Duration(days: 8)), 51),
+          SalesData(now.subtract(Duration(days: 7)), 52),
+          SalesData(now.subtract(Duration(days: 6)), 55),
+          SalesData(now.subtract(Duration(days: 5)), 55),
+          SalesData(now.subtract(Duration(days: 4)), 54),
+          SalesData(now.subtract(Duration(days: 3)), 53),
+          SalesData(now.subtract(Duration(days: 2)), 54),
+          SalesData(now.subtract(Duration(days: 1)), 55),
+          SalesData(now, 59),
         ];
         break;
     }

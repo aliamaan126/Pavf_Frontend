@@ -51,35 +51,35 @@ class RegisterController extends GetxController {
         Get.offAllNamed('/');
       }
       //cheks for user name
-      if (response.statusCode == 201) {
-        Get.snackbar('Error', 'The user field is missing');
-      } 
-      if (response.statusCode == 201) {
-        Get.snackbar('Error', 'Username should be between 0 & 15');
-      }
-            if (response.statusCode == 201) {
-        Get.snackbar('Error', 'Username already eixts');
-      }
-      //check for email
-            if (response.statusCode == 201) {
-        Get.snackbar('Error', 'The eamil field is missing');
-      } 
-      if (response.statusCode == 201) {
-        Get.snackbar('Error', 'Email should be between 6 & 12');
-      }
-            if (response.statusCode == 201) {
-        Get.snackbar('Error', 'Email already eixts');
-      }
-      // check on pasword
-            if (response.statusCode == 201) {
-        Get.snackbar('Error', 'The Password field is missing');
-      } 
-      if (response.statusCode == 201) {
-        Get.snackbar('Error', 'Password should be between 8 & 12');
-      }
-            if (response.statusCode == 201) {
-        Get.snackbar('Error', 'Confirm Password is not equal to Password ');
-      }
+      // if (response.statusCode == 201) {
+      //   Get.snackbar('Error', 'The user field is missing');
+      // } 
+      // if (response.statusCode == 201) {
+      //   Get.snackbar('Error', 'Username should be between 0 & 15');
+      // }
+      //       if (response.statusCode == 201) {
+      //   Get.snackbar('Error', 'Username already eixts');
+      // }
+      // //check for email
+      //       if (response.statusCode == 201) {
+      //   Get.snackbar('Error', 'The eamil field is missing');
+      // } 
+      // if (response.statusCode == 201) {
+      //   Get.snackbar('Error', 'Email should be between 6 & 12');
+      // }
+      //       if (response.statusCode == 201) {
+      //   Get.snackbar('Error', 'Email already eixts');
+      // }
+      // // check on pasword
+      //       if (response.statusCode == 201) {
+      //   Get.snackbar('Error', 'The Password field is missing');
+      // } 
+      // if (response.statusCode == 201) {
+      //   Get.snackbar('Error', 'Password should be between 8 & 12');
+      // }
+      //       if (response.statusCode == 201) {
+      //   Get.snackbar('Error', 'Confirm Password is not equal to Password ');
+      // }
 
       else {
         var responseBody = json.decode(response.body);

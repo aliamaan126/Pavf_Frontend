@@ -1,8 +1,4 @@
 import 'package:PAVF/screens/app/local_storage.dart';
-import 'package:PAVF/values/graph/soil_nitrogen.dart';
-import 'package:PAVF/values/real_time/phosphorous.dart';
-import 'package:PAVF/values/real_time/potassium.dart';
-import 'package:PAVF/values/real_time/soilec.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kdgaugeview/kdgaugeview.dart';
@@ -54,7 +50,7 @@ class _PhosphorusvalueState extends State<Nitrogenvalue> {
 // double lightSpeed = double.parse(retrieveData('light'));
 // double humiditySpeed  = double.parse(retrieveData('humid'));
   // int speedValue1 = retrieveData("moisture");
-  int speedValue1 = 20;
+  int speedValue1 = 130;
 
   Widget build(BuildContext context) {
     // Retrieve MediaQuery
@@ -83,7 +79,7 @@ class _PhosphorusvalueState extends State<Nitrogenvalue> {
         },
       ),
       title: Text(
-        'Welcome $user', // Display the greeting with the username
+        retrieveData("plantName"), // Display the greeting with the username
         style: TextStyle(
           color: Colors.white,
           fontSize: 22,
@@ -207,7 +203,7 @@ class _PhosphorusvalueState extends State<Nitrogenvalue> {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Center(
-                  child: Text('Min 32', style: TextStyle(color: Colors.white))),
+                  child: Text("Min "+retrieveData("nitroMin").toString(), style: TextStyle(color: Colors.white))),
             ),
             Container(
               width: screenWidth * 0.3,
@@ -217,7 +213,7 @@ class _PhosphorusvalueState extends State<Nitrogenvalue> {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Center(
-                  child: Text('Max 52', style: TextStyle(color: Colors.white))),
+                  child: Text("Max "+retrieveData("nitroMax").toString(), style: TextStyle(color: Colors.white))),
             ),
           ],
         ),
@@ -228,8 +224,8 @@ class _PhosphorusvalueState extends State<Nitrogenvalue> {
               height: screenWidth * 0.9,
               padding: EdgeInsets.all(12),
               child: KdGaugeView(
-                minSpeed: 0,
-                maxSpeed: 100,
+                minSpeed: 50,
+                maxSpeed: 200,
                 speed: speedValue.toDouble(),
                 animate: true,
                 duration: Duration(seconds: 5),

@@ -1,3 +1,4 @@
+import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:PAVF/values/graph/ph_graph.dart';
 import 'package:PAVF/values/graph/potassium.dart';
 import 'package:PAVF/values/graph/soil_nitrogen.dart';
@@ -76,7 +77,7 @@ class _SoilpotassiumgraphState extends State<Soilpotassiumgraph> {
         },
       ),
       title: Text(
-        'Welcome $user',
+        retrieveData("plantName"),
         style: TextStyle(
           color: Colors.white,
           fontSize: 22,
@@ -188,7 +189,7 @@ class _SoilpotassiumgraphState extends State<Soilpotassiumgraph> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Center(
-                      child: Text('Min 32',
+                      child: Text('Min '+retrieveData("potaMin").toString(),
                           style: TextStyle(color: Colors.white))),
                 ),
                 Container(
@@ -199,7 +200,7 @@ class _SoilpotassiumgraphState extends State<Soilpotassiumgraph> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Center(
-                      child: Text('Max 52',
+                      child: Text("Max "+retrieveData("potaMax").toString(),
                           style: TextStyle(color: Colors.white))),
                 ),
               ],

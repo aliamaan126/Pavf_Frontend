@@ -1,5 +1,5 @@
 import "package:PAVF/screens/app/shelves.dart";
-import "package:PAVF/screens/app/shlef_dashboard.dart";
+import 'package:PAVF/screens/app/shelf_dashboard.dart';
 import "package:PAVF/screens/device/add_device.dart";
 import "package:PAVF/screens/device/device_Setup.dart";
 import "package:PAVF/screens/app/dashboard.dart";
@@ -9,6 +9,7 @@ import "package:PAVF/screens/auth/otp_screen.dart";
 import "package:PAVF/screens/auth/register_screen.dart";
 import "package:PAVF/screens/auth/resetPass_screen.dart";
 import "package:PAVF/screens/device/device_conn.dart";
+import "package:PAVF/screens/device/shelfconfig.dart";
 import "package:PAVF/values/graph/ph_graph.dart";
 import "package:PAVF/values/graph/potassium.dart";
 import "package:PAVF/values/graph/soil_Ec.dart";
@@ -61,6 +62,10 @@ class RouteGenerator {
     GetPage(
       name: '/shelfdashboard',
       page: () => ShelfDashboard(),
+    ),
+    GetPage(
+      name: "/shelfConfig", 
+      page: ()=>Shelfconfig()
     ),
     GetPage(
       name: '/addDevice',
