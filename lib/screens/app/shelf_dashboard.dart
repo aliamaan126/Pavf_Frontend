@@ -15,8 +15,6 @@ import 'package:localstorage/localstorage.dart';
 
 import 'package:PAVF/control/control.dart';
 
-import 'package:PAVF/screens/device/add_device.dart';
-
 final localStorage = LocalStorage('app_data.json');
 
 class HomeController extends GetxController {
@@ -50,11 +48,6 @@ class ShelfDashboard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              // _buildSpace(),
-              // _buildLightRow(),
-              // _buildSpace(),
-              // _buildVisualRecording(),
-              // _buildVideoBox(context),
               _buildMetricRows(context),
               _buildRecommendationSection(context),
             ],
@@ -99,15 +92,6 @@ class ShelfDashboard extends StatelessWidget {
     );
   }
 
-  // Padding _buildProfileIcon() {
-  //   return Padding(
-  //     padding: const EdgeInsets.only(right: 20.0),
-  //     child: CircleAvatar(
-  //       backgroundColor: Colors.white,
-  //       child: Icon(Icons.person, color: Colors.black, size: 40),
-  //     ),
-  //   );
-  // }
 
   SizedBox _buildSpace({double height = 40.0}) => SizedBox(height: height);
 
@@ -194,6 +178,7 @@ Widget _buildMetricRows(BuildContext context) {
   List<List<Map<String, dynamic>>> visualReadingMetrics = [
     [
       {
+        
         "title": "Soil Moisture",
         "description": "Light value of the shelf.",
         "navigationPage": SoilMoistureValue(),
@@ -405,49 +390,7 @@ Padding _buildRecommendationSection(BuildContext context) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
-        // children: [
-        //   Text(
-        //     "Device Connection",
-        //     style: TextStyle(
-        //       fontWeight: FontWeight.bold,
-        //       fontSize: 18,
-        //     ),
-        //   ),
-        //   SizedBox(height: 10), // Add space between text and button
-        //   Text(
-        //     "No Device Connected",
-        //     style: TextStyle(
-        //       fontSize: 16,
-        //     ),
-        //   ),
-        //   SizedBox(height: 10), // Add space between text and button
-        //   InkWell(
-        //     onTap: () {
-        //       Get.to(() => AddDevice());
-        //     },
-        //     child: Container(
-        //       height: 40,
-        //       width: 150,
-        //       decoration: BoxDecoration(
-        //         color: Color.fromARGB(255, 255, 255, 255),
-        //         borderRadius: BorderRadius.circular(30),
-        //         border: Border.all(
-        //           color: const Color.fromARGB(255, 255, 253, 253),
-        //           width: 2.0,
-        //         ),
-        //       ),
-        //       child: const Center(
-        //         child: Text(
-        //           "Bind the device",
-        //           style: TextStyle(
-        //             color: Color.fromARGB(255, 40, 176, 6),
-        //             fontSize: 16,
-        //           ),
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // ],
+       
       ),
     ),
   );

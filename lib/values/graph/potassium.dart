@@ -1,10 +1,5 @@
 import 'package:PAVF/screens/app/local_storage.dart';
-import 'package:PAVF/values/graph/ph_graph.dart';
-import 'package:PAVF/values/graph/potassium.dart';
-import 'package:PAVF/values/graph/soil_nitrogen.dart';
-import 'package:PAVF/values/graph/soilphosporous.dart';
 import 'package:PAVF/values/real_time/potassium.dart';
-import 'package:PAVF/values/real_time/soil_moisture.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -14,7 +9,6 @@ import 'package:PAVF/component/drawer.dart';
 
 import 'package:intl/intl.dart';
 
-// Define the main widget for the real-time screen
 void main() {
   runApp(MaterialApp(
     home: Soilpotassiumgraph(),

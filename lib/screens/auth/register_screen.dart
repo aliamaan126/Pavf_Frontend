@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:PAVF/constants/colors.dart';
 import 'package:get/get.dart';
 
-// final FlutterSecureStorage _storage = FlutterSecureStorage();
-
 class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -238,7 +236,7 @@ class SignUpButton extends StatelessWidget {
           ),
         ),
         style: ElevatedButton.styleFrom(
-          primary: Colors.green,
+          backgroundColor: Colors.green,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -278,60 +276,6 @@ class LoginLink extends StatelessWidget {
     );
   }
 }
-
-// final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-// Future<void> registerUser(String username, String email, String password,
-//     String passwordConfirmation, BuildContext context) async {
-//   // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-//   final apiUrl = '$server/auth/register';
-//   try {
-//     final response = await http.post(
-//       Uri.parse(apiUrl),
-//       headers: <String, String>{
-//         'Content-Type': 'application/json; charset=UTF-8',
-//       },
-//       body: jsonEncode(<String, String>{
-//         'username': username,
-//         'email': email,
-//         'password': password,
-//         'password_confirmation': passwordConfirmation,
-//       }),
-//     );
-
-//     if (response.statusCode == 201) {
-
-//       final json = jsonDecode(response.body);
-//       var token = json['access_token'];
-//       storeAuthToken(token);
-
-//       var uname = json['user']['username'];
-//       var uemail = json['user']['email'];
-//       var uFirstName = json['user']['firstname'];
-//       var uLastName = json['user']['lastname'];
-//       var urole = json['user']['role'];
-
-//       await storeData('username', uname.toString());
-//       await storeData('email', uemail.toString());
-//       await storeData('firstname', uFirstName.toString());
-//       await storeData('lastname', uLastName.toString());
-//       await storeData('role', urole.toString());
-
-//       Get.offAllNamed('/');
-//     } else {
-//       var responseBody = json.decode(response.body);
-
-//       if (responseBody['error'] == 'Password too short') {
-//       } else {
-//       }
-//       if (response.statusCode == 400) {
-//       }
-//     }
-//   } catch (e) {
-//     ScaffoldMessenger.of(context).showSnackBar(
-//         SnackBar(content: Text('Signup failed: $e')),
-//       );
-//   }
-// }
 
 void showSignUpConfirmationDialog(
     BuildContext context, String title, String content) {

@@ -1,10 +1,4 @@
 import 'package:PAVF/screens/app/local_storage.dart';
-import 'package:PAVF/values/graph/potassium.dart';
-import 'package:PAVF/values/graph/soil_Ec.dart';
-import 'package:PAVF/values/graph/soil_moisture.dart';
-import 'package:PAVF/values/real_time/pH.dart';
-import 'package:PAVF/values/real_time/soil_moisture.dart';
-import 'package:PAVF/values/real_time/soilec.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -325,47 +319,45 @@ class _PhgraphState extends State<Phgraph> {
     switch (interval) {
       case '1d':
         dummyData = [
-          SalesData(now.subtract(Duration(hours: 7)), 6),
-          SalesData(now, 7),
+          SalesData(now.subtract(Duration(hours: 7)), 6.4),
+          SalesData(now, 6.3),
         ];
         break;
       case '3d':
         dummyData = [
-          SalesData(now.subtract(Duration(days: 3)), 6.3),
-          SalesData(now.subtract(Duration(days: 2)), 6.5),
-          SalesData(now.subtract(Duration(days: 1)), 6.7),
-          SalesData(now, 6.8),
+          SalesData(now.subtract(Duration(days: 3)), 6.4),
+          SalesData(now.subtract(Duration(days: 2)), 6.4),
+          SalesData(now.subtract(Duration(days: 1)), 6.4),
+          SalesData(now, 6.3),
         ];
         break;
       // Add cases for other intervals if needed
       case '7d':
         dummyData = [
-          SalesData(now.subtract(Duration(days: 5)), 6.3),
-          SalesData(now.subtract(Duration(days: 4)), 6.5),
-          SalesData(now.subtract(Duration(days: 3)), 6.7),
-          SalesData(now.subtract(Duration(days: 2)), 6.7),
-          SalesData(now.subtract(Duration(days: 1)), 6.7),
-          SalesData(now, 6.8),
+          SalesData(now.subtract(Duration(days: 5)), 6.5),
+          SalesData(now.subtract(Duration(days: 4)), 6.4),
+          SalesData(now.subtract(Duration(days: 3)), 6.4),
+          SalesData(now.subtract(Duration(days: 2)), 6.4),
+          SalesData(now.subtract(Duration(days: 1)), 6.4),
+          SalesData(now, 6.3),
         ];
         break;
       case '1m':
         dummyData = [
-           SalesData(now.subtract(Duration(days: 5)), 6.3),
-          SalesData(now.subtract(Duration(days: 4)), 6.5),
-          SalesData(now.subtract(Duration(days: 3)), 6.7),
-          SalesData(now.subtract(Duration(days: 2)), 6.7),
-          SalesData(now.subtract(Duration(days: 1)), 6.7),
-          SalesData(now, 6.8),
+          SalesData(now.subtract(Duration(days: 3)), 6.5),
+          SalesData(now.subtract(Duration(days: 2)), 6.5),
+          SalesData(now.subtract(Duration(days: 1)), 6.4),
+          SalesData(now, 6.3),
         ];
         break;
       case '3m':
         dummyData = [
-           SalesData(now.subtract(Duration(days: 5)), 6.3),
+           SalesData(now.subtract(Duration(days: 5)), 6.5),
           SalesData(now.subtract(Duration(days: 4)), 6.5),
-          SalesData(now.subtract(Duration(days: 3)), 6.7),
-          SalesData(now.subtract(Duration(days: 2)), 6.7),
-          SalesData(now.subtract(Duration(days: 1)), 6.7),
-          SalesData(now, 6.8),
+          SalesData(now.subtract(Duration(days: 3)), 6.5),
+          SalesData(now.subtract(Duration(days: 2)), 6.4),
+          SalesData(now.subtract(Duration(days: 1)), 6.4),
+          SalesData(now, 6.3),
         ];
         break;
     }

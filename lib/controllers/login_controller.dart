@@ -56,29 +56,8 @@ class LoginController extends GetxController {
         Get.offAllNamed('/dashboard');
 
         
-        // Get.find().addUser(user,email,fname,lname,'role');
       }
-      //user name check
-//       if (response.statusCode == 201) {
-//         Get.snackbar('Error', 'Username Field is empty');
-//       }
-//       if (response.statusCode == 201) {
-//         Get.snackbar('Error', 'Incorrect Username');
-//       }
-// //PASSWORD HECK
-//       if (response.statusCode == 201) {
-//         Get.snackbar('Error', 'Password Field is empty');
-//       }
-//       if (response.statusCode == 201) {
-//         Get.snackbar('Error', 'Incorrect Password');
-//       } else {
-//         Get.snackbar(
-//             "Request Failed", "Login failed: Invalid Username or Password",
-//             backgroundColor: const Color.fromARGB(255, 221, 92, 82),
-//             duration: const Duration(seconds: 3));
-//       }
     } catch (e) {
-      // Handle exceptions
     } finally {
       isLoading(false);
     }

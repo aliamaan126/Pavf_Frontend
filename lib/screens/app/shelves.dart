@@ -1,10 +1,8 @@
 import 'package:PAVF/component/drawer.dart';
 import 'package:PAVF/screens/app/local_storage.dart';
-import 'package:PAVF/screens/device/shelfconfig.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:PAVF/screens/device/add_device.dart';
 
 
 class HomeController extends GetxController {
@@ -96,14 +94,8 @@ class Shelves extends StatelessWidget {
           elevation: 4.0,
           child: InkWell(
             onTap: () async {
-              // isConfig?Get.toNamed("/shelfdashboard"):Get.toNamed("/shelfConfig");
               if(Shelves?["isConfigured"] == true){
-                // Get.toNamed("/shelfdashboard");
-                // storeData("plantName", Shelves);
-                // print(Shelves["temprature"]["min"]);
                 print(Shelves?["plant_data"]);
-                // print("  ....");
-                // print(Shelves!["plant_data"]["temperature"]);
                 await storeData("plantName", Shelves!["plant_data"]["name"]);
                 await storeData("tempMin", Shelves!["plant_data"]["temperature"]["min"]);
                 await storeData("tempMax", Shelves!["plant_data"]["temperature"]["max"]);
@@ -160,42 +152,7 @@ class Shelves extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
-        // children: [
-          // Text(
-          //   "Device Connection",
-          //   style: TextStyle(
-          //     fontWeight: FontWeight.bold,
-          //     fontSize: 18,
-          //   ),
-          // ),
-          // SizedBox(height: 10), // Add space between text and button
-          // InkWell(
-          //   onTap: () {
-          //     Get.toNamed("/deviceConn");
-          //   },
-          //   child: Container(
-          //     height: 40,
-          //     width: 150,
-          //     decoration: BoxDecoration(
-          //       color: Color.fromARGB(255, 255, 255, 255),
-          //       borderRadius: BorderRadius.circular(30),
-          //       border: Border.all(
-          //         color: const Color.fromARGB(255, 255, 253, 253),
-          //         width: 2.0,
-          //       ),
-          //     ),
-          //     child: Center(
-          //       child: Text(
-          //         "Bind the device",
-          //         style: TextStyle(
-          //           color: Color.fromARGB(255, 40, 176, 6),
-          //           fontSize: 16,
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
-        // ],
+        
       ),
     );
   }

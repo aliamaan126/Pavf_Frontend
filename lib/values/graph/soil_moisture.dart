@@ -332,54 +332,43 @@ class _SoilgraphState extends State<Soilgraph> {
       case '1d':
 
         dummyData = [
-          SalesData(now.subtract(const Duration(hours: 1)), 51),
-          SalesData(now.subtract(const Duration(minutes: 30)), 57),
-          SalesData(now.subtract(const Duration(minutes: 15)), 59),
-          SalesData(now, 59),
+          SalesData(now.subtract(const Duration(hours: 7)), 56.4),
+          SalesData(now, 56),
         ];
         break;
       case '3d':
         dummyData = [
-           SalesData(now.subtract(Duration(days: 5)), 51),
-          SalesData(now.subtract(Duration(days: 4)), 52),
-          SalesData(now.subtract(Duration(days: 3)), 55),
-          SalesData(now.subtract(Duration(days: 2)), 53),
-          SalesData(now.subtract(Duration(days: 1)), 58),
-          SalesData(now, 59),
+          SalesData(now.subtract(Duration(days: 2)), 57),
+          SalesData(now.subtract(Duration(days: 1)), 56.8),
+          SalesData(now, 56),
         ];
         break;
       // Add cases for other intervals if needed
       case '7d':
         dummyData = [
-          SalesData(now.subtract(Duration(days: 5)), 51),
-          SalesData(now.subtract(Duration(days: 4)), 52),
-          SalesData(now.subtract(Duration(days: 3)), 55),
-          SalesData(now.subtract(Duration(days: 2)), 53),
-          SalesData(now.subtract(Duration(days: 1)), 58),
-          SalesData(now, 59),
+          SalesData(now.subtract(Duration(days: 6)), 55),
+          SalesData(now.subtract(Duration(days: 5)), 58),
+          SalesData(now.subtract(Duration(days: 4)), 58),
+          SalesData(now.subtract(Duration(days: 3)), 58),
+          SalesData(now.subtract(Duration(days: 2)), 57),
+          SalesData(now.subtract(Duration(days: 1)), 54),
+          SalesData(now, 56),
         ];
         break;
       case '1m':
         dummyData = [
-          SalesData(now.subtract(Duration(days: 5)), 51),
-          SalesData(now.subtract(Duration(days: 4)), 52),
-          SalesData(now.subtract(Duration(days: 3)), 55),
-          SalesData(now.subtract(Duration(days: 2)), 53),
-          SalesData(now.subtract(Duration(days: 1)), 58),
-          SalesData(now, 59),
+          SalesData(now.subtract(Duration(days: 28)), 58),
+          SalesData(now.subtract(Duration(days: 21)), 58),
+          SalesData(now.subtract(Duration(days: 14)), 57),
+          SalesData(now.subtract(Duration(days: 7)), 56),
+          SalesData(now, 56),
         ];
         break;
       case '3m':
         dummyData = [
-          SalesData(now.subtract(Duration(days: 8)), 51),
-          SalesData(now.subtract(Duration(days: 7)), 52),
-          SalesData(now.subtract(Duration(days: 6)), 55),
-          SalesData(now.subtract(Duration(days: 5)), 55),
-          SalesData(now.subtract(Duration(days: 4)), 54),
-          SalesData(now.subtract(Duration(days: 3)), 53),
-          SalesData(now.subtract(Duration(days: 2)), 54),
-          SalesData(now.subtract(Duration(days: 1)), 55),
-          SalesData(now, 59),
+           SalesData(now.subtract(Duration(days: 21)), 58),
+          SalesData(now.subtract(Duration(days: 7)), 56),
+          SalesData(now, 56),
         ];
         break;
     }

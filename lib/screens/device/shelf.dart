@@ -7,11 +7,7 @@ import 'package:get/get.dart';
 final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 // Example JSON response containing an array of items
 final jsonResponse = {
-  "items": [
-    {"id": 1, "name": "Shelf 01"},
-    {"id": 2, "name": "Shelf 02"},
-    // Add more items as needed
-  ]
+  "items": []
 };
 
 void main() {

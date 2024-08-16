@@ -147,8 +147,6 @@ class SplashScreenContent extends StatelessWidget {
         return 200;
       } 
       else if(response.statusCode==401){
-        // // Handle HTTP error response
-        // Get.snackbar("error", "message");
         return 401;
         // Get.offAllNamed("/login");
       }

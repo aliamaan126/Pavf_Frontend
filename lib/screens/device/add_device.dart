@@ -54,11 +54,8 @@ class AddDevice extends StatelessWidget {
                 itemId: index + 1,
                 itemName: itemName,
                 onTap: () {
-                  // Handle card tap (e.g., navigate to detail page)
-                  // print('Card tapped: ${item['name']}');
                   Navigator.of(context).pop(); // Close the drawer
                   Get.to(() => Shelf());
-                  // Implement your navigation logic here
                 },
               );
             } else {
@@ -152,7 +149,6 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
             Icons.menu), // Specify the icon for the left button (e.g., menu)
         onPressed: () {
           // Handle onPressed event for the left button
-          // Implement your logic here
           _scaffoldKey.currentState?.openDrawer(); // Open the drawer
         },
       ),
@@ -169,7 +165,7 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         IconButton(
           icon: Icon(
-              Icons.add), // Specify the icon for the right button (e.g., add)
+              Icons.add), 
           onPressed: () {
             Get.to(() => DeviceSetup());
           },

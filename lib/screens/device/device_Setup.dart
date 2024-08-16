@@ -1,8 +1,7 @@
 import 'package:PAVF/constants/url.dart';
 import 'package:flutter/material.dart';
 import 'package:PAVF/screens/device/add_device.dart';
-import 'package:PAVF/screens/device/device_conn.dart'; // Import the AddDevice screen
-import 'package:PAVF/screens/device/wifi_conect.dart';
+import 'package:PAVF/screens/device/device_conn.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -41,13 +40,7 @@ class DeviceSetup extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 22),
                     children: [
                       _buildRow("Bind Device", "", () {
-                        // onTap action for Connect and Configure Device
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) =>
-                        //           DeviceConn()), // Navigate to AddDevice screen
-                        // );
+                       
                         Get.toNamed("/deviceConn");
                       }),
                       SizedBox(height: 20),
@@ -60,16 +53,7 @@ class DeviceSetup extends StatelessWidget {
                                   DeviceConn()), // Navigate to AddDevice screen
                         );
                       }),
-                      SizedBox(height: 20),
-                      _buildRow("Connect Device only", "", () {
-                        // onTap action for Connect and Configure Device
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  WifiConn()), // Navigate to AddDevice screen
-                        );
-                      }),
+                      SizedBox(height: 20)
                     ],
                   ),
                 ),

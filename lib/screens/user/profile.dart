@@ -159,7 +159,7 @@ class _ProfileState extends State<Profile> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(
+                      backgroundColor: Color(
                           0xFF18A818), // Set the save button color to 18A818
                     ),
                     child: Text(
@@ -176,7 +176,7 @@ class _ProfileState extends State<Profile> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(
+                      backgroundColor: Color(
                           0xFFF3F3F3), // Set the cancel button color to F3F3F3
                     ),
                     child: Text(

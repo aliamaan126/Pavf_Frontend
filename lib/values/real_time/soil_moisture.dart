@@ -38,22 +38,11 @@ class _SoilMoistureValueState extends State<SoilMoistureValue> {
     Icons.thermostat, // Soil Moisture icon
   ];
   int currentIndex = 0;
-  // Global variables for each meter's speed value
-  // double speedValue1 =
-  //     double.parse(retrieveData('temp')); // Speed value for Potassium
-  // double speedValue2 =
-  //     double.parse(retrieveData('light')); // Speed value for Nitrogen
-  // double speedValue3 =
-  //     double.parse(retrieveData('light')); // Speed value for Phosphorus
-  // double speedValue4 =
-  //     double.parse(retrieveData('light')); // Speed value for Soil EC
 
-  // Define the speed value for the Potassium meter
-// double temperatureSpeed = double.parse(retrieveData('temp'));
-// double lightSpeed = double.parse(retrieveData('light'));
-// double humiditySpeed  = double.parse(retrieveData('humid'));
-  // int speedValue1 = retrieveData("moisture");
-  int speedValue1 = 54;
+double temperatureSpeed = double.parse(retrieveData('temp'));
+double lightSpeed = double.parse(retrieveData('light'));
+double humiditySpeed  = double.parse(retrieveData('humid'));
+  int speedValue1 = retrieveData("moisture");
 
   Widget build(BuildContext context) {
     // Retrieve MediaQuery

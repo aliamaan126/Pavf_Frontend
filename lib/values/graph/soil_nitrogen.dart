@@ -318,41 +318,42 @@ class _SoilNCgraphState extends State<SoilNCgraph> {
     switch (interval) {
       case '1d':
         dummyData = [
-          SalesData(now.subtract(Duration(hours: 7)), 10),
-          SalesData(now, 12),
+          SalesData(now.subtract(Duration(hours: 7)), 128),
+          SalesData(now, 130),
         ];
         break;
       case '3d':
         dummyData = [
-          SalesData(now.subtract(Duration(days: 3)), 8),
-          SalesData(now.subtract(Duration(days: 2)), 9),
-          SalesData(now.subtract(Duration(days: 1)), 10),
-          SalesData(now, 12),
+          SalesData(now.subtract(Duration(days: 2)), 128),
+          SalesData(now.subtract(Duration(days: 1)), 128),
+          SalesData(now, 130),
         ];
         break;
       // Add cases for other intervals if needed
       case '7d':
         dummyData = [
-          SalesData(now.subtract(Duration(days: 3)), 8),
-          SalesData(now.subtract(Duration(days: 2)), 9),
-          SalesData(now.subtract(Duration(days: 5)), 11),
-          SalesData(now, 12),
+          SalesData(now.subtract(Duration(days: 6)), 126),
+          SalesData(now.subtract(Duration(days: 5)), 126),
+          SalesData(now.subtract(Duration(days: 4)), 127),
+          SalesData(now.subtract(Duration(days: 3)), 127),
+          SalesData(now.subtract(Duration(days: 2)), 128),
+          SalesData(now.subtract(Duration(days: 1)), 128),
+          SalesData(now, 130),
         ];
         break;
       case '1m':
         dummyData = [
-          SalesData(now.subtract(Duration(days: 4)), 8),
-          SalesData(now.subtract(Duration(days: 2)), 9),
-          SalesData(now.subtract(Duration(days: 5)), 11),
-          SalesData(now, 12),
+          SalesData(now.subtract(Duration(days: 28)), 125),
+          SalesData(now.subtract(Duration(days: 21)), 126),
+          SalesData(now.subtract(Duration(days: 14)), 126),
+          SalesData(now.subtract(Duration(days: 7)), 128),
+          SalesData(now, 130),
         ];
         break;
       case '3m':
         dummyData = [
-          SalesData(now.subtract(Duration(days: 7)), 8),
-          SalesData(now.subtract(Duration(days: 21)), 9),
-          SalesData(now.subtract(Duration(days: 5)), 11),
-          SalesData(now, 12),
+          SalesData(now.subtract(Duration(days: 28)), 125),
+          SalesData(now, 130),
         ];
         break;
     }

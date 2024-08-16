@@ -19,8 +19,9 @@ const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
 // Define global variables for speeds
 double temperatureSpeed = 23;
-double lightSpeed = 100;
+double lightSpeed = 0;
 double humiditySpeed = 30;
+double waterSpeed = 0;
 
 class control extends StatelessWidget {
   @override
@@ -299,26 +300,26 @@ class _View1ScreenState extends State<View1Screen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Text(
-                        //   'Manual',
-                        //   style: TextStyle(
-                        //     fontSize: isSmallScreen ? 12.0 : 16.0,
-                        //   ),
-                        // ),
-                        // Switch(
-                        //   value: isManualMode,
-                        //   onChanged: (value) {
-                        //     setState(() {
-                        //       isManualMode = value;
-                        //     });
-                        //   },
-                        // ),
-                        // Text(
-                        //   'Auto',
-                        //   style: TextStyle(
-                        //     fontSize: isSmallScreen ? 12.0 : 16.0,
-                        //   ),
-                        // ),
+                        Text(
+                          'Manual',
+                          style: TextStyle(
+                            fontSize: isSmallScreen ? 12.0 : 16.0,
+                          ),
+                        ),
+                        Switch(
+                          value: isManualMode,
+                          onChanged: (value) {
+                            setState(() {
+                              isManualMode = value;
+                            });
+                          },
+                        ),
+                        Text(
+                          'Auto',
+                          style: TextStyle(
+                            fontSize: isSmallScreen ? 12.0 : 16.0,
+                          ),
+                        ),
                       ],
                     ),
                   ] else if (dynamicText == 'Light Bulb') ...[
@@ -327,33 +328,33 @@ class _View1ScreenState extends State<View1Screen> {
                       child: ElevatedButton(
                         onPressed: () {
 
-                          notificationService.showNotification("title", "body");
-                          // setState(() {
-                            // isLightOn = !isLightOn;
-                            // if (isLightOn == false) {
-                            //   state = 0;
-                            //   socketService.emitAction('controlAction', {
-                            //     "action":"control",
-                            //     "component":"led",
-                            //     "value":0});
-                            //     lightSpeed =0;
-                            // } else {
-                            //   state = 1;
-                            //   socketService.emitAction('controlAction', {
-                            //     "action":"control",
-                            //     "component":"led",
-                            //     "value":1});
-                            //     lightSpeed =100;
+                          setState(() {
+                            isLightOn = !isLightOn;
+                            if (isLightOn == false) {
+                              state = 0;
+                              lightSpeed =0;
+                              socketService.emitAction('controlAction', {
+                                "action":"control",
+                                "component":"led",
+                                "value":0});
+                                
+                            } else {
+                              state = 1;
+                              lightSpeed =100;
+                              socketService.emitAction('controlAction', {
+                                "action":"control",
+                                "component":"led",
+                                "value":1});
 
-                            // }
-                            // controlUnit(
-                            //     context,
-                            //     "3d2c5777-25a4-455a-b8f3-fa0e135cc12b",
-                            //     "shelf_light",
-                            //     retrieveData("setLightValue"),
-                            //     state);
-                          // }
-                          // );
+                            }
+                            controlUnit(
+                                context,
+                                "3d2c5777-25a4-455a-b8f3-fa0e135cc12b",
+                                "shelf_light",
+                                retrieveData("setLightValue"),
+                                state);
+                          }
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           primary: isLightOn
@@ -387,50 +388,32 @@ class _View1ScreenState extends State<View1Screen> {
                       ),
                     ),
                     SizedBox(height: isSmallScreen ? 10 : 20),
-                    // Slider(
-                    //   value: lightSliderValue,
-                    //   onChanged: isManualMode
-                    //       ? null // If manual mode is on, make onChanged null to disable slider
-                    //       : (value) {
-                    //           setState(() {
-                    //             print('Slider value changed: $value');
-                    //             lightSliderValue =
-                    //                 value; // Assign the new value to your variable
-                    //             storeData("setLightValue", value);
-                    //           });
-                    //         },
-                    //   min: 0,
-                    //   max: 100,
-                    //   divisions: 100,
-                    //   label: lightSliderValue.round().toString(),
-                    //   activeColor: isManualMode ? Colors.grey : Colors.green,
-                    //   thumbColor: isManualMode ? Colors.grey : Colors.green,
-                    // ),
+                    
                     SizedBox(height: isSmallScreen ? 10 : 20),
                     SizedBox(height: isSmallScreen ? 10 : 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Text(
-                        //   'Manual',
-                        //   style: TextStyle(
-                        //     fontSize: isSmallScreen ? 12.0 : 16.0,
-                        //   ),
-                        // ),
-                        // Switch(
-                        //   value: isManualMode,
-                        //   onChanged: (value) {
-                        //     setState(() {
-                        //       isManualMode = value;
-                        //     });
-                        //   },
-                        // ),
-                        // Text(
-                        //   'Auto',
-                        //   style: TextStyle(
-                        //     fontSize: isSmallScreen ? 12.0 : 16.0,
-                        //   ),
-                        // ),
+                        Text(
+                          'Manual',
+                          style: TextStyle(
+                            fontSize: isSmallScreen ? 12.0 : 16.0,
+                          ),
+                        ),
+                        Switch(
+                          value: isManualMode,
+                          onChanged: (value) {
+                            setState(() {
+                              isManualMode = value;
+                            });
+                          },
+                        ),
+                        Text(
+                          'Auto',
+                          style: TextStyle(
+                            fontSize: isSmallScreen ? 12.0 : 16.0,
+                          ),
+                        ),
                       ],
                     ),
                   ] else if (dynamicText == 'Humidity') ...[
@@ -526,26 +509,26 @@ class _View1ScreenState extends State<View1Screen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Text(
-                        //   'Manual',
-                        //   style: TextStyle(
-                        //     fontSize: isSmallScreen ? 12.0 : 16.0,
-                        //   ),
-                        // ),
-                        // Switch(
-                        //   value: isManualMode,
-                        //   onChanged: (value) {
-                        //     setState(() {
-                        //       isManualMode = value;
-                        //     });
-                        //   },
-                        // ),
-                        // Text(
-                        //   'Auto',
-                        //   style: TextStyle(
-                        //     fontSize: isSmallScreen ? 12.0 : 16.0,
-                        //   ),
-                        // ),
+                        Text(
+                          'Manual',
+                          style: TextStyle(
+                            fontSize: isSmallScreen ? 12.0 : 16.0,
+                          ),
+                        ),
+                        Switch(
+                          value: isManualMode,
+                          onChanged: (value) {
+                            setState(() {
+                              isManualMode = value;
+                            });
+                          },
+                        ),
+                        Text(
+                          'Auto',
+                          style: TextStyle(
+                            fontSize: isSmallScreen ? 12.0 : 16.0,
+                          ),
+                        ),
                       ],
                     ),
                   ] else if (dynamicText == 'Water') ...[
@@ -557,12 +540,14 @@ class _View1ScreenState extends State<View1Screen> {
                             isWaterReleased = !isWaterReleased;
                             if (isWaterReleased == false) {
                               state = 0;
+                              waterSpeed=0;
                               socketService.emitAction('controlAction', {
                                 "action":"control",
                                 "component":"water",
                                 "value":0});
                             } else {
                               state = 1;
+                              waterSpeed=100;
                               socketService.emitAction('controlAction', {
                                 "action":"control",
                                 "component":"water",
@@ -582,7 +567,7 @@ class _View1ScreenState extends State<View1Screen> {
                               : Color.fromARGB(255, 42, 172, 42),
                           // Change button color based on light status
                         ),
-                        child: Text(isLightOn ? 'Turn Off' : 'Turn On'),
+                        child: Text(isWaterReleased ? 'Turn Off' : 'Turn On'),
                       ),
                     ),
                     Container(
@@ -593,7 +578,7 @@ class _View1ScreenState extends State<View1Screen> {
                         key: lightGaugeKey, // Use GlobalKey instance
                         minSpeed: 0,
                         maxSpeed: 100,
-                        speed: lightSpeed,
+                        speed: waterSpeed,
                         animate: true,
                         duration: Duration(seconds: 5),
                         alertSpeedArray: [40, 80, 90],
@@ -616,8 +601,16 @@ class _View1ScreenState extends State<View1Screen> {
                             isWaterReleased = !isWaterReleased;
                             if (isWaterReleased == false) {
                               state = 0;
+                              socketService.emitAction('controlAction', {
+                                "action":"control",
+                                "component":"water",
+                                "value":1});
                             } else {
                               state = 1;
+                              socketService.emitAction('controlAction', {
+                                "action":"control",
+                                "component":"water",
+                                "value":0});
                             }
                             controlUnit(
                                 context,
@@ -644,31 +637,29 @@ class _View1ScreenState extends State<View1Screen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Text(
-                        //   'Manual',
-                        //   style: TextStyle(
-                        //     fontSize: isSmallScreen ? 12.0 : 16.0,
-                        //   ),
-                        // ),
-                        // Switch(
-                        //   value: isManualMode,
-                        //   onChanged: (value) {
-                        //     setState(() {
-                        //       isManualMode = value;
-                        //     });
-                        //   },
-                        // ),
-                        // Text(
-                        //   'Auto',
-                        //   style: TextStyle(
-                        //     fontSize: isSmallScreen ? 12.0 : 16.0,
-                        //   ),
-                        // ),
+                        Text(
+                          'Manual',
+                          style: TextStyle(
+                            fontSize: isSmallScreen ? 12.0 : 16.0,
+                          ),
+                        ),
+                        Switch(
+                          value: isManualMode,
+                          onChanged: (value) {
+                            setState(() {
+                              isManualMode = value;
+                            });
+                          },
+                        ),
+                        Text(
+                          'Auto',
+                          style: TextStyle(
+                            fontSize: isSmallScreen ? 12.0 : 16.0,
+                          ),
+                        ),
                       ],
                     ),
                   ]
-
-                  // here add more if needed
                 ],
               ),
             ),

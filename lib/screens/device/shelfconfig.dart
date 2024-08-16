@@ -1,10 +1,7 @@
 import 'package:PAVF/constants/plants.dart';
 import 'package:PAVF/constants/url.dart';
-import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:PAVF/screens/device/device_Setup.dart';
 import 'package:get/get.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -31,14 +28,7 @@ class Shelfconfig extends StatelessWidget {
   Map<String, dynamic>? plantData;
   @override
   Widget build(BuildContext context) {
-    // Define a list of plants
-    // List<dynamic> plants = [
-    //   'Plant A',
-    //   'Plant B',
-    //   'Plant C'
-    // ]; // Add your list of plants here
     List<String> plantNames = plantsDatabase.map((plant) => plant['name'] as String).toList();
-    // Define a variable to hold the selected plant and initialize it with null
     
     String? selectedPlant;
 
@@ -98,34 +88,7 @@ class Shelfconfig extends StatelessWidget {
               SizedBox(
                 height: 100,
               ),
-              // Text(
-              //   'Date', // Password text
-              //   style: TextStyle(
-              //     fontSize: 25,
-              //     fontWeight: FontWeight.bold,
-              //     color: Colors.black,
-              //   ),
-              // ),
-              // SizedBox(
-              //   height: 15,
-              // ), // Add some space between the text and the text field
-              // TextFormField(
-              //   // Text field for entering the date
-              //   controller: _dateController, // Attach text controller
-
-              //   // decoration: InputDecoration(
-              //   //   border: OutlineInputBorder(
-              //   //     borderRadius: BorderRadius.circular(10.0),
-              //   //     borderSide: BorderSide(color: Color(0xFFE4E4E4)),
-              //   //   ),
-              //   //   hintText: 'Enter Date',
-              //   //   filled: true,
-              //   //   fillColor: Color(0xFFF9FAF9),
-              //   // ),
-              // ),
-              // SizedBox(
-              //   height: 100,
-              // ),
+              
               Center(
                 child: SizedBox(
                   width: 200,
@@ -140,7 +103,7 @@ class Shelfconfig extends StatelessWidget {
                       // Add your connection logic here
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF18A818), // Background color
+                      backgroundColor: Color(0xFF18A818), // Background color
                     ),
                     child: Text(
                       'confirm',

@@ -61,26 +61,11 @@ class buildDrawer extends StatelessWidget {
               text: 'Home',
               onTap: () => Get.to(() => const Dashboard()),
             ),
-            // DrawerItem(
-            //   icon: Icons.device_hub,
-            //   text: 'Devices',
-            //   onTap: () => Get.to(() => AddDevice()),
-            // ),
-            // DrawerItem(
-            //   icon: Icons.notifications,
-            //   text: 'Notifications',
-            //   onTap: () => Get.to(() => NotificationPage()),
-            // ),
             DrawerItem(
               icon: Icons.settings,
               text: 'Settings',
               onTap: () => Get.to(() => Settings()),
             ),
-            // DrawerItem(
-            //   icon: Icons.device_hub,
-            //   text: 'shelf',
-            //   onTap: () => Get.to(() => Shelves()),
-            // ),
             DrawerItem(
               icon: Icons.person,
               text: 'Profile',

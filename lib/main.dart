@@ -29,7 +29,6 @@ class MainApp extends StatelessWidget {
     return GetMaterialApp(
       title: "PAVF",
       initialRoute: '/',
-      //onGenerateRoute: RouteGenerator.generateRoute,
       getPages: RouteGenerator.routes,
     );
 

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:PAVF/component/drawer.dart';
 
-import 'package:get/get.dart';
-
 final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 void main() {

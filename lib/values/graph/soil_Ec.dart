@@ -1,9 +1,4 @@
 import 'package:PAVF/screens/app/local_storage.dart';
-import 'package:PAVF/values/graph/soil_moisture.dart';
-
-import 'package:PAVF/values/graph/soil_nitrogen.dart';
-
-import 'package:PAVF/values/real_time/soilec.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -13,7 +8,6 @@ import 'package:PAVF/component/drawer.dart';
 
 import 'package:intl/intl.dart';
 
-// Define the main widget for the real-time screen
 void main() {
   runApp(MaterialApp(
     home: SoilECgraph(),
@@ -321,41 +315,42 @@ class _SoilgECraphState extends State<SoilECgraph> {
     switch (interval) {
       case '1d':
         dummyData = [
-          SalesData(now.subtract(Duration(hours: 7)), 10),
-          SalesData(now, 12),
+          SalesData(now.subtract(Duration(hours: 7)), 2),
+          SalesData(now, 2.1),
         ];
         break;
       case '3d':
         dummyData = [
-          SalesData(now.subtract(Duration(days: 3)), 8),
-          SalesData(now.subtract(Duration(days: 2)), 9),
-          SalesData(now.subtract(Duration(days: 1)), 10),
-          SalesData(now, 12),
+          SalesData(now.subtract(Duration(days: 2)), 2.2),
+          SalesData(now.subtract(Duration(days: 1)), 2.1),
+          SalesData(now, 2.1),
         ];
         break;
       // Add cases for other intervals if needed
       case '7d':
         dummyData = [
-          SalesData(now.subtract(Duration(days: 3)), 8),
-          SalesData(now.subtract(Duration(days: 2)), 9),
-          SalesData(now.subtract(Duration(days: 5)), 11),
-          SalesData(now, 12),
+          SalesData(now.subtract(Duration(days: 5)), 2.2),
+          SalesData(now.subtract(Duration(days: 4)), 2.2),
+          SalesData(now.subtract(Duration(days: 3)), 2.2),
+          SalesData(now.subtract(Duration(days: 2)), 2.2),
+          SalesData(now.subtract(Duration(days: 1)), 2.1),
+          SalesData(now, 2.1),
         ];
         break;
       case '1m':
         dummyData = [
-          SalesData(now.subtract(Duration(days: 4)), 8),
-          SalesData(now.subtract(Duration(days: 2)), 9),
-          SalesData(now.subtract(Duration(days: 5)), 11),
-          SalesData(now, 12),
+          SalesData(now.subtract(Duration(days: 28)), 2.2),
+          SalesData(now.subtract(Duration(days: 21)), 2.2),
+          SalesData(now.subtract(Duration(days: 14)), 2.2),
+          SalesData(now.subtract(Duration(days: 7)), 2.1),
+          SalesData(now, 2.1),
         ];
         break;
       case '3m':
         dummyData = [
-          SalesData(now.subtract(Duration(days: 7)), 8),
-          SalesData(now.subtract(Duration(days: 21)), 9),
-          SalesData(now.subtract(Duration(days: 5)), 11),
-          SalesData(now, 12),
+          SalesData(now.subtract(Duration(days: 28)), 2.2),
+          SalesData(now.subtract(Duration(days: 7)), 2.1),
+          SalesData(now, 2.1),
         ];
         break;
     }

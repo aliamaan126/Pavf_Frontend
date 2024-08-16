@@ -22,17 +22,19 @@ class UpdatePass extends StatelessWidget {
   final TextEditingController confirmNewPasswordController =TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
-      appBar: const SubHeader(heading: "Update Password"),
-      drawer: buildDrawer(),
-      body: Container(
-        decoration: const BoxDecoration(
-          color: Color(0xFFC9E9C9),
-        ),
-        child: Center(
+Widget build(BuildContext context) {
+  final screenWidth = MediaQuery.of(context).size.width;
+  final screenHeight = MediaQuery.of(context).size.height;
+  return Scaffold(
+    appBar: const SubHeader(heading: "Update Password"),
+    drawer: buildDrawer(),
+    resizeToAvoidBottomInset: true,
+    body: Container(
+      decoration: const BoxDecoration(
+        color: Color(0xFFC9E9C9),
+      ),
+      child: Center(
+        child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -50,6 +52,7 @@ class UpdatePass extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           const SizedBox(height: 20),
+                          // Uncomment and update the avatar if needed
                           // CircleAvatar(
                           //   radius: 70,
                           //   backgroundImage:
@@ -116,8 +119,10 @@ class UpdatePass extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
 }
 
 class SubHeader extends StatelessWidget implements PreferredSizeWidget {

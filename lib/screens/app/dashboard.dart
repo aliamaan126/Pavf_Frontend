@@ -89,9 +89,6 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Widget _buildConnectedDevices(BuildContext context) {
-    // MediaQueryData mediaQueryData = MediaQuery.of(context);
-    // double screenWidth = mediaQueryData.size.width;
-    // double screenHeight = mediaQueryData.size.height;
 
     print(connectedDevices);
     return Expanded(

@@ -1,5 +1,13 @@
+import 'package:PAVF/constants/url.dart';
+import 'package:PAVF/screens/app/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:PAVF/component/drawer.dart';
+import 'package:get/get.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
 void main() {
   runApp(MaterialApp(
@@ -11,30 +19,27 @@ class RemoveDevice extends StatelessWidget {
   RemoveDevice({Key? key}) : super(key: key);
 
   final TextEditingController _deviceNameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const SubHeader(heading: "Delete Device"),
-      drawer: buildDrawer(),
-      body: Container(
-        color: const Color(0xFFC9E9C9),
-        child: Center(
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: const SubHeader(heading: "Delete Device"),
+    drawer: buildDrawer(),
+    body: Container(
+      color: const Color(0xFFC9E9C9),
+      child: Center(
+        child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: MediaQuery.of(context).size.height * 0.2, // Adjust vertical padding based on screen height
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildTextField(
                   controller: _deviceNameController,
                   labelText: 'Device Name',
-                ),
-                const SizedBox(height: 40),
-                _buildTextField(
-                  controller: _passwordController,
-                  labelText: 'Password',
-                  obscureText: true,
                 ),
                 const SizedBox(height: 40),
                 Container(
@@ -76,6 +81,7 @@ class RemoveDevice extends StatelessWidget {
                                 onPressed: () {
                                   // Perform delete action
                                   // Close the dialog
+                                  deleteDevice(context, _deviceNameController);
                                   Navigator.of(context).pop();
                                 },
                                 child: const Text("Delete"),
@@ -86,7 +92,7 @@ class RemoveDevice extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.transparent,
+                      backgroundColor: Colors.transparent,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 40, vertical: 15),
                       shape: RoundedRectangleBorder(
@@ -114,8 +120,10 @@ class RemoveDevice extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   Widget _buildTextField({
     required TextEditingController controller,
@@ -215,4 +223,51 @@ class SubHeader extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+
+Future<bool> deleteDevice(
+    BuildContext context,
+    TextEditingController userNameController) async {
+  final username = userNameController.text;
+
+  if (username == "") {
+    Get.snackbar("Error", "Username field must be filled",
+        backgroundColor: const Color.fromARGB(255, 250, 50, 35),
+        duration: const Duration(seconds: 3));
+    return false;
+  }
+  // Add your API endpoint URL here
+  const apiUrl = '$server/profile/delete-device';
+  final token = await _secureStorage.read(key: 'auth_token');
+  try {
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+      body: json.encode({'username': username}),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      List<dynamic>? devices = data['user']?['devices'];
+
+      await storeData('devices', devices);
+
+      print(retrieveData("devices"));
+      
+      Get.snackbar("Success", 'Device Deleted Successfully',
+          backgroundColor: Color.fromARGB(255, 26, 227, 42),
+          duration: Duration(seconds: 3));
+      return true;
+    } 
+    return false;
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Update failed: $e')),
+    );
+    return false;
+  }
 }

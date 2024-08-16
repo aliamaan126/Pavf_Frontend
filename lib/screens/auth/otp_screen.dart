@@ -1,5 +1,3 @@
-// ignore_for_file: body_might_complete_normally_nullable
-
 import 'package:PAVF/constants/url.dart';
 import 'package:flutter/material.dart';
 import 'package:PAVF/constants/colors.dart';
@@ -262,7 +260,7 @@ class LoginButton extends StatelessWidget {
           ),
         ),
         style: ElevatedButton.styleFrom(
-          primary: Colors.green,
+          backgroundColor: Colors.green,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
